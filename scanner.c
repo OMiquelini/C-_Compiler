@@ -112,16 +112,26 @@ void DFA(p_buffer b, FILE *fp, p_no no)
             printf("Erro lexico na linha %d: caractere %c não aceito na linguagem",b->line,c);
             return -1;
         }
-        if (estado_atual==Q5)
+        if (estado_atual==Q13)
         {
+            printf("Erro lexico na linha %d: caractere %c não aceito na linguagem",b->line,c);
+            return -1;
             unget_char(b, c);
             no->token = estado_ant;
             no->lexema[i]='\0';
         }
-        else
+        else if (estado_atual!=Q5)
         {
-            no->lexema[i]=c;
+            no->lexema=c;
         }
+        else if(estado_atual==Q5)
+        {
+            unget_char(b, c);
+            no->token = estado_ant;
+            no->lexema[i]='\0';
+            return;
+        }
+        
         i++;
     }
 }
