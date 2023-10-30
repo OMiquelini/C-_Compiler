@@ -5,6 +5,8 @@
 
 enum Estados{Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13};
 
+enum Tokens{NUM=1, ID, OP};
+
 enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, ponto_virgula, virgula, exclama,
               L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, };
 
@@ -29,79 +31,79 @@ int DFA(p_buffer b, FILE *fp)
 {
     int estado_atual = Q0, estado_ant = Q0;
     int i = 0;
-    for(i=0;b->vetor[i]!='\0';i++)
+    char c;
+    while((c=get_next_char(b, fp))!='\0')
     {
-        get_next_char(b, fp);
         estado_ant = estado_atual;
-        if(isalpha(b->vetor[i]))
+        if(isalpha(c))
         {
             estado_atual = tabela_transicoes[estado_atual][alfa];
         }
-        else if(isdigit(b->vetor[i]))
+        else if(isdigit(c))
         {
             estado_atual = tabela_transicoes[estado_atual][digito];
         }
-        else if(b->vetor[i] =='+')
+        else if(c =='+')
         {
             estado_atual = tabela_transicoes[estado_atual][mais];
         }
         
-        else if(b->vetor[i] =='-')
+        else if(c =='-')
         {
             estado_atual = tabela_transicoes[estado_atual][menos];
         }
-        else if(b->vetor[i] =='(')
+        else if(c =='(')
         {
             estado_atual = tabela_transicoes[estado_atual][L_parentesis];
-        }else if(b->vetor[i] ==')')
+        }else if(c ==')')
         {
             estado_atual = tabela_transicoes[estado_atual][R_parentesis];
         }
-        else if(b->vetor[i] =='[')
+        else if(c =='[')
         {
             estado_atual = tabela_transicoes[estado_atual][L_colchete];
         }
-        else if(b->vetor[i] ==']')
+        else if(c ==']')
         {
             estado_atual = tabela_transicoes[estado_atual][R_colchete];
         }
-        else if(b->vetor[i] =='{')
+        else if(c =='{')
         {
             estado_atual = tabela_transicoes[estado_atual][L_chaves];
         }
-        else if(b->vetor[i] =='}')
+        else if(c =='}')
         {
             estado_atual = tabela_transicoes[estado_atual][R_chaves];
         }
-        else if(b->vetor[i] =='<')
+        else if(c =='<')
         {
             estado_atual = tabela_transicoes[estado_atual][menor];
         }
-        else if(b->vetor[i] ==';')
+        else if(c ==';')
         {
             estado_atual = tabela_transicoes[estado_atual][ponto_virgula];
         }
-        else if(b->vetor[i] ==',')
+        else if(c ==',')
         {
             estado_atual = tabela_transicoes[estado_atual][virgula];
         }
-        else if(b->vetor[i] =='!')
+        else if(c =='!')
         {
             estado_atual = tabela_transicoes[estado_atual][exclama];
         }
-        else if(b->vetor[i] =='>')
+        else if(c =='>')
         {
             estado_atual = tabela_transicoes[estado_atual][maior];
         }
-        else if(b->vetor[i] =='=')
+        else if(c =='=')
         {
             estado_atual = tabela_transicoes[estado_atual][igual];
         }
-        else if (b->vetor[i] =='/')
+        else if (c =='/')
         {
             estado_atual = tabela_transicoes[estado_atual][barra];
         }
-        else if(b->vetor[i] =='*')
+        else if(c =='*')
         {
             estado_atual = tabela_transicoes[estado_atual][vezes];
         }
@@ -111,15 +113,13 @@ int DFA(p_buffer b, FILE *fp)
         }
         if (estado_atual==Q5)
         {
-            //ungetchar
+            unget_char(b, c);
             return estado_ant;
         }
         else if (estado_atual==Q13)
         {
             return -1;
         }
-        
-        
     }
 }
 
