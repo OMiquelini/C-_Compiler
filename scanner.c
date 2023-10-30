@@ -27,12 +27,12 @@ int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}//estou em Q12, para onde eu vou, Q13 é estado lixo, se veio aqui, deu erro léxico
 };
 
-int DFA(p_buffer b, FILE *fp)
+void DFA(p_buffer b, FILE *fp, p_no no)
 {
     int estado_atual = Q0, estado_ant = Q0;
     int i = 0;
     char c;
-    while((c=get_next_char(b, fp))!='\0')
+    while(((c=get_next_char(b, fp))!='\0')&&((c=get_next_char(b, fp))!=EOF))
     {
         estado_ant = estado_atual;
         if(isalpha(c))
@@ -47,7 +47,6 @@ int DFA(p_buffer b, FILE *fp)
         {
             estado_atual = tabela_transicoes[estado_atual][mais];
         }
-        
         else if(c =='-')
         {
             estado_atual = tabela_transicoes[estado_atual][menos];
@@ -110,16 +109,20 @@ int DFA(p_buffer b, FILE *fp)
         else
         {
             estado_atual = Q13;
+            printf("Erro lexico na linha %d: caractere %c não aceito na linguagem",b->line,c);
+            return -1;
         }
         if (estado_atual==Q5)
         {
             unget_char(b, c);
-            return estado_ant;
+            no->token = estado_ant;
+            no->lexema[i]='\0';
         }
-        else if (estado_atual==Q13)
+        else
         {
-            return -1;
+            no->lexema[i]=c;
         }
+        i++;
     }
 }
 
