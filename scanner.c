@@ -25,82 +25,83 @@ int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}//estou em Q12, para onde eu vou, Q13 é estado lixo, se veio aqui, deu erro léxico
 };
 
-int DFA(char input[])
+int DFA(p_buffer b, FILE *fp)
 {
     int estado_atual = Q0, estado_ant = Q0;
     int i = 0;
-    for(i=0;input[i]!='\0';i++)
+    for(i=0;b->vetor[i]!='\0';i++)
     {
+        get_next_char(b, fp);
         estado_ant = estado_atual;
-        if(isalpha(input[i]))
+        if(isalpha(b->vetor[i]))
         {
             estado_atual = tabela_transicoes[estado_atual][alfa];
         }
-        else if(isdigit(input[i]))
+        else if(isdigit(b->vetor[i]))
         {
             estado_atual = tabela_transicoes[estado_atual][digito];
         }
-        else if(input[i]=='+')
+        else if(b->vetor[i] =='+')
         {
             estado_atual = tabela_transicoes[estado_atual][mais];
         }
         
-        else if(input[i]=='-')
+        else if(b->vetor[i] =='-')
         {
             estado_atual = tabela_transicoes[estado_atual][menos];
         }
-        else if(input[i]=='(')
+        else if(b->vetor[i] =='(')
         {
             estado_atual = tabela_transicoes[estado_atual][L_parentesis];
-        }else if(input[i]==')')
+        }else if(b->vetor[i] ==')')
         {
             estado_atual = tabela_transicoes[estado_atual][R_parentesis];
         }
-        else if(input[i]=='[')
+        else if(b->vetor[i] =='[')
         {
             estado_atual = tabela_transicoes[estado_atual][L_colchete];
         }
-        else if(input[i]==']')
+        else if(b->vetor[i] ==']')
         {
             estado_atual = tabela_transicoes[estado_atual][R_colchete];
         }
-        else if(input[i]=='{')
+        else if(b->vetor[i] =='{')
         {
             estado_atual = tabela_transicoes[estado_atual][L_chaves];
         }
-        else if(input[i]=='}')
+        else if(b->vetor[i] =='}')
         {
             estado_atual = tabela_transicoes[estado_atual][R_chaves];
         }
-        else if(input[i]=='<')
+        else if(b->vetor[i] =='<')
         {
             estado_atual = tabela_transicoes[estado_atual][menor];
         }
-        else if(input[i]==';')
+        else if(b->vetor[i] ==';')
         {
             estado_atual = tabela_transicoes[estado_atual][ponto_virgula];
         }
-        else if(input[i]==',')
+        else if(b->vetor[i] ==',')
         {
             estado_atual = tabela_transicoes[estado_atual][virgula];
         }
-        else if(input[i]=='!')
+        else if(b->vetor[i] =='!')
         {
             estado_atual = tabela_transicoes[estado_atual][exclama];
         }
-        else if(input[i]=='>')
+        else if(b->vetor[i] =='>')
         {
             estado_atual = tabela_transicoes[estado_atual][maior];
         }
-        else if(input[i]=='=')
+        else if(b->vetor[i] =='=')
         {
             estado_atual = tabela_transicoes[estado_atual][igual];
         }
-        else if (input[i]=='/')
+        else if (b->vetor[i] =='/')
         {
             estado_atual = tabela_transicoes[estado_atual][barra];
         }
-        else if(input[i]=='*')
+        else if(b->vetor[i] =='*')
         {
             estado_atual = tabela_transicoes[estado_atual][vezes];
         }
@@ -176,4 +177,57 @@ char *busca_no(arvore_p raiz, int valor, char *str)
         }
     }
     
+}
+
+//******************************************************************
+p_buffer allocate_buffer()
+{
+    p_buffer b = (p_buffer)malloc(sizeof(t_buffer));
+    if(b == NULL)
+    {
+        return NULL;
+    }
+    b->buffer_size = 256;
+    b->last_pos = 0;
+    b->line = 1;
+    return b;
+}
+
+void deallocate_buffer(p_buffer b)
+{
+    free(b);
+}
+
+char get_next_char(p_buffer b, FILE *fp)
+{
+    if (b->vetor[b->last_pos] == '\0')
+    {
+        if (fill_buffer(b, fp) == -1)
+        {
+            return EOF;
+        }
+    }
+
+    char c = b->vetor[b->last_pos];
+    b->last_pos++;
+    return c;
+}
+
+int fill_buffer(p_buffer b, FILE *fp)
+{
+    b->last_pos = 0;
+    if(fgets(b->vetor, 256, fp)==NULL)
+    {
+        return -1;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+void unget_char(p_buffer b,char c)
+{
+    b->last_pos--;
+    b->vetor[b->last_pos] = c;
 }
