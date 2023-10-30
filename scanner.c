@@ -27,7 +27,7 @@ int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}//estou em Q12, para onde eu vou, Q13 é estado lixo, se veio aqui, deu erro léxico
 };
 
-void DFA(p_buffer b, FILE *fp, p_no no)
+void DFA_func(p_buffer b, FILE *fp, p_no no)
 {
     int estado_atual = Q0, estado_ant = Q0;
     int i = 0;
@@ -243,4 +243,16 @@ void unget_char(p_buffer b,char c)
 {
     b->last_pos--;
     b->vetor[b->last_pos] = c;
+}
+
+p_no allocate_no() {
+    p_no novo_no = (p_no)malloc(sizeof(t_no));
+    
+    if (novo_no != NULL) {
+        novo_no->lexema = NULL;
+        novo_no->token = 0;
+        novo_no->linha = 0;
+        novo_no->prox = NULL;
+    }   
+    return novo_no;
 }

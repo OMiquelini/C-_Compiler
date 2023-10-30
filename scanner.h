@@ -32,12 +32,13 @@ typedef struct no{
 
 typedef t_no *p_no;
 
-
+void DFA_func(p_buffer b, FILE *fp, p_no no);
 int soma_ascii(char *str);
 arvore_p criar_no(int valor, char *str);
 arvore_p inserir_no(arvore_p raiz, int valor, char *str);
 char *busca_no(arvore_p raiz, int valor, char *str);
 
+p_no allocate_no();
 p_buffer allocate_buffer();
 void deallocate_buffer(p_buffer b);
 char get_next_char(p_buffer b, FILE *fp);
