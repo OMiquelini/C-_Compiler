@@ -9,12 +9,12 @@ enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, pont
               L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, };
 
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
-    {Q3,Q2,Q1,Q1,Q8,Q1,Q4,Q11,Q12,Q1,Q1,Q11,Q1,Q1,Q1,Q1,Q1,Q1}, //estou em Q0, para onde eu vou
+    {Q3,Q2,Q1,Q1,Q8,Q1,Q4,Q11,Q12,Q1,Q1,Q11,Q1,Q1,Q1,Q1,Q1,Q1}, //estou em Q0, para onde eu vou 3,4,6,9,10,11,13,14,15,16,17,18
     {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5}, //estou em Q1, para onde eu vou
     {Q5,Q2,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q2, para onde eu vou
     {Q3,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q3, para onde eu vou
     {Q5,Q5,Q5,Q5,Q5,Q6,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5}, //estou em Q4, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q5, para onde eu vou
+    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q5, para onde eu vou, Q5 é estado de aceitação
     {Q6,Q6,Q6,Q6,Q6,Q7,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},//estou em Q6, para onde eu vou
     {Q6,Q6,Q6,Q6,Q6,Q6,Q0,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},//estou em Q7, para onde eu vou
     {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q8, para onde eu vou
@@ -22,8 +22,105 @@ int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     {Q13,Q13,Q13,Q13,Q9,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13},//estou em Q10, para onde eu vou
     {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q11, para onde eu vou
     {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q12, para onde eu vou
-    {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}//estou em Q12, para onde eu vou
+    {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}//estou em Q12, para onde eu vou, Q13 é estado lixo, se veio aqui, deu erro léxico
 };
+
+int DFA(char input[])
+{
+    int estado_atual = Q0, estado_ant = Q0;
+    int i = 0;
+    for(i=0;input[i]!='\0';i++)
+    {
+        estado_ant = estado_atual;
+        if(isalpha(input[i]))
+        {
+            estado_atual = tabela_transicoes[estado_atual][alfa];
+        }
+        else if(isdigit(input[i]))
+        {
+            estado_atual = tabela_transicoes[estado_atual][digito];
+        }
+        else if(input[i]=='+')
+        {
+            estado_atual = tabela_transicoes[estado_atual][mais];
+        }
+        
+        else if(input[i]=='-')
+        {
+            estado_atual = tabela_transicoes[estado_atual][menos];
+        }
+        else if(input[i]=='(')
+        {
+            estado_atual = tabela_transicoes[estado_atual][L_parentesis];
+        }else if(input[i]==')')
+        {
+            estado_atual = tabela_transicoes[estado_atual][R_parentesis];
+        }
+        else if(input[i]=='[')
+        {
+            estado_atual = tabela_transicoes[estado_atual][L_colchete];
+        }
+        else if(input[i]==']')
+        {
+            estado_atual = tabela_transicoes[estado_atual][R_colchete];
+        }
+        else if(input[i]=='{')
+        {
+            estado_atual = tabela_transicoes[estado_atual][L_chaves];
+        }
+        else if(input[i]=='}')
+        {
+            estado_atual = tabela_transicoes[estado_atual][R_chaves];
+        }
+        else if(input[i]=='<')
+        {
+            estado_atual = tabela_transicoes[estado_atual][menor];
+        }
+        else if(input[i]==';')
+        {
+            estado_atual = tabela_transicoes[estado_atual][ponto_virgula];
+        }
+        else if(input[i]==',')
+        {
+            estado_atual = tabela_transicoes[estado_atual][virgula];
+        }
+        else if(input[i]=='!')
+        {
+            estado_atual = tabela_transicoes[estado_atual][exclama];
+        }
+        else if(input[i]=='>')
+        {
+            estado_atual = tabela_transicoes[estado_atual][maior];
+        }
+        else if(input[i]=='=')
+        {
+            estado_atual = tabela_transicoes[estado_atual][igual];
+        }
+        else if (input[i]=='/')
+        {
+            estado_atual = tabela_transicoes[estado_atual][barra];
+        }
+        else if(input[i]=='*')
+        {
+            estado_atual = tabela_transicoes[estado_atual][vezes];
+        }
+        else
+        {
+            estado_atual = Q13;
+        }
+        if (estado_atual==Q5)
+        {
+            //ungetchar
+            return estado_ant;
+        }
+        else if (estado_atual==Q13)
+        {
+            return -1;
+        }
+        
+        
+    }
+}
 
 int soma_ascii(char *str)
 {
