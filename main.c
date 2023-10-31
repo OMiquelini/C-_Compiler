@@ -3,8 +3,9 @@
 int main(int argc, char *argv[])
 {
     int i;
-    int vetor_ascii[]={207, 331, 425, 434, 537, 672};//inserir valores ascii das palavras reservadas
-    char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};//inserir palavras reservadas em ordem dos seus valores em ascii
+    int vetor_ascii[]={207, 331, 425, 434, 537, 672};
+    char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
+    char c;
     arvore_p raiz_reservada = NULL;
     p_no no = allocate_no();
     p_buffer buffer = allocate_buffer();
@@ -24,6 +25,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    //TODO: ler do arquivo em buffer e chamar dfa
+    //TODO: ler do arquivo em buffer e chamar dfa (arrumar função do dfa)
+    if(DFA_func(buffer, fp, no)==-1)
+    {
+        printf("Compilation has stoped due to lexical error\n");
+        return -1;
+    }
 
 }

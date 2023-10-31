@@ -32,7 +32,7 @@ typedef struct no{
 
 typedef t_no *p_no;
 
-void DFA_func(p_buffer b, FILE *fp, p_no no);
+int DFA_func(p_buffer b, FILE *fp, p_no no);
 int soma_ascii(char *str);
 arvore_p criar_no(int valor, char *str);
 arvore_p inserir_no(arvore_p raiz, int valor, char *str);

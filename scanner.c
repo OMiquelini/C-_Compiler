@@ -1,33 +1,33 @@
 #include "scanner.h"
 
-#define N_SIMBOBOLOS 18
+#define N_SIMBOBOLOS 19
 #define N_ESTADOS 14
 
+//TODO: Renomear estados
 enum Estados{Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13};
 
-enum Tokens{NUM=1, ID, OP};
-
 enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, ponto_virgula, virgula, exclama,
-              L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, };
+              L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, Space };//TODO: adicionar espaço em branco
 
+//TODO: Refazer tabela de transição com um estado para cada operador
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
-    {Q3,Q2,Q1,Q1,Q8,Q1,Q4,Q11,Q12,Q1,Q1,Q11,Q1,Q1,Q1,Q1,Q1,Q1}, //estou em Q0, para onde eu vou 3,4,6,9,10,11,13,14,15,16,17,18
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5}, //estou em Q1, para onde eu vou
-    {Q5,Q2,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q2, para onde eu vou
-    {Q3,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q3, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q5,Q6,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5}, //estou em Q4, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q5, para onde eu vou, Q5 é estado de aceitação
-    {Q6,Q6,Q6,Q6,Q6,Q7,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},//estou em Q6, para onde eu vou
-    {Q6,Q6,Q6,Q6,Q6,Q6,Q0,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},//estou em Q7, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q8, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q9, para onde eu vou
-    {Q13,Q13,Q13,Q13,Q9,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13},//estou em Q10, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q11, para onde eu vou
-    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},//estou em Q12, para onde eu vou
-    {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}//estou em Q12, para onde eu vou, Q13 é estado lixo, se veio aqui, deu erro léxico
+    {Q3,Q2,Q1,Q1,Q8,Q1,Q4,Q11,Q12,Q1,Q1,Q11,Q1,Q1,Q1,Q1,Q1,Q1,Q0},
+    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q5,Q2,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q3,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q5,Q5,Q5,Q5,Q5,Q6,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q6,Q6,Q6,Q6,Q6,Q7,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},
+    {Q6,Q6,Q6,Q6,Q6,Q6,Q0,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},
+    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q13,Q13,Q13,Q13,Q9,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13},
+    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
+    {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}
 };
 
-void DFA_func(p_buffer b, FILE *fp, p_no no)
+int DFA_func(p_buffer b, FILE *fp, p_no no)
 {
     int estado_atual = Q0, estado_ant = Q0;
     int i = 0;
@@ -106,35 +106,39 @@ void DFA_func(p_buffer b, FILE *fp, p_no no)
         {
             estado_atual = tabela_transicoes[estado_atual][vezes];
         }
+        else if(isspace(c))
+        {
+            estado_atual = tabela_transicoes[estado_atual][Space];
+        }
         else
         {
             estado_atual = Q13;
-            printf("Erro lexico na linha %d: caractere %c não aceito na linguagem",b->line,c);
-            return -1;
         }
         if (estado_atual==Q13)
         {
             printf("Erro lexico na linha %d: caractere %c não aceito na linguagem",b->line,c);
             return -1;
-            unget_char(b, c);
-            no->token = estado_ant;
-            no->lexema[i]='\0';
         }
         else if (estado_atual!=Q5)
         {
-            no->lexema=c;
+            no->lexema[i]=c;
+            i++;
         }
         else if(estado_atual==Q5)
         {
             unget_char(b, c);
             no->token = estado_ant;
+            no->linha=b->line;
             no->lexema[i]='\0';
-            return;
+            no->prox=allocate_no();
+            no=no->prox;
+            i=0;
         }
         
-        i++;
     }
+    return 0;
 }
+
 
 int soma_ascii(char *str)
 {
