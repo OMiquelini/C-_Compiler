@@ -11,7 +11,18 @@ enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, pont
 
 //TODO: Refazer tabela de transição com um estado para cada operador
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
-    
+    /*INICIAL*/ {NUM, ID, OP1, OP1, ATRIB, OP1, DIV, OP2, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
+    /*NUM*/     {FINAL, NUM, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*ID*/      {FINAL, FINAL, ID, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*OP1*/     {FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*OP2*/     {FINAL, FINAL, FINAL, FINAL, OP1, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*ATRIB*/   {FINAL, FINAL, FINAL, FINAL, OP1, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*DIV*/     {FINAL, FINAL, FINAL, FINAL, FINAL, Q8, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*Q7*/      {LIXO, LIXO, LIXO, LIXO, OP1, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO},
+    /*Q8*/      {Q8, Q8, Q8, Q8, Q8, Q9, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8},
+    /*Q9*/      {Q8, Q8, Q8, Q8, Q8, Q9, INICIAL, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8, Q8},
+    /*FINAL*/   {FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*LIXO*/    {LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO}
 };
 
 int DFA_func(p_buffer b, FILE *fp, p_no no)
@@ -19,112 +30,73 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
     int estado_atual = INICIAL, estado_ant = INICIAL;
     int i = 0;
     char c;
-    while(((c=get_next_char(b, fp))!='\0')&&((c=get_next_char(b, fp))!=EOF))
-    {
+    c = get_next_char(b, fp);
+    while (c != EOF) {
+        printf("%c\n", c);
         estado_ant = estado_atual;
-        if(isalpha(c))
-        {
+        if (isalpha(c)) {
             estado_atual = tabela_transicoes[estado_atual][alfa];
-        }
-        else if(isdigit(c))
-        {
+        } else if (isdigit(c)) {
             estado_atual = tabela_transicoes[estado_atual][digito];
-        }
-        else if(c =='+')
-        {
+        } else if (c == '+') {
             estado_atual = tabela_transicoes[estado_atual][mais];
-        }
-        else if(c =='-')
-        {
+        } else if (c == '-') {
             estado_atual = tabela_transicoes[estado_atual][menos];
-        }
-        else if(c =='(')
-        {
+        } else if (c == '(') {
             estado_atual = tabela_transicoes[estado_atual][L_parentesis];
-        }else if(c ==')')
-        {
+        } else if (c == ')') {
             estado_atual = tabela_transicoes[estado_atual][R_parentesis];
-        }
-        else if(c =='[')
-        {
+        } else if (c == '[') {
             estado_atual = tabela_transicoes[estado_atual][L_colchete];
-        }
-        else if(c ==']')
-        {
+        } else if (c == ']') {
             estado_atual = tabela_transicoes[estado_atual][R_colchete];
-        }
-        else if(c =='{')
-        {
+        } else if (c == '{') {
             estado_atual = tabela_transicoes[estado_atual][L_chaves];
-        }
-        else if(c =='}')
-        {
+        } else if (c == '}') {
             estado_atual = tabela_transicoes[estado_atual][R_chaves];
-        }
-        else if(c =='<')
-        {
+        } else if (c == '<') {
             estado_atual = tabela_transicoes[estado_atual][menor];
-        }
-        else if(c ==';')
-        {
+        } else if (c == ';') {
             estado_atual = tabela_transicoes[estado_atual][ponto_virgula];
-        }
-        else if(c ==',')
-        {
+        } else if (c == ',') {
             estado_atual = tabela_transicoes[estado_atual][virgula];
-        }
-        else if(c =='!')
-        {
+        } else if (c == '!') {
             estado_atual = tabela_transicoes[estado_atual][exclama];
-        }
-        else if(c =='>')
-        {
+        } else if (c == '>') {
             estado_atual = tabela_transicoes[estado_atual][maior];
-        }
-        else if(c =='=')
-        {
+        } else if (c == '=') {
             estado_atual = tabela_transicoes[estado_atual][igual];
-        }
-        else if (c =='/')
-        {
+        } else if (c == '/') {
             estado_atual = tabela_transicoes[estado_atual][barra];
-        }
-        else if(c =='*')
-        {
+        } else if (c == '*') {
             estado_atual = tabela_transicoes[estado_atual][vezes];
-        }
-        else if(isspace(c))
-        {
+        } else if (isspace(c)) {
             estado_atual = tabela_transicoes[estado_atual][Space];
+        } else {
+            estado_atual = LIXO;
         }
-        else
-        {
-            estado_atual = Q13;
-        }
-        if (estado_atual==Q13)
-        {
-            printf("Erro lexico na linha %d: caractere %c não aceito na linguagem",b->line,c);
+        if (estado_atual == LIXO) {
+            printf("Erro lexico na linha %d: caractere %c não aceito na linguagem\n", b->line, c);
             return -1;
-        }
-        else if (estado_atual!=Q5)
-        {
-            no->lexema[i]=c;
+        } else if ((estado_atual != FINAL) && (!isspace(c))) {
+            no->lexema[i] = c;
             i++;
-        }
-        else if(estado_atual==Q5)
-        {
+        } else if (estado_atual == FINAL) {
             unget_char(b, c);
             no->token = estado_ant;
-            no->linha=b->line;
-            no->lexema[i]='\0';
-            no->prox=allocate_no();
-            no=no->prox;
-            i=0;
+            no->linha = b->line;
+            no->lexema[i] = '\0';
+            no->prox = allocate_no();
+            no = no->prox;
+            i = 0;
         }
-        
+        c = get_next_char(b, fp);
     }
+
     return 0;
 }
+
+
 
 
 int soma_ascii(char *str)
@@ -248,9 +220,9 @@ void unget_char(p_buffer b,char c)
 
 p_no allocate_no() {
     p_no novo_no = (p_no)malloc(sizeof(t_no));
+    novo_no->lexema=(char*)malloc(64);
     
     if (novo_no != NULL) {
-        novo_no->lexema = NULL;
         novo_no->token = 0;
         novo_no->linha = 0;
         novo_no->prox = NULL;
