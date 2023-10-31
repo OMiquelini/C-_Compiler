@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
     char c;
     arvore_p raiz_reservada = NULL;
-    p_no no = allocate_no();
+    p_no lex = allocate_no();
     p_buffer buffer = allocate_buffer();
     if(argc != 2)
     {
@@ -26,10 +26,14 @@ int main(int argc, char *argv[])
     }
 
     //TODO: ler do arquivo em buffer e chamar dfa (arrumar função do dfa)
-    if(DFA_func(buffer, fp, no)==-1)
+    if(DFA_func(buffer, fp, lex)==-1)
     {
         printf("Compilation has stoped due to lexical error\n");
         return -1;
     }
 
+    deallocate_buffer(buffer);
+    deallocate_no(lex);
+    fclose(fp);
+    return 0;
 }

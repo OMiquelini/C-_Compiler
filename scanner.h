@@ -41,6 +41,7 @@ char *busca_no(arvore_p raiz, int valor, char *str);
 p_no allocate_no();
 p_buffer allocate_buffer();
 void deallocate_buffer(p_buffer b);
+void deallocate_no(p_no no);
 char get_next_char(p_buffer b, FILE *fp);
 int fill_buffer(p_buffer b, FILE *fp);
 void unget_char(p_buffer b,char c);

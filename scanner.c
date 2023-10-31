@@ -1,35 +1,22 @@
 #include "scanner.h"
 
 #define N_SIMBOBOLOS 19
-#define N_ESTADOS 14
+#define N_ESTADOS 12
 
 //TODO: Renomear estados
-enum Estados{Q0, Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10, Q11, Q12, Q13};
+enum Estados{INICIAL, NUM, ID, OP1, OP2, ATRIB, DIV, Q7, Q8, Q9, FINAL, LIXO};
 
 enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, ponto_virgula, virgula, exclama,
               L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, Space };//TODO: adicionar espaço em branco
 
 //TODO: Refazer tabela de transição com um estado para cada operador
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
-    {Q3,Q2,Q1,Q1,Q8,Q1,Q4,Q11,Q12,Q1,Q1,Q11,Q1,Q1,Q1,Q1,Q1,Q1,Q0},
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q5,Q2,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q3,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q5,Q5,Q5,Q5,Q5,Q6,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q6,Q6,Q6,Q6,Q6,Q7,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},
-    {Q6,Q6,Q6,Q6,Q6,Q6,Q0,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6,Q6},
-    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q13,Q13,Q13,Q13,Q9,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13},
-    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q5,Q5,Q5,Q5,Q9,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5,Q5},
-    {Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13,Q13}
+    
 };
 
 int DFA_func(p_buffer b, FILE *fp, p_no no)
 {
-    int estado_atual = Q0, estado_ant = Q0;
+    int estado_atual = INICIAL, estado_ant = INICIAL;
     int i = 0;
     char c;
     while(((c=get_next_char(b, fp))!='\0')&&((c=get_next_char(b, fp))!=EOF))
@@ -196,7 +183,7 @@ char *busca_no(arvore_p raiz, int valor, char *str)
     
 }
 
-//******************************************************************
+/******************************************************************************************************************************************/
 p_buffer allocate_buffer()
 {
     p_buffer b = (p_buffer)malloc(sizeof(t_buffer));
@@ -213,6 +200,16 @@ p_buffer allocate_buffer()
 void deallocate_buffer(p_buffer b)
 {
     free(b);
+}
+
+void deallocate_no(p_no no)
+{
+    while(no->prox!=NULL)
+    {
+        p_no aux = no;
+        no=no->prox;
+        free(aux);
+    }
 }
 
 char get_next_char(p_buffer b, FILE *fp)
