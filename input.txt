@@ -1,3 +1,8 @@
 aa=1;
 bbbb<a;
-aaaa!=b;
+if(aaaa!=b);
+else
+while
+int
+void
+return 

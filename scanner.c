@@ -3,12 +3,6 @@
 #define N_SIMBOBOLOS 19
 #define N_ESTADOS 12
 
-//TODO: Renomear estados
-enum Estados{INICIAL, NUM, ID, OP1, OP2, ATRIB, DIV, Q7, Q8, Q9, FINAL, LIXO};
-
-enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, ponto_virgula, virgula, exclama,
-              L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, Space };//TODO: adicionar espaço em branco
-
 //TODO: Refazer tabela de transição com um estado para cada operador
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     /*INICIAL*/ {ID, NUM, OP1, OP1, ATRIB, OP1, DIV, OP2, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
@@ -32,6 +26,7 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
         char c =' ';
     while (((c = get_next_char(b, fp)) != EOF)) {
         estado_ant = estado_atual;
+        printf("%c\n",c);
         if (isalpha(c)) {
             estado_atual = tabela_transicoes[estado_atual][alfa];
         } else if (isdigit(c)) {
@@ -107,7 +102,7 @@ int soma_ascii(char *str)
 }
 
 //função para criar o nó com a palavra reservada e seu valor em ascii
-arvore_p criar_no(int valor, char *str)
+arvore_p criar_no(int valor, char *str, int token)
 {
     arvore_p novo_no = (arvore_p)malloc(sizeof(arvore_t));
     if (novo_no == NULL) {
@@ -116,38 +111,39 @@ arvore_p criar_no(int valor, char *str)
     }
     novo_no->ascii = valor;
     novo_no->palavra = str;
+    novo_no->tok = token;
     novo_no->direita = NULL;
     novo_no->esquerda = NULL;
     return novo_no;
 }
 
 //função para inserir o nó na arvore
-arvore_p inserir_no(arvore_p raiz, int valor, char *str)
+arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token)
 {
     if (raiz == NULL) {
-        return criar_no(valor, str);
+        return criar_no(valor, str, token);
     }
     if (valor < raiz->ascii) {
-        raiz->esquerda = inserir_no(raiz->esquerda, valor, str);
+        raiz->esquerda = inserir_no(raiz->esquerda, valor, str, token);
     } else if (valor > raiz->ascii) {
-        raiz->direita = inserir_no(raiz->direita, valor, str);
+        raiz->direita = inserir_no(raiz->direita, valor, str, token);
     }
     return raiz;
 }
 
-char *busca_no(arvore_p raiz, int valor, char *str)
+int busca_no(arvore_p raiz, int valor, char *str)
 {
     while (raiz != NULL)
     {
-        if (valor < raiz->ascii) {
+        if (valor < raiz->ascii && raiz->esquerda!=NULL) {
             raiz = raiz->esquerda;
-        } else if (valor > raiz->ascii) {
+        } else if (valor > raiz->ascii && raiz->direita!=NULL) {
             raiz = raiz->direita;
-        } else if (strcmp(str,raiz->palavra)){
-            return raiz->palavra;
+        } else if (!strcmp(str,raiz->palavra)){
+            return raiz->tok;
         }
         else{
-            return "ID";
+            return ID;
         }
     }
     
@@ -193,6 +189,10 @@ char get_next_char(p_buffer b, FILE *fp)
     }
 
     char c = b->vetor[b->last_pos];
+    if (c=='\n')
+    {
+        b->line++;
+    }
     b->last_pos++;
     return c;
 }
@@ -223,6 +223,7 @@ p_no allocate_no() {
     if (novo_no != NULL) {
         novo_no->token = 0;
         novo_no->linha = 0;
+        novo_no->ascii = 0;
         novo_no->prox = NULL;
     }   
     return novo_no;
