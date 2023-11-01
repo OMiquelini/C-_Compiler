@@ -5,15 +5,15 @@ int main(int argc, char *argv[])
     int i;
     int vetor_ascii[]={207, 331, 425, 434, 537, 672};
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
-    char c;
+    char c =' ';
     arvore_p raiz_reservada = NULL;
     p_no lex = allocate_no(), aux;
     p_buffer buffer = allocate_buffer();
-    if(argc != 2)
+    /*if(argc != 2)
     {
         printf("Usage: <file_name>\n");
         return 1;
-    }
+    }*/
     for(i=0;i<7;i++)
     {
         raiz_reservada = inserir_no(raiz_reservada, vetor_ascii[i], vetor_palavras[i]);

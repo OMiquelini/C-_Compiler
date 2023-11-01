@@ -1,2 +1,3 @@
-aaaaaaaaaaa = 1234;
-aaaaaaaaaaaaaaa= b;
+aa=1;
+bbbb<a;
+aaaa!=b;

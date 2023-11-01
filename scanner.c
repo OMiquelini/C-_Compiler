@@ -11,9 +11,9 @@ enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, pont
 
 //TODO: Refazer tabela de transição com um estado para cada operador
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
-    /*INICIAL*/ {NUM, ID, OP1, OP1, ATRIB, OP1, DIV, OP2, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
+    /*INICIAL*/ {ID, NUM, OP1, OP1, ATRIB, OP1, DIV, OP2, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
     /*NUM*/     {FINAL, NUM, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
-    /*ID*/      {FINAL, FINAL, ID, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
+    /*ID*/      {ID, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
     /*OP1*/     {FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
     /*OP2*/     {FINAL, FINAL, FINAL, FINAL, OP1, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
     /*ATRIB*/   {FINAL, FINAL, FINAL, FINAL, OP1, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
@@ -29,10 +29,8 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
 {
     int estado_atual = INICIAL, estado_ant = INICIAL;
     int i = 0;
-    char c;
-    c = get_next_char(b, fp);
-    while (c != EOF) {
-        printf("%c\n", c);
+        char c =' ';
+    while (((c = get_next_char(b, fp)) != EOF)) {
         estado_ant = estado_atual;
         if (isalpha(c)) {
             estado_atual = tabela_transicoes[estado_atual][alfa];
@@ -73,6 +71,7 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
         } else if (isspace(c)) {
             estado_atual = tabela_transicoes[estado_atual][Space];
         } else {
+            printf("Lixo\n");
             estado_atual = LIXO;
         }
         if (estado_atual == LIXO) {
@@ -82,6 +81,7 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             no->lexema[i] = c;
             i++;
         } else if (estado_atual == FINAL) {
+            estado_atual = INICIAL;
             unget_char(b, c);
             no->token = estado_ant;
             no->linha = b->line;
@@ -90,9 +90,7 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             no = no->prox;
             i = 0;
         }
-        c = get_next_char(b, fp);
     }
-
     return 0;
 }
 
