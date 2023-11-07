@@ -94,9 +94,6 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
     return 0;
 }
 
-
-
-
 int soma_ascii(char *str)
 {
     int soma = 0;
@@ -146,9 +143,8 @@ int busca_no(arvore_p raiz, int valor, char *str)
             raiz = raiz->direita;
         } else if (!strcmp(str,raiz->palavra)){
             return raiz->tok;
-        }
-        else{
-            return ID;
+        }else{
+             return ID;
         }
     }
     
