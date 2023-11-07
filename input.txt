@@ -1,9 +1,5 @@
-aa=1;
-bbbb<a;
-if(aaaa!=b);
-else
-while
-int
-void
-return
-a=1;
+(){}[],;+-*/<>==!==<=abc123
+aa=2
+a!=34
+a>=0;
+a<23,b<43
