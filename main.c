@@ -15,7 +15,6 @@ int main(int argc, char *argv[])
     int vetor_ascii[]={207, 331, 425, 434, 537, 672};
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
     int token_reservada[]={7,8,9,10,11,12};
-    char c =' ';
     arvore_p raiz_reservada = NULL;
     p_no lex = allocate_no(), aux;
     p_buffer buffer = allocate_buffer();

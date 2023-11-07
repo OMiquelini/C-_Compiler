@@ -25,9 +25,10 @@ int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
 int DFA_func(p_buffer b, FILE *fp, p_no no)
 {
     int estado_atual = INICIAL, estado_ant = INICIAL;
-    int i = 0;
+    int i = 0, stop=0;
         char c =' ';
-    do{
+    while (!stop){
+        c = get_next_char(b, fp);
         estado_ant = estado_atual;
         if (isalpha(c)) {
             estado_atual = tabela_transicoes[estado_atual][alfa];
@@ -67,6 +68,9 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             estado_atual = tabela_transicoes[estado_atual][vezes];
         } else if (isspace(c)) {
             estado_atual = tabela_transicoes[estado_atual][Space];
+        } else if(c==EOF){
+            stop = 1;
+            estado_atual = tabela_transicoes[estado_atual][Space];
         } else {
             printf("Lixo\n");
             estado_atual = LIXO;
@@ -90,7 +94,7 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             no = no->prox;
             i = 0;
         }
-    }while (((c = get_next_char(b, fp)) != EOF));
+    }
     return 0;
 }
 
