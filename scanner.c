@@ -1,11 +1,14 @@
 #include "scanner.h"
 
-#define N_SIMBOBOLOS 19
-#define N_ESTADOS 12
+/********************************************************************************************************************
+ Desenvolvido em Outubro de 2023 por:
+ Matheus Miquelini Andrello
+ Tiago Miranda
+**********************************************************************************************************************/
 
 //TODO: Refazer tabela de transição com um estado para cada operador
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
-    /*INICIAL*/ {ID, NUM, OP1, OP1, ATRIB, OP1, DIV, OP2, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
+    /*INICIAL*/ {ID, NUM, OP1, OP1, ATRIB, OP1, DIV, OP2, OP1, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
     /*NUM*/     {FINAL, NUM, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
     /*ID*/      {ID, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
     /*OP1*/     {FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL, FINAL},
@@ -24,9 +27,8 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
     int estado_atual = INICIAL, estado_ant = INICIAL;
     int i = 0;
         char c =' ';
-    while (((c = get_next_char(b, fp)) != EOF)) {
+    do{
         estado_ant = estado_atual;
-        printf("%c\n",c);
         if (isalpha(c)) {
             estado_atual = tabela_transicoes[estado_atual][alfa];
         } else if (isdigit(c)) {
@@ -69,8 +71,11 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             printf("Lixo\n");
             estado_atual = LIXO;
         }
-        if (estado_atual == LIXO) {
-            printf("Erro lexico na linha %d: caractere %c não aceito na linguagem\n", b->line, c);
+        if (estado_atual == LIXO && estado_ant == Q7) {
+            printf("Erro lexico na linha %d: esperado caractere '=' mas recebeu '%c'\n", b->line,c);
+            return -1;
+        } else if(estado_atual == LIXO){
+            printf("Erro lexico na linha %d: caractere '%c' não aceito pela linguagem\n", b->line,c);
             return -1;
         } else if ((estado_atual != FINAL) && (!isspace(c))) {
             no->lexema[i] = c;
@@ -85,7 +90,7 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             no = no->prox;
             i = 0;
         }
-    }
+    }while (((c = get_next_char(b, fp)) != EOF));
     return 0;
 }
 

@@ -1,7 +1,14 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+#include "lib.h"
+
+
+/********************************************************************************************************************
+ Desenvolvido em Outubro de 2023 por:
+ Matheus Miquelini Andrello
+ Tiago Miranda
+**********************************************************************************************************************/
+
+#define N_SIMBOBOLOS 19
+#define N_ESTADOS 12
 
 //TODO: Renomear estados
 enum Estados{INICIAL, NUM, ID, OP1, OP2, ATRIB, DIV, Q7, Q8, Q9, FINAL, LIXO};

@@ -5,4 +5,5 @@ else
 while
 int
 void
-return 
+return
+a=1;
