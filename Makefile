@@ -1,33 +1,19 @@
-# Makefile para compilar o projeto
-
-# Compilador
 CC = gcc
-
-# Flags de compilação
 CFLAGS = -Wall
+EXECUTABLE = compilas
 
-# Nome do executável
-TARGET = compilas
-
-# Lista de arquivos-fonte
-SRCS = scanner.c parser.c main.c
+# Lista de arquivos fonte
+SOURCES = main.c scanner.c parser.c
 
 # Lista de arquivos de cabeçalho
-HEADERS = lib.h scanner.h parser.h
+HEADERS = scanner.h parser.h lib.h
 
-# Objetos gerados a partir dos arquivos-fonte
-OBJS = $(SRCS:.c=.o)
+all: $(EXECUTABLE)
 
-all: $(TARGET)
-
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-
-# Regra para compilar os arquivos-fonte em objetos
-%.o: %.c $(HEADERS)
-	$(CC) $(CFLAGS) -c $< -o $@
+$(EXECUTABLE): $(SOURCES)
+	$(CC) $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(EXECUTABLE)
 
-.PHONY: all clean
+.PHONY: clean

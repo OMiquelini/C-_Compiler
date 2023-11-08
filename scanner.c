@@ -91,7 +91,6 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             no->linha = b->line;
             no->lexema[i] = '\0';
             no->prox = allocate_no();
-            printf("TOKEN: %d, Lex: %s, Linha %d\n",no->token, no->lexema, no->linha);
             no = no->prox;
             i = 0;
         }

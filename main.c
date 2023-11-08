@@ -18,16 +18,16 @@ int main(int argc, char *argv[])
     arvore_p raiz_reservada = NULL;
     p_no lex = allocate_no(), aux;
     p_buffer buffer = allocate_buffer();
-    /*if(argc != 2)
+    if(argc != 2)
     {
         printf("Usage: <file_name>\n");
         return 1;
-    }*/
+    }
     for(i=0;i<6;i++)
     {
         raiz_reservada = inserir_no(raiz_reservada, vetor_ascii[i], vetor_palavras[i],token_reservada[i]);
     }
-    FILE *fp = fopen("input.txt","r");
+    FILE *fp = fopen(argv[1],"r");
     if(fp == NULL)
     {
         printf("Error opening file\n");
