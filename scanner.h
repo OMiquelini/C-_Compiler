@@ -10,10 +10,8 @@
 **********************************************************************************************************************/
 
 int DFA_func(p_buffer b, FILE *fp, p_no no);
-int soma_ascii(char *str);
 arvore_p criar_no(int valor, char *str, int token);
 arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token);
-int busca_no(arvore_p raiz, int valor, char *str);
 
 p_no allocate_no();
 p_buffer allocate_buffer();

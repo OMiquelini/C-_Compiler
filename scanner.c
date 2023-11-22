@@ -98,15 +98,6 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
     return 0;
 }
 
-int soma_ascii(char *str)
-{
-    int soma = 0;
-    for (int i = 0; i < strlen(str); i++) {
-        soma += str[i];
-    }
-    return soma;
-}
-
 //função para criar o nó com a palavra reservada e seu valor em ascii
 arvore_p criar_no(int valor, char *str, int token)
 {
@@ -151,6 +142,7 @@ int busca_no(arvore_p raiz, int valor, char *str)
              return ID;
         }
     }
+    return -1;
     
 }
 

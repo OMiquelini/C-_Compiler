@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
     int token_reservada[]={IF,INT, ELSE, VOID, WHILE, RETURN};
     arvore_p raiz_reservada = NULL;
-    p_no lex = allocate_no(), aux;
+    p_no lex = allocate_no();
     p_buffer buffer = allocate_buffer();
     if(argc != 2)
     {
@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
             return 1;
         }
         reservada(lex, raiz_reservada);
+        //token_operadores(lex);
         token_string(lex);
         imprime_token(lex);
         fclose(output);
