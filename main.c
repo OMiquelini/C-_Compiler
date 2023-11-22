@@ -1,5 +1,4 @@
 #include "scanner.h"
-#include "parser.h"
 
 
 /********************************************************************************************************************
@@ -14,7 +13,7 @@ int main(int argc, char *argv[])
     int i;
     int vetor_ascii[]={207, 331, 425, 434, 537, 672};
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
-    int token_reservada[]={20,21,22,23,24,25};
+    int token_reservada[]={IF,INT, ELSE, VOID, WHILE, RETURN};
     arvore_p raiz_reservada = NULL;
     p_no lex = allocate_no(), aux;
     p_buffer buffer = allocate_buffer();

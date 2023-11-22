@@ -3,10 +3,10 @@ CFLAGS = -Wall
 EXECUTABLE = compilas
 
 # Lista de arquivos fonte
-SOURCES = main.c scanner.c parser.c
+SOURCES = main.c scanner.c
 
 # Lista de arquivos de cabeçalho
-HEADERS = scanner.h parser.h lib.h
+HEADERS = scanner.h lib.h
 
 all: $(EXECUTABLE)
 
