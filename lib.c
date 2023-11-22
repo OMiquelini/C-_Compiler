@@ -131,25 +131,26 @@ void token_operadores(p_no lista)
     p_no aux = lista;
     while(aux!=NULL)
     {
-        if(aux->token==3||aux->token==5)
+        if(aux->token==3||aux->token==4)
         {
-            if(strcmp(aux->lexema,  "+")){aux->token=MAIS;}
-            else if(strcmp(aux->lexema,  "-")){aux->token=MENOS;}
-            else if(strcmp(aux->lexema,  "<")){aux->token=MENOR;}
-            else if(strcmp(aux->lexema,  ">")){aux->token=MAIOR;}
-            else if(strcmp(aux->lexema,  "=")){aux->token=ATRIBUICAO;}
-            else if(strcmp(aux->lexema,  "*")){aux->token=MULTIPLICACAO;}
-            else if(strcmp(aux->lexema,  "/")){aux->token=DIVISAO;}
-            else if(strcmp(aux->lexema,  "(")){aux->token=L_PAR;}
-            else if(strcmp(aux->lexema,  ")")){aux->token=R_PAR;}
-            else if(strcmp(aux->lexema,  "{")){aux->token=L_CHAVES;}
-            else if(strcmp(aux->lexema,  "}")){aux->token=R_CHAVES;}
-            else if(strcmp(aux->lexema,  "[")){aux->token=L_BRAC;}
-            else if(strcmp(aux->lexema,  "]")){aux->token=R_BRAC;}
-            else if(strcmp(aux->lexema,  ",")){aux->token=VIRGULA;}
-            else if(strcmp(aux->lexema,  ";")){aux->token=COMMA;}
-            else if(strcmp(aux->lexema,  ">=")){aux->token=MAIOR_IGUAL;}
-            else if(strcmp(aux->lexema,  "!=")){aux->token=DIFERENTE;}
+            if(strcmp(aux->lexema,  "+")==0){aux->token=MAIS;}
+            else if(strcmp(aux->lexema,  "-")==0){aux->token=MENOS;}
+            else if(strcmp(aux->lexema,  "<")==0){aux->token=MENOR;}
+            else if(strcmp(aux->lexema,  ">")==0){aux->token=MAIOR;}
+            else if(strcmp(aux->lexema,  "=")==0){aux->token=ATRIBUICAO;}
+            else if(strcmp(aux->lexema,  "*")==0){aux->token=MULTIPLICACAO;}
+            else if(strcmp(aux->lexema,  "/")==0){aux->token=DIVISAO;}
+            else if(strcmp(aux->lexema,  "(")==0){aux->token=L_PAR;}
+            else if(strcmp(aux->lexema,  ")")==0){aux->token=R_PAR;}
+            else if(strcmp(aux->lexema,  "{")==0){aux->token=L_CHAVES;}
+            else if(strcmp(aux->lexema,  "}")==0){aux->token=R_CHAVES;}
+            else if(strcmp(aux->lexema,  "[")==0){aux->token=L_BRAC;}
+            else if(strcmp(aux->lexema,  "]")==0){aux->token=R_BRAC;}
+            else if(strcmp(aux->lexema,  ",")==0){aux->token=VIRGULA;}
+            else if(strcmp(aux->lexema,  ";")==0){aux->token=COMMA;}
+            else if(strcmp(aux->lexema,  ">=")==0){aux->token=MAIOR_IGUAL;}
+            else if(strcmp(aux->lexema,  "!=")==0){aux->token=DIFERENTE;}
+            printf("lex: %s tok: %d\n",aux->lexema, aux->token);
         }
         aux = aux->prox;
     }
