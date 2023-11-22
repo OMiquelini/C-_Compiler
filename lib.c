@@ -120,7 +120,7 @@ void imprime_token(p_no lista, FILE *output)
     p_no aux = lista;
     while(aux!=NULL)
     {
-        fprintf(output,"%d %s %d\n", aux->linha, aux->lexema, aux->token);
+        fprintf(output,"%d %s %s\n", aux->linha, aux->lexema, aux->tok);
         aux = aux->prox;
     }
     return;
@@ -150,7 +150,6 @@ void token_operadores(p_no lista)
             else if(strcmp(aux->lexema,  ";")==0){aux->token=COMMA;}
             else if(strcmp(aux->lexema,  ">=")==0){aux->token=MAIOR_IGUAL;}
             else if(strcmp(aux->lexema,  "!=")==0){aux->token=DIFERENTE;}
-            printf("lex: %s tok: %d\n",aux->lexema, aux->token);
         }
         aux = aux->prox;
     }
