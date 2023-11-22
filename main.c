@@ -54,7 +54,6 @@ int main(int argc, char *argv[])
                 aux->ascii=soma_ascii(aux->lexema);
                 aux->token = busca_no(raiz_reservada, aux->ascii, aux->lexema);
             }
-            fprintf(output, "%d %s %d\n", aux->token, aux->lexema, aux->linha);
             aux = aux->prox;
         }
         aux = lex;
@@ -141,6 +140,7 @@ int main(int argc, char *argv[])
                 aux->tok="ERRO";
                 break;
             }
+            fprintf(output, "%d\t%s\t%s\t%d\n", aux->token, aux->tok, aux->lexema, aux->linha);
             aux=aux->prox;
         }
         

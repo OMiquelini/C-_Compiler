@@ -1,27 +1,27 @@
-3 ( 1
-20 if 2
-3 ) 3
-22 else 4
-3 { 5
-25 return 6
-3 } 7
-23 void 8
-3 [ 9
-24 while 10
-3 ] 11
-21 int 12
-3 , 13
-2 variavel 14
-3 ; 15
-1 123 16
-3 + 17
-3 - 18
-3 * 19
-6 / 20
-3 < 21
-4 > 22
-3 == 23
-3 != 24
-5 = 25
-4 > -16777191
-0  0
+3	MAIS	(	1
+20	IF	if	2
+3	MAIS	)	3
+22	ELSE	else	4
+3	MAIS	{	5
+25	RETURN	return	6
+3	MAIS	}	7
+23	VOID	void	8
+3	MAIS	[	9
+24	WHILE	while	10
+3	MAIS	]	11
+21	INT	int	12
+3	MAIS	,	13
+2	ID	variavel	14
+3	MAIS	;	15
+1	NUM	123	16
+3	MAIS	+	17
+3	MAIS	-	18
+3	MAIS	*	19
+6	ATRIBUICAO	/	20
+3	MAIS	<	21
+4	MAIOR	>	22
+3	MAIS	==	23
+3	MAIS	!=	24
+5	MENOS	=	25
+4	MAIOR	>	-16777191
+0	ERRO		0
