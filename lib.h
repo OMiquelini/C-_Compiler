@@ -14,7 +14,7 @@ enum Estados{INICIAL, NUM, ID, OP1, OP2, ATRIB, DIV, Q7, Q8, Q9, FINAL, LIXO};
 enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, ponto_virgula, virgula, exclama,
               L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, Space };//TODO: adicionar espaço em branco
 
-enum Tokens{NUMERO=1, IDENTIFICADOR, MAIS, MAIOR, MENOS, ATRIBUICAO, DIVISAO, MULTIPLICACAO, L_PAR, R_PAR, L_CHAVES, R_CHAVES, L_BRAC, R_BRAC, VIRGULA, COMMA, MENOR, MAIOR_IGUAL, DIFERENTE, IF,INT, ELSE, VOID, WHILE, RETURN};
+enum Tokens{NUMERO=1, IDENTIFICADOR, MAIS, MAIOR, ATRIBUICAO, DIVISAO, MENOS, MULTIPLICACAO, L_PAR, R_PAR, L_CHAVES, R_CHAVES, L_BRAC, R_BRAC, VIRGULA, COMMA, MENOR, MAIOR_IGUAL, DIFERENTE, IF,INT, ELSE, VOID, WHILE, RETURN};
 
 //struct do nó da arvore binária
 typedef struct arvore_t
