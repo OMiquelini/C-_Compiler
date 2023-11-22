@@ -110,16 +110,17 @@ void token_string(p_no lista)
                     aux->tok="ERRO";
                     break;
                 }
+            aux = aux->prox;
         }
         return;
 }
 
-void imprime_token(p_no lista)
+void imprime_token(p_no lista, FILE *output)
 {
     p_no aux = lista;
     while(aux!=NULL)
     {
-        printf("%d %s %d\n", aux->linha, aux->lexema, aux->token);
+        fprintf(output,"%d %s %d\n", aux->linha, aux->lexema, aux->token);
         aux = aux->prox;
     }
     return;

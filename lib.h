@@ -52,7 +52,7 @@ int soma_ascii(char *str);
 int busca_no(arvore_p raiz, int valor, char *str);
 
 void reservada(p_no lista, arvore_p raiz_reservada);
-void imprime_token(p_no lista);
+void imprime_token(p_no lista, FILE *output);
 void token_string(p_no lista);
 void token_operadores(p_no lista);
 
