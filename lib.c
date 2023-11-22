@@ -126,14 +126,31 @@ void imprime_token(p_no lista, FILE *output)
     return;
 }
 
-/*token_operadores(p_no lista)
+void token_operadores(p_no lista)
 {
     p_no aux = lista;
     while(aux!=NULL)
     {
         if(aux->token==3||aux->token==5)
         {
-
+            if(strcmp(aux->lexema,  "+")){aux->token=MAIS;}
+            else if(strcmp(aux->lexema,  "-")){aux->token=MENOS;}
+            else if(strcmp(aux->lexema,  "<")){aux->token=MENOR;}
+            else if(strcmp(aux->lexema,  ">")){aux->token=MAIOR;}
+            else if(strcmp(aux->lexema,  "=")){aux->token=ATRIBUICAO;}
+            else if(strcmp(aux->lexema,  "*")){aux->token=MULTIPLICACAO;}
+            else if(strcmp(aux->lexema,  "/")){aux->token=DIVISAO;}
+            else if(strcmp(aux->lexema,  "(")){aux->token=L_PAR;}
+            else if(strcmp(aux->lexema,  ")")){aux->token=R_PAR;}
+            else if(strcmp(aux->lexema,  "{")){aux->token=L_CHAVES;}
+            else if(strcmp(aux->lexema,  "}")){aux->token=R_CHAVES;}
+            else if(strcmp(aux->lexema,  "[")){aux->token=L_BRAC;}
+            else if(strcmp(aux->lexema,  "]")){aux->token=R_BRAC;}
+            else if(strcmp(aux->lexema,  ",")){aux->token=VIRGULA;}
+            else if(strcmp(aux->lexema,  ";")){aux->token=COMMA;}
+            else if(strcmp(aux->lexema,  ">=")){aux->token=MAIOR_IGUAL;}
+            else if(strcmp(aux->lexema,  "!=")){aux->token=DIFERENTE;}
         }
+        aux = aux->prox;
     }
-}*/
+}

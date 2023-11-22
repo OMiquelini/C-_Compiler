@@ -46,9 +46,8 @@ int main(int argc, char *argv[])
             printf("Error opening file\n");
             return 1;
         }
-        printf("abri o arquivo\n");
         reservada(lex, raiz_reservada);
-        //token_operadores(lex);
+        token_operadores(lex);
         token_string(lex);
         imprime_token(lex, output);
         fclose(output);
