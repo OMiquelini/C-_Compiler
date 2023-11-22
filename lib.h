@@ -48,4 +48,8 @@ typedef struct no{
 
 typedef t_no *p_no;
 
+void reservada(p_no lista, arvore_p raiz_reservada);
+void imprime_token(p_no lista);
+void token_string(p_no lista);
+
 #endif
