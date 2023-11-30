@@ -11,146 +11,130 @@ int soma_ascii(char *str)
 
 void reservada(p_no lista, arvore_p raiz_reservada)
 {
-    p_no aux = lista;
-    while(aux != NULL)
-    {
-        if(aux->token == ID)
+        if(lista->token == ID)
         {
-            aux->ascii=soma_ascii(aux->lexema);
-            aux->token = busca_no(raiz_reservada, aux->ascii, aux->lexema);
+            lista->ascii=soma_ascii(lista->lexema);
+            lista->token = busca_no(raiz_reservada, lista->ascii, lista->lexema);
         }
-        aux = aux->prox;
-    }
     return;
-}
-
-void token_string(p_no lista)
-{
-    p_no aux = lista;
-        while (aux!=NULL)
-        {
-            switch (aux->token)
-            {
-                case NUMERO:
-                    aux->tok="NUM";
-                    break;
-                case IDENTIFICADOR:
-                    aux->tok="ID";                    
-                    break;
-                case MAIS:
-                    aux->tok="MAIS";
-                    break;
-                case MAIOR:
-                    aux->tok="MAIOR";     
-                    break;
-                case MENOS:
-                    aux->tok="MENOS";       
-                    break;
-                case ATRIBUICAO:
-                    aux->tok="ATRIBUICAO";           
-                    break;
-                case DIVISAO:
-                    aux->tok="DIVISAO";
-                    break;
-                case MULTIPLICACAO:
-                    aux->tok="MULTIPLICACAO";
-                    break;
-                case L_PAR:
-                    aux->tok="L_PAR";
-                    break;
-                case R_PAR:
-                    aux->tok="R_PAR";
-                    break;
-                case L_CHAVES:
-                    aux->tok="L_CHAVES";
-                    break;
-                case R_CHAVES:
-                    aux->tok="R_CHAVES";
-                    break;
-                case L_BRAC:
-                    aux->tok="L_BRAC";
-                    break;
-                case R_BRAC:
-                    aux->tok="R_BRAC";
-                    break;
-                case VIRGULA:
-                    aux->tok="VIRGULA";
-                    break;
-                case COMMA:
-                    aux->tok="COMMA";
-                    break;
-                case MENOR:
-                    aux->tok="MENOR";
-                    break;
-                case MAIOR_IGUAL:
-                    aux->tok="MAIOR_IGUAL";
-                    break;
-                case DIFERENTE:
-                    aux->tok="DIFERENTE";
-                    break;
-                case IF:
-                    aux->tok="IF";
-                    break;
-                case INT:
-                    aux->tok="INT";
-                    break;
-                case ELSE:
-                    aux->tok="ELSE";
-                    break;
-                case VOID:
-                    aux->tok="VOID";
-                    break;
-                case WHILE:
-                    aux->tok="WHILE";
-                    break;
-                case RETURN:
-                    aux->tok="RETURN";
-                    break;
-                default:
-                    aux->tok="ERRO";
-                    break;
-                }
-            aux = aux->prox;
-        }
-        return;
 }
 
 void imprime_token(p_no lista, FILE *output)
 {
-    p_no aux = lista;
-    while(aux!=NULL)
-    {
-        fprintf(output,"%d %s %s\n", aux->linha, aux->lexema, aux->tok);
-        aux = aux->prox;
-    }
+
+    fprintf(output,"%d %s %s\n", lista->linha, lista->lexema, lista->tok);
     return;
 }
 
 void token_operadores(p_no lista)
 {
-    p_no aux = lista;
-    while(aux!=NULL)
-    {
-        if(aux->token==3||aux->token==4)
+        if(lista->token==3||lista->token==4)
         {
-            if(strcmp(aux->lexema,  "+")==0){aux->token=MAIS;}
-            else if(strcmp(aux->lexema,  "-")==0){aux->token=MENOS;}
-            else if(strcmp(aux->lexema,  "<")==0){aux->token=MENOR;}
-            else if(strcmp(aux->lexema,  ">")==0){aux->token=MAIOR;}
-            else if(strcmp(aux->lexema,  "=")==0){aux->token=ATRIBUICAO;}
-            else if(strcmp(aux->lexema,  "*")==0){aux->token=MULTIPLICACAO;}
-            else if(strcmp(aux->lexema,  "/")==0){aux->token=DIVISAO;}
-            else if(strcmp(aux->lexema,  "(")==0){aux->token=L_PAR;}
-            else if(strcmp(aux->lexema,  ")")==0){aux->token=R_PAR;}
-            else if(strcmp(aux->lexema,  "{")==0){aux->token=L_CHAVES;}
-            else if(strcmp(aux->lexema,  "}")==0){aux->token=R_CHAVES;}
-            else if(strcmp(aux->lexema,  "[")==0){aux->token=L_BRAC;}
-            else if(strcmp(aux->lexema,  "]")==0){aux->token=R_BRAC;}
-            else if(strcmp(aux->lexema,  ",")==0){aux->token=VIRGULA;}
-            else if(strcmp(aux->lexema,  ";")==0){aux->token=COMMA;}
-            else if(strcmp(aux->lexema,  ">=")==0){aux->token=MAIOR_IGUAL;}
-            else if(strcmp(aux->lexema,  "!=")==0){aux->token=DIFERENTE;}
+            if(strcmp(lista->lexema,  "+")==0){lista->token=MAIS;}
+            else if(strcmp(lista->lexema,  "-")==0){lista->token=MENOS;}
+            else if(strcmp(lista->lexema,  "<")==0){lista->token=MENOR;}
+            else if(strcmp(lista->lexema,  ">")==0){lista->token=MAIOR;}
+            else if(strcmp(lista->lexema,  "=")==0){lista->token=ATRIBUICAO;}
+            else if(strcmp(lista->lexema,  "*")==0){lista->token=MULTIPLICACAO;}
+            else if(strcmp(lista->lexema,  "/")==0){lista->token=DIVISAO;}
+            else if(strcmp(lista->lexema,  "(")==0){lista->token=L_PAR;}
+            else if(strcmp(lista->lexema,  ")")==0){lista->token=R_PAR;}
+            else if(strcmp(lista->lexema,  "{")==0){lista->token=L_CHAVES;}
+            else if(strcmp(lista->lexema,  "}")==0){lista->token=R_CHAVES;}
+            else if(strcmp(lista->lexema,  "[")==0){lista->token=L_BRAC;}
+            else if(strcmp(lista->lexema,  "]")==0){lista->token=R_BRAC;}
+            else if(strcmp(lista->lexema,  ",")==0){lista->token=VIRGULA;}
+            else if(strcmp(lista->lexema,  ";")==0){lista->token=COMMA;}
+            else if(strcmp(lista->lexema,  ">=")==0){lista->token=MAIOR_IGUAL;}
+            else if(strcmp(lista->lexema,  "!=")==0){lista->token=DIFERENTE;}
         }
-        aux = aux->prox;
+    return;
+}
+
+//função para criar o nó com a palavra reservada e seu valor em ascii
+arvore_p criar_no(int valor, char *str, int token)
+{
+    arvore_p novo_no = (arvore_p)malloc(sizeof(arvore_t));
+    if (novo_no == NULL) {
+        perror("Erro ao alocar memória");
+        exit(EXIT_FAILURE);
     }
+    novo_no->ascii = valor;
+    novo_no->palavra = str;
+    novo_no->tok = token;
+    novo_no->direita = NULL;
+    novo_no->esquerda = NULL;
+    return novo_no;
+}
+
+//função para inserir o nó na arvore
+arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token)
+{
+    if (raiz == NULL) {
+        return criar_no(valor, str, token);
+    }
+    if (valor < raiz->ascii) {
+        raiz->esquerda = inserir_no(raiz->esquerda, valor, str, token);
+    } else if (valor > raiz->ascii) {
+        raiz->direita = inserir_no(raiz->direita, valor, str, token);
+    }
+    return raiz;
+}
+
+//função para buscar o nó na arvore
+int busca_no(arvore_p raiz, int valor, char *str)
+{
+    while (raiz != NULL)
+    {
+        if (valor < raiz->ascii && raiz->esquerda!=NULL) {
+            raiz = raiz->esquerda;
+        } else if (valor > raiz->ascii && raiz->direita!=NULL) {
+            raiz = raiz->direita;
+        } else if (!strcmp(str,raiz->palavra)){
+            return raiz->tok;
+        }else{
+             return ID;
+        }
+    }
+    return -1;
+    
+}
+
+//funcao para alocar buffer
+p_buffer allocate_buffer()
+{
+    p_buffer b = (p_buffer)malloc(sizeof(t_buffer));
+    if(b == NULL)
+    {
+        return NULL;
+    }
+    b->buffer_size = 256;
+    b->last_pos = 0;
+    b->line = 0;
+    return b;
+}
+
+//desalocar buffer
+void deallocate_buffer(p_buffer b)
+{
+    free(b);
+}
+
+//desalocar no
+void deallocate_no(p_no no)
+{
+    free(no);
+}
+
+//alocar no
+p_no allocate_no() {
+    p_no novo_no = (p_no)malloc(sizeof(t_no));
+    novo_no->lexema=(char*)malloc(64);
+    
+    if (novo_no != NULL) {
+        novo_no->token = 0;
+        novo_no->linha = 0;
+        novo_no->ascii = 0;
+    }   
+    return novo_no;
 }

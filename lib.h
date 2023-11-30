@@ -43,7 +43,6 @@ typedef struct no{
     char *tok;
     int linha;
     int ascii;
-    struct no *prox;
 }t_no;
 
 typedef t_no *p_no;
@@ -53,7 +52,14 @@ int busca_no(arvore_p raiz, int valor, char *str);
 
 void reservada(p_no lista, arvore_p raiz_reservada);
 void imprime_token(p_no lista, FILE *output);
-void token_string(p_no lista);
 void token_operadores(p_no lista);
+
+arvore_p criar_no(int valor, char *str, int token);
+arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token);
+
+p_no allocate_no();
+p_buffer allocate_buffer();
+void deallocate_buffer(p_buffer b);
+void deallocate_no(p_no no);
 
 #endif

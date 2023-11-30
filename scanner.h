@@ -10,16 +10,11 @@
 **********************************************************************************************************************/
 
 int DFA_func(p_buffer b, FILE *fp, p_no no);
-arvore_p criar_no(int valor, char *str, int token);
-arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token);
 
-p_no allocate_no();
-p_buffer allocate_buffer();
-void deallocate_buffer(p_buffer b);
-void deallocate_no(p_no no);
 char get_next_char(p_buffer b, FILE *fp);
 int fill_buffer(p_buffer b, FILE *fp);
 void unget_char(p_buffer b,char c);
+void get_token(p_buffer b, FILE *fp, p_no no, arvore_p raiz_reservada);
 
 #endif
 

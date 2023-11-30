@@ -6,3 +6,4 @@ TODO:
     2: Parser
     3: Tabela de símbolos
     4: Gerador de código intermediário (?)
+    5: (FEITO) Modificar funcionamento do lexer para ser chamado pelo parser

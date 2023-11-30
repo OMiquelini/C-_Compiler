@@ -33,25 +33,8 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    if(DFA_func(buffer, fp, lex)==-1)
-    {
-        printf("Compilation has stoped due to lexical error\n");
-        return -1;
-    }
-    else
-    {
-        FILE *output = fopen("output.txt", "w");
-        if(output == NULL)
-        {
-            printf("Error opening file\n");
-            return 1;
-        }
-        reservada(lex, raiz_reservada);
-        token_operadores(lex);
-        token_string(lex);
-        imprime_token(lex, output);
-        fclose(output);
-    }
+    for(i=0;i<10;i++)
+        get_token(buffer, fp, lex, raiz_reservada);
 
     deallocate_buffer(buffer);
     deallocate_no(lex);

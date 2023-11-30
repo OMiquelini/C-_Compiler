@@ -11,7 +11,7 @@ HEADERS = scanner.h lib.h
 all: $(EXECUTABLE)
 
 $(EXECUTABLE): $(SOURCES)
-	$(CC) $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
+	$(CC) -g $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
 
 clean:
 	rm -f $(EXECUTABLE)
