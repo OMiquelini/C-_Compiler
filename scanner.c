@@ -131,10 +131,9 @@ void unget_char(p_buffer b,char c)
     b->vetor[b->last_pos] = c;
 }
 
-void get_token(p_buffer b, FILE *fp, p_no no, arvore_p raiz_reservada)
+void get_token(p_buffer b, FILE *fpi, p_no no, arvore_p raiz_reservada, FILE *fpo)
 {
-    FILE *fpo = fopen("output.txt","r");
-    if(DFA_func(b, fp, no)==-1)
+    if(DFA_func(b, fpi, no)==-1)
     {
         printf("Erro lexico\n");
     }

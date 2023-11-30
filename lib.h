@@ -40,7 +40,6 @@ typedef t_buffer *p_buffer;
 typedef struct no{
     char *lexema;
     int token;
-    char *tok;
     int linha;
     int ascii;
 }t_no;

@@ -26,18 +26,26 @@ int main(int argc, char *argv[])
     {
         raiz_reservada = inserir_no(raiz_reservada, vetor_ascii[i], vetor_palavras[i],token_reservada[i]);
     }
-    FILE *fp = fopen(argv[1],"r");
-    if(fp == NULL)
+    FILE *fpi = fopen(argv[1],"r");
+    if(fpi == NULL)
     {
         printf("Error opening file\n");
         return 1;
     }
 
-    for(i=0;i<10;i++)
-        get_token(buffer, fp, lex, raiz_reservada);
+    FILE *fpo = fopen("output.txt","w");
+    if(fpi == NULL)
+    {
+        printf("Error opening file\n");
+        return 1;
+    }
+
+    for(i=0;i<28;i++)
+        get_token(buffer, fpi, lex, raiz_reservada,fpo);
 
     deallocate_buffer(buffer);
     deallocate_no(lex);
-    fclose(fp);
+    fclose(fpi);
+    fclose(fpo);
     return 0;
 }

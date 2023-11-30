@@ -21,8 +21,7 @@ void reservada(p_no lista, arvore_p raiz_reservada)
 
 void imprime_token(p_no lista, FILE *output)
 {
-
-    fprintf(output,"%d %s %s\n", lista->linha, lista->lexema, lista->tok);
+    fprintf(output,"linha: %d lexema: %s token: %d\n", lista->linha, lista->lexema, lista->token);
     return;
 }
 

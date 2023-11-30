@@ -1,25 +1,8 @@
-(
-if
-)
-else
+if(x==1)
 {
-return
+    teste=123;
 }
-void
+else if(y<=2)
 [
-while
+    teste=x+3;
 ]
-int
-,
-variavel
-;
-123
-+
--
-*
-/
-<
->
-==
-!=
-=>
