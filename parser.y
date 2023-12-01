@@ -1,9 +1,10 @@
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include "lib.h"
 #include "scanner.h"
 %}
+
+%union {
+    p_no token_info;
+}
 
 %token NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
 %token L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC VIRGULA COMMA

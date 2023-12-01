@@ -1,11 +1,12 @@
-#include "scanner.h"
-
-
 /********************************************************************************************************************
  Desenvolvido em Outubro de 2023 por:
  Matheus Miquelini Andrello
  Tiago Miranda
 **********************************************************************************************************************/
+
+#include "scanner.h"
+#include "parser.tab.h"
+extern FILE* yyin;
 
 
 int main(int argc, char *argv[])
@@ -40,8 +41,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    for(i=0;i<28;i++)
-        get_token(buffer, fpi, lex, raiz_reservada,fpo);
+    yyin=fpi;
+    yyparse();
+
+    /*for(i=0;i<28;i++)
+        get_token(buffer, fpi, lex, raiz_reservada,fpo);*/
 
     deallocate_buffer(buffer);
     deallocate_no(lex);

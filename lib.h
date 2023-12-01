@@ -6,6 +6,7 @@
 #include <ctype.h>
 #include <string.h>
 
+
 #define N_SIMBOBOLOS 19
 #define N_ESTADOS 12
 
