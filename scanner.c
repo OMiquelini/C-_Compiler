@@ -21,13 +21,13 @@ int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     /*LIXO*/    {LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO, LIXO}
 };
 
-int DFA_func(p_buffer b, FILE *fp, p_no no)
+int DFA_func()
 {
     int estado_atual = INICIAL, estado_ant = INICIAL;
     int i = 0;
         char c =' ';
     while (estado_atual!=FINAL){
-        c = get_next_char(b, fp);
+        c = get_next_char(buffer, fpi);
         estado_ant = estado_atual;
         if (isalpha(c)) {
             estado_atual = tabela_transicoes[estado_atual][alfa];
@@ -74,48 +74,48 @@ int DFA_func(p_buffer b, FILE *fp, p_no no)
             estado_atual = LIXO;
         }
         if (estado_atual == LIXO && estado_ant == Q7) {
-            printf("Erro lexico na linha %d: esperado caractere '=' mas recebeu '%c'\n", b->line,c);
+            printf("Erro lexico na linha %d: esperado caractere '=' mas recebeu '%c'\n", buffer->line,c);
             return -1;
         } else if(estado_atual == LIXO){
-            printf("Erro lexico na linha %d: caractere '%c' não aceito pela linguagem\n", b->line,c);
+            printf("Erro lexico na linha %d: caractere '%c' não aceito pela linguagem\n", buffer->line,c);
             return -1;
         } else if ((estado_atual != FINAL) && (!isspace(c))) {
-            no->lexema[i] = c;
-            no->linha = b->line;
+            lex->lexema[i] = c;
+            lex->linha = buffer->line;
             i++;
         }
         
     }
-    unget_char(b, c);
-    no->token = estado_ant;
-    no->lexema[i] = '\0';
+    unget_char(c);
+    lex->token = estado_ant;
+    lex->lexema[i] = '\0';
     return 0;
 }
 
 
-char get_next_char(p_buffer b, FILE *fp)
+char get_next_char()
 {
-    if (b->vetor[b->last_pos] == '\0')
+    if (buffer->vetor[buffer->last_pos] == '\0')
     {
-        if (fill_buffer(b, fp) == -1)
+        if (fill_buffer(buffer, fpi) == -1)
         {
             return EOF;
         }
     }
 
-    char c = b->vetor[b->last_pos];
+    char c = buffer->vetor[buffer->last_pos];
     if (c=='\n')
     {
-        b->line++;
+        buffer->line++;
     }
-    b->last_pos++;
+    buffer->last_pos++;
     return c;
 }
 
-int fill_buffer(p_buffer b, FILE *fp)
+int fill_buffer()
 {
-    b->last_pos = 0;
-    if(fgets(b->vetor, 256, fp)==NULL)
+    buffer->last_pos = 0;
+    if(fgets(buffer->vetor, 256, fpi)==NULL)
     {
         return -1;
     }
@@ -125,22 +125,23 @@ int fill_buffer(p_buffer b, FILE *fp)
     }
 }
 
-void unget_char(p_buffer b,char c)
+void unget_char(char c)
 {
-    b->last_pos--;
-    b->vetor[b->last_pos] = c;
+    buffer->last_pos--;
+    buffer->vetor[buffer->last_pos] = c;
 }
 
-void get_token(p_buffer b, FILE *fpi, p_no no, arvore_p raiz_reservada, FILE *fpo)
+int get_token()
 {
-    if(DFA_func(b, fpi, no)==-1)
+    if(DFA_func(buffer, fpi, lex)==-1)
     {
         printf("Erro lexico\n");
     }
     else
     {
-        reservada(no, raiz_reservada);
-        token_operadores(no);
-        imprime_token(no, fpo);
+        reservada(lex, raiz_reservada);
+        token_operadores(lex);
+        imprime_token(lex, fpo);
     }
+    return lex->token;
 }

@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
     int vetor_ascii[]={207, 331, 425, 434, 537, 672};
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
     int token_reservada[]={IF,INT, ELSE, VOID, WHILE, RETURN};
-    arvore_p raiz_reservada = NULL;
-    p_no lex = allocate_no();
-    p_buffer buffer = allocate_buffer();
+    raiz_reservada = NULL;
+    lex = allocate_no();
+    buffer = allocate_buffer();
     if(argc != 2)
     {
         printf("Usage: <file_name>\n");
@@ -26,14 +26,14 @@ int main(int argc, char *argv[])
     {
         raiz_reservada = inserir_no(raiz_reservada, vetor_ascii[i], vetor_palavras[i],token_reservada[i]);
     }
-    FILE *fpi = fopen(argv[1],"r");
+    fpi = fopen(argv[1],"r");
     if(fpi == NULL)
     {
         printf("Error opening file\n");
         return 1;
     }
 
-    FILE *fpo = fopen("output.txt","w");
+    fpo = fopen("output.txt","w");
     if(fpi == NULL)
     {
         printf("Error opening file\n");
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     }
 
     for(i=0;i<28;i++)
-        get_token(buffer, fpi, lex, raiz_reservada,fpo);
+        get_token();
 
     deallocate_buffer(buffer);
     deallocate_no(lex);

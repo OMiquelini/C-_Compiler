@@ -50,9 +50,9 @@ typedef t_no *p_no;
 int soma_ascii(char *str);
 int busca_no(arvore_p raiz, int valor, char *str);
 
-void reservada(p_no lista, arvore_p raiz_reservada);
-void imprime_token(p_no lista, FILE *output);
-void token_operadores(p_no lista);
+void reservada();
+void imprime_token();
+void token_operadores();
 
 arvore_p criar_no(int valor, char *str, int token);
 arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token);
@@ -61,5 +61,11 @@ p_no allocate_no();
 p_buffer allocate_buffer();
 void deallocate_buffer(p_buffer b);
 void deallocate_no(p_no no);
+
+FILE *fpi;
+FILE *fpo;
+arvore_p raiz_reservada;
+p_no lex;
+p_buffer buffer;
 
 #endif
