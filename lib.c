@@ -1,5 +1,11 @@
 #include "lib.h"
 
+FILE *fpi;
+FILE *fpo;
+arvore_p raiz_reservada;
+p_no lex;
+p_buffer buffer;
+
 int soma_ascii(char *str)
 {
     int soma = 0;

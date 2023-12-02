@@ -62,10 +62,10 @@ p_buffer allocate_buffer();
 void deallocate_buffer(p_buffer b);
 void deallocate_no(p_no no);
 
-FILE *fpi;
-FILE *fpo;
-arvore_p raiz_reservada;
-p_no lex;
-p_buffer buffer;
+extern FILE *fpi;
+extern FILE *fpo;
+extern arvore_p raiz_reservada;
+extern p_no lex;
+extern p_buffer buffer;
 
 #endif
