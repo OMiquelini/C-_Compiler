@@ -1,8 +1,11 @@
-if(x==1)
+>=
+<=
+
+if(x<=1)
 {
     teste=123;
 }
-else if(y<=2)
+else if(y>=2)
 [
     teste=x+3;
 ]

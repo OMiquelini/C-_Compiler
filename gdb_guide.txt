@@ -1,0 +1,9 @@
+compilar com -g
+gdb --args ./executavel args
+info functions
+break function
+lay src
+run
+//
+n para passar, display para printar sempre, s para entrar na função
+refresh pra arrumar tela
