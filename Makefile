@@ -1,19 +1,27 @@
 CC = gcc
-CFLAGS = -Wall
-EXECUTABLE = compilas
+CFLAGS = -Wall -g
 
-# Lista de arquivos fonte
-SOURCES = main.c scanner.c lib.c 
+all: compilador
 
-# Lista de arquivos de cabeçalho
-HEADERS = scanner.h lib.h
+compilador: lib.o scanner.o parser.o main.o
+	$(CC) $(CFLAGS) $^ -o $@
 
-all: $(EXECUTABLE)
+lib.o: lib.c lib.h
+	$(CC) $(CFLAGS) -c $< -o $@
 
-$(EXECUTABLE): $(SOURCES)
-	$(CC) -g $(CFLAGS) $(SOURCES) -o $(EXECUTABLE)
+scanner.o: scanner.c scanner.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+parser.o: parser.tab.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+parser.tab.c: parser.y
+	bison -d $<
+
+main.o: main.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(EXECUTABLE)
+	rm -f *.o compilador parser.tab.c parser.tab.h
 
-.PHONY: clean
+.PHONY: all clean

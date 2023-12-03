@@ -1,8 +1,16 @@
+/********************************************************************************************************************
+ Desenvolvido em Novembro de 2023 por:
+ Matheus Miquelini Andrello
+ Tiago Miranda
+**********************************************************************************************************************/
+
 %{
 #include "scanner.h"
 #include "stdio.h"
 #include "stdlib.h"
 
+int yylex();
+void yyerror(const char *s);
 
 %}
 
@@ -14,7 +22,8 @@
 
 %token <int> NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
 %token <int> L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC COMMA SEMICOLON
-%token <int> MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IF INT ELSE VOID WHILE RETURN
+%token <int> MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IGUAL IF INT ELSE VOID WHILE RETURN
+
 
 %type <node> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
 
@@ -31,7 +40,7 @@ programa: declaracao_lista {
 declaracao_lista: declaracao_lista declaracao {
     $$ = create_node("declaracao_lista", 2, $1, $2);
 } 
-| declaracao { //arrumei aqui
+| declaracao { 
     $$ = create_node("declaracao_lista", 0);
 };
 
@@ -43,28 +52,28 @@ declaracao: var_declaracao {
 };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
-    $$ = create_node("var_declaracao", 2, create_node($1, NULL, NULL), create_node($2, NULL, NULL));
+    $$ = create_node("var_declaracao", 2, $1, create_node($2->label, 0, NULL));
 }
 | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
-    $$ = create_node("var_declaracao", 3, create_node($1, NULL, NULL), create_node($2, NULL, NULL), create_node($4, NULL, NULL));
+    $$ = create_node("var_declaracao", 3, $1, create_node($2->label, 0, NULL), create_node($4->label, 0, NULL));
 };
 
 tipo_especificador: INT {
-    $$ = create_node("tipo_especificador", 1, create_node($1, NULL, NULL));
+    $$ = create_node("tipo_especificador", 1, create_node($1->label, 0, NULL));
 }
 | VOID {
-    $$ = create_node("tipo_especificador", 1, create_node($1, NULL, NULL));
+    $$ = create_node("tipo_especificador", 1, create_node($1->label, 0, NULL));
 };
 
 fun_declaracao: tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_decl {
-    $$ = create_node("fun_declaracao", 3, create_node($1, NULL, NULL), create_node($2, NULL, NULL), $4, $6);
+    $$ = create_node("fun_declaracao", 3, create_node($1->label, 0, NULL), create_node($2->label, 0, NULL), $4, $6);
 };
 
 params: param_list {
     $$ = create_node("params", 1, $1);
 } 
 | VOID {
-    $$ = create_node("params", 1, create_node($1, NULL, NULL));
+    $$ = create_node("params", 1, create_node($1->label, 0, NULL));
 };
 
 param_list: param_list COMMA param {
@@ -75,10 +84,10 @@ param_list: param_list COMMA param {
 };
 
 param: tipo_especificador IDENTIFICADOR  {
-    $$ = create_node("param", 2, create_node($1, NULL, NULL), create_node($2, NULL, NULL));
+    $$ = create_node("param", 2, create_node($1->label, 0, NULL), create_node($2->label, 0, NULL));
 }
 | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
-    $$ = create_node("param", 3, create_node($1, NULL, NULL), create_node($2, NULL, NULL));
+    $$ = create_node("param", 3, create_node($1->label, 0, NULL), create_node($2->label, 0, NULL));
 };
 
 composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
@@ -157,12 +166,12 @@ expressao: var ATRIBUICAO expressao {
 };
 
 var: IDENTIFICADOR {
-    $$ = create_node("var", 1, create_node($1, NULL, NULL));
+    $$ = create_node("var", 1, create_node($1->label, 0, NULL));
     printTree($$, 0);
     freeTree($$);
 }
 | IDENTIFICADOR L_BRAC expressao R_BRAC {
-    $$ = create_node("ArrayVar", 2, create_node($1, NULL, NULL), $3);
+    $$ = create_node("ArrayVar", 2, create_node($1->label, 0, NULL), $3);
     printTree($$, 0);
     freeTree($$);
 };
@@ -177,26 +186,26 @@ simples_expressao: soma_expressao relacional soma_expressao {
 };
 
 relacional: MENOR {
-    $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
+    $$ = create_node("relacional", 1, create_node($1->label, 0, NULL));
 }
 | MAIOR {
-    $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
+    $$ = create_node("relacional", 1, create_node($1->label, 0, NULL));
 }
 
 | MENOR_IGUAL {
-    $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
+    $$ = create_node("relacional", 1, create_node($1->label, 0, NULL));
 }
 
 | DIFERENTE {
-    $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
+    $$ = create_node("relacional", 1, create_node($1->label, 0, NULL));
 }
 
 | MAIOR_IGUAL {
-    $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
+    $$ = create_node("relacional", 1, create_node($1->label, 0, NULL));
 }
 
-| SEMICOLON { //fazer == aqui
-    $$ = create_node("relacional", 0);
+| IGUAL { //fazer == aqui
+    $$ = create_node("relacional", 1, create_node($1->label, 0, NULL));
 };
 
 soma_expressao: soma_expressao soma termo {
@@ -209,11 +218,11 @@ soma_expressao: soma_expressao soma termo {
 };
 
 soma: MAIS {
-    $$ = create_node("soma", 1, create_node($1, NULL, NULL));
+    $$ = create_node("soma", 1, create_node($1->label, 0, NULL));
 }
 
 | MENOS {
-    $$ = create_node("soma", 1, create_node($1, NULL, NULL));
+    $$ = create_node("soma", 1, create_node($1->label, 0, NULL));
 };
 
 termo: termo mult fator {
@@ -244,13 +253,13 @@ fator: L_PAR expressao R_PAR {
 }
 
 | NUMERO {
-    $$ = create_node("NUMERO", 1, create_node($1, NULL, NULL));
+    $$ = create_node("NUMERO", 1, create_node($1->label, 0, NULL));
     printTree($$, 0);
     freeTree($$);
 };
 
 ativacao: IDENTIFICADOR L_PAR args R_PAR {
-    $$ = create_node("ativacao", 2, create_node($1, NULL, NULL), $3);
+    $$ = create_node("ativacao", 2, create_node($1->label, 0, NULL), $3);
     printTree($$, 0);
     freeTree($$);
 };
@@ -281,7 +290,7 @@ int main() {
 }
 
 void yylex() {
-    yylval.token_info = get_token();
+    return get_token();
 }
 
 void yyerror(const char *s) {

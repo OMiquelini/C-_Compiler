@@ -57,6 +57,8 @@ void token_operadores()
             else if(strcmp(lex->lexema,  ",")==0){lex->token=COMMA;}
             else if(strcmp(lex->lexema,  ";")==0){lex->token=SEMICOLON;}
             else if(strcmp(lex->lexema,  ">=")==0){lex->token=MAIOR_IGUAL;}
+            else if(strcmp(lex->lexema,  "<=")==0){lex->token=MENOR_IGUAL;}
+            else if(strcmp(lex->lexema,  "==")==0){lex->token=IGUAL;}
             else if(strcmp(lex->lexema,  "!=")==0){lex->token=DIFERENTE;}
         }
     return;
@@ -152,20 +154,27 @@ p_no allocate_no() {
 
 //função para criar o nó da arvore AST
 AST_p create_node(char* label, int n_filhos, ...) {
-    AST_p node = (AST_p) malloc(sizeof(AST_t));
-    node->label = label;
+    AST_p node = (AST_p)malloc(sizeof(AST_t));
+    node->label = strdup(label);
     node->n_filhos = n_filhos;
-    node->filhos = (AST_p*) malloc(n_filhos * sizeof(AST_p));
 
-    va_list args;
-    va_start(args, n_filhos);
-    for (int i = 0; i < n_filhos; i++) {
-        node->filhos[i] = va_arg(args, AST_p);
+    if (n_filhos > 0) {
+        node->filhos = (AST_p*)malloc(n_filhos * sizeof(AST_p));
+
+        va_list args;
+        va_start(args, n_filhos);
+        for (int i = 0; i < n_filhos; i++) {
+            node->filhos[i] = va_arg(args, AST_p);
+        }
+        va_end(args);
+    } else {
+        node->filhos = NULL;
     }
-    va_end(args);
 
     return node;
 }
+
+
 
 void printTree(AST_p node, int level) {
     if (node == NULL) {
