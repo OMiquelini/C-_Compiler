@@ -8,13 +8,13 @@
 
 %union {
     char* str;
-    TreeNode* node;
+    AST_p node;
     p_no token_info;
 }
 
-%token NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
-%token L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC VIRGULA COMMA
-%token MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IF INT ELSE VOID WHILE RETURN
+%token <int> NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
+%token <int> L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC VIRGULA COMMA
+%token <int> MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IF INT ELSE VOID WHILE RETURN
 
 %type <node> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
 
@@ -31,7 +31,7 @@ programa: declaracao_lista {
 declaracao_lista: declaracao_lista declaracao {
     $$ = create_node("declaracao_lista", 2, $1, $2);
 } 
-| /* vazio */ {
+| declaracao { //arrumei aqui
     $$ = create_node("declaracao_lista", 0);
 };
 
@@ -67,17 +67,17 @@ params: param_list {
     $$ = create_node("params", 1, create_node($1, NULL, NULL));
 };
 
-param_list: param_list COMMA param {
+param_list: param_list VIRGULA param {
     $$ = create_node("param_list", 2, $1, $3);
 }  
 | param {
     $$ = create_node("param_list", 1, $1);
 };
 
-param: tipo_especificador IDENTIFICADOR COMMA  {
+param: tipo_especificador IDENTIFICADOR  {
     $$ = create_node("param", 2, create_node($1, NULL, NULL), create_node($2, NULL, NULL));
 }
-| tipo_especificador IDENTIFICADOR L_BRAC R_BRAC COMMA {
+| tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
     $$ = create_node("param", 3, create_node($1, NULL, NULL), create_node($2, NULL, NULL));
 };
 
@@ -121,7 +121,7 @@ statement: expressao_decl {
 expressao_decl: expressao COMMA {
     $$ = create_node("expressao_decl", 1, $1);
 }
-| COMMA {
+| COMMA { 
     $$ = create_node("expressao_decl", 0);
 };
 
@@ -147,7 +147,7 @@ retorno_decl: RETURN COMMA {
     freeTree($$);
 };
 
-expressao: var ATRIBUICAO expressao COMMA {
+expressao: var ATRIBUICAO expressao {
     $$ = create_node("expressao", 2, $1, $3);
     printTree($$, 0);
     freeTree($$);
@@ -156,12 +156,12 @@ expressao: var ATRIBUICAO expressao COMMA {
     $$ = $1;
 };
 
-var: IDENTIFICADOR COMMA {
+var: IDENTIFICADOR {
     $$ = create_node("var", 1, create_node($1, NULL, NULL));
     printTree($$, 0);
     freeTree($$);
 }
-| IDENTIFICADOR L_BRAC expressao R_BRAC COMMA {
+| IDENTIFICADOR L_BRAC expressao R_BRAC {
     $$ = create_node("ArrayVar", 2, create_node($1, NULL, NULL), $3);
     printTree($$, 0);
     freeTree($$);
@@ -195,16 +195,16 @@ relacional: MENOR {
     $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
 }
 
-| COMMA {
+| COMMA { //fazer == aqui
     $$ = create_node("relacional", 0);
 };
 
-soma_expressao: soma_expressao MAIS termo COMMA {
+soma_expressao: soma_expressao soma termo {
     $$ = create_node("soma_expressao", 2, $1, $3);
     printTree($$, 0);
     freeTree($$);
 }
-| termo COMMA {
+| termo {
     $$ = $1;
 };
 
@@ -216,12 +216,12 @@ soma: MAIS {
     $$ = create_node("soma", 1, create_node($1, NULL, NULL));
 };
 
-termo: termo MULTIPLICACAO fator COMMA {
+termo: termo mult fator {
     $$ = create_node("termo", 2, $1, $3);
     printTree($$, 0);
     freeTree($$);
 }
-| fator COMMA {
+| fator {
     $$ = $1;
 };
 
@@ -232,24 +232,24 @@ mult: MULTIPLICACAO {
     $$ = create_node("div", 0);
 };
 
-fator: L_PAR expressao R_PAR COMMA {
+fator: L_PAR expressao R_PAR {
     $$ = $2;
 }
-| var COMMA {
+| var {
     $$ = $1;
 }
 
-| ativacao COMMA {
+| ativacao {
     $$ = $1;
 }
 
-| NUMERO COMMA {
+| NUMERO {
     $$ = create_node("NUMERO", 1, create_node($1, NULL, NULL));
     printTree($$, 0);
     freeTree($$);
 };
 
-ativacao: IDENTIFICADOR L_PAR args R_PAR COMMA {
+ativacao: IDENTIFICADOR L_PAR args R_PAR {
     $$ = create_node("ativacao", 2, create_node($1, NULL, NULL), $3);
     printTree($$, 0);
     freeTree($$);
@@ -262,12 +262,12 @@ args: arg_list {
     $$ = create_node("args", 0);
 };
 
-arg_list: arg_list COMMA expressao COMMA {
+arg_list: arg_list VIRGULA expressao {
     $$ = create_node("arg_list", 2, $1, $3);
     printTree($$, 0);
     freeTree($$);
 }
-| expressao COMMA {
+| expressao {
     $$ = create_node("arg_list", 1, $1);
     printTree($$, 0);
     freeTree($$);
