@@ -9,32 +9,28 @@
 #include "stdio.h"
 #include "stdlib.h"
 
+#define YYSTYPE AST_p
+
+AST_p raiz;
+
 int yylex();
 void yyerror(const char *s);
 
 %}
 
-%union {
-    char* str;
-    AST_p node;
-    p_no token_info;
-}
-
-%token <int> NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
-%token <int> L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC COMMA SEMICOLON
-%token <int> MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IGUAL IF INT ELSE VOID WHILE RETURN
+%token  NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
+%token  L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC COMMA SEMICOLON
+%token  MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IGUAL IF INT ELSE VOID WHILE RETURN
 
 
-%type <node> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
+%type programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
 
 %start programa
 
 %%
 
 programa: declaracao_lista {
-    $$ = create_node("programa", 1, $1);
-    printTree($$, 0);
-    freeTree($$);
+    raiz = $1;
 };
 
 declaracao_lista: declaracao_lista declaracao {
@@ -52,10 +48,10 @@ declaracao: var_declaracao {
 };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
-    $$ = create_node("var_declaracao", 2, $1, create_node($2->label, 0, NULL));
+    $$ = create_node("var_declaracao", 2, create_node($1->label, 0, NULL), create_node($2->label, 0, NULL));
 }
 | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
-    $$ = create_node("var_declaracao", 3, $1, create_node($2->label, 0, NULL), create_node($4->label, 0, NULL));
+    $$ = create_node("var_declaracao", 3, create_node($1->label, 0, NULL), create_node($2->label, 0, NULL), create_node($4->label, 0, NULL));
 };
 
 tipo_especificador: INT {
@@ -147,19 +143,13 @@ iteracao_decl: WHILE L_PAR expressao R_PAR statement {
 
 retorno_decl: RETURN SEMICOLON {
     $$ = create_node("retorno_decl", 0);
-    printTree($$, 0);
-    freeTree($$);
 }
 | RETURN expressao SEMICOLON {
     $$ = create_node("retorno_decl", 1, $2);
-    printTree($$, 0);
-    freeTree($$);
 };
 
 expressao: var ATRIBUICAO expressao {
     $$ = create_node("expressao", 2, $1, $3);
-    printTree($$, 0);
-    freeTree($$);
 }
 | simples_expressao {
     $$ = $1;
@@ -167,19 +157,13 @@ expressao: var ATRIBUICAO expressao {
 
 var: IDENTIFICADOR {
     $$ = create_node("var", 1, create_node($1->label, 0, NULL));
-    printTree($$, 0);
-    freeTree($$);
 }
 | IDENTIFICADOR L_BRAC expressao R_BRAC {
     $$ = create_node("ArrayVar", 2, create_node($1->label, 0, NULL), $3);
-    printTree($$, 0);
-    freeTree($$);
 };
 
 simples_expressao: soma_expressao relacional soma_expressao {
     $$ = create_node("simples_expressao", 3, $1, $2, $3);
-    printTree($$, 0);
-    freeTree($$);
 }
 | soma_expressao {
     $$ = $1;
@@ -210,8 +194,6 @@ relacional: MENOR {
 
 soma_expressao: soma_expressao soma termo {
     $$ = create_node("soma_expressao", 2, $1, $3);
-    printTree($$, 0);
-    freeTree($$);
 }
 | termo {
     $$ = $1;
@@ -227,8 +209,6 @@ soma: MAIS {
 
 termo: termo mult fator {
     $$ = create_node("termo", 2, $1, $3);
-    printTree($$, 0);
-    freeTree($$);
 }
 | fator {
     $$ = $1;
@@ -254,14 +234,10 @@ fator: L_PAR expressao R_PAR {
 
 | NUMERO {
     $$ = create_node("NUMERO", 1, create_node($1->label, 0, NULL));
-    printTree($$, 0);
-    freeTree($$);
 };
 
 ativacao: IDENTIFICADOR L_PAR args R_PAR {
     $$ = create_node("ativacao", 2, create_node($1->label, 0, NULL), $3);
-    printTree($$, 0);
-    freeTree($$);
 };
 
 args: arg_list {
@@ -273,13 +249,9 @@ args: arg_list {
 
 arg_list: arg_list COMMA expressao {
     $$ = create_node("arg_list", 2, $1, $3);
-    printTree($$, 0);
-    freeTree($$);
 }
 | expressao {
     $$ = create_node("arg_list", 1, $1);
-    printTree($$, 0);
-    freeTree($$);
 };
 
 %%
@@ -289,7 +261,7 @@ int main() {
     return 0;
 }
 
-void yylex() {
+int yylex() {
     return get_token();
 }
 
