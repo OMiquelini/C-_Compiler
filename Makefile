@@ -22,6 +22,6 @@ main.o: main.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f *.o compilador parser.tab.c parser.tab.h
+	rm -f *.o compilador parser.tab.c
 
 .PHONY: all clean

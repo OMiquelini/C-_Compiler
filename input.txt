@@ -1,12 +1,14 @@
->=
-<=
-==
+/* Um programa para calcular o mdc
+   segunda o algoritmo de Euclides. */
 
-if(x<=1)
-{
-    teste=123;
+int gcd (int u, int v)
+{ if (v == 0) return u ;
+  else return gcd(v,u-u/v*v);
+  /* u-u/v*v == u mod v */
 }
-else if(y>=2)
-[
-    teste=x+3;
-]
+
+void main(void)
+{ int x; int y;
+  x = input(); y = input();
+  output(gcd(x,y));
+}

@@ -256,11 +256,6 @@ arg_list: arg_list COMMA expressao {
 
 %%
 
-int main() {
-    yyparse();
-    return 0;
-}
-
 int yylex() {
     return get_token();
 }
