@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-   /* for(i=0;i<28;i++)
+   /*for(i=0;i<28;i++)
         get_token();*/
     yyparse();
 

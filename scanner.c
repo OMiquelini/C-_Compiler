@@ -70,16 +70,21 @@ int DFA_func()
         } else if(c==EOF){
             estado_atual = tabela_transicoes[estado_atual][Space];
         } else {
-            printf("Lixo\n");
             estado_atual = LIXO;
         }
+        if (estado_atual==INICIAL)
+        {
+            i=0;
+        }
+        
         if (estado_atual == LIXO && estado_ant == Q7) {
             printf("Erro lexico na linha %d: esperado caractere '=' mas recebeu '%c'\n", buffer->line,c);
             return -1;
         } else if(estado_atual == LIXO){
             printf("Erro lexico na linha %d: caractere '%c' não aceito pela linguagem\n", buffer->line,c);
             return -1;
-        } else if ((estado_atual != FINAL) && (!isspace(c))) {
+        } else if ((estado_atual != FINAL && estado_atual != Q8 && estado_atual != Q9) && (!isspace(c))) {
+            printf("i: %d Ant: %d atual: %d char: %c\n",i,estado_ant,estado_atual, c);
             lex->lexema[i] = c;
             lex->linha = buffer->line;
             i++;

@@ -257,7 +257,7 @@ arg_list: arg_list COMMA expressao {
 %%
 
 int yylex() {
-    return get_token();
+    return (257+get_token());
 }
 
 void yyerror(const char *s) {
