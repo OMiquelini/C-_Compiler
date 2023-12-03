@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    fpo = fopen("output.txt","w");
+    fpo_tokens = fopen("output.txt","w");
     if(fpi == NULL)
     {
         printf("Error opening file\n");
@@ -46,6 +46,6 @@ int main(int argc, char *argv[])
     deallocate_buffer(buffer);
     deallocate_no(lex);
     fclose(fpi);
-    fclose(fpo);
+    fclose(fpo_tokens);
     return 0;
 }

@@ -1,10 +1,10 @@
-#include "scanner.h"
-
 /********************************************************************************************************************
  Desenvolvido em Outubro de 2023 por:
  Matheus Miquelini Andrello
  Tiago Miranda
 **********************************************************************************************************************/
+
+#include "scanner.h"
 
 int tabela_transicoes[N_ESTADOS][N_SIMBOBOLOS]={
     /*INICIAL*/ {ID, NUM, OP1, OP1, ATRIB, OP1, DIV, OP2, OP2, OP1, OP1, Q7, OP1, OP1, OP1, OP1, OP1, OP1, INICIAL},
@@ -141,7 +141,7 @@ int get_token()
     {
         reservada(lex, raiz_reservada);
         token_operadores(lex);
-        imprime_token(lex, fpo);
+        imprime_token(lex, fpo_tokens);
     }
     return lex->token;
 }

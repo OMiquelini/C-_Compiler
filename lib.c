@@ -1,7 +1,13 @@
+/********************************************************************************************************************
+ Desenvolvido em Outubro de 2023 por:
+ Matheus Miquelini Andrello
+ Tiago Miranda
+**********************************************************************************************************************/
+
 #include "lib.h"
 
 FILE *fpi;
-FILE *fpo;
+FILE *fpo_tokens;
 arvore_p raiz_reservada;
 p_no lex;
 p_buffer buffer;
@@ -27,7 +33,7 @@ void reservada()
 
 void imprime_token()
 {
-    fprintf(fpo,"linha: %d lexema: %s token: %d\n", lex->linha, lex->lexema, lex->token);
+    fprintf(fpo_tokens,"linha: %d lexema: %s token: %d\n", lex->linha, lex->lexema, lex->token);
     return;
 }
 
@@ -143,3 +149,49 @@ p_no allocate_no() {
     }   
     return novo_no;
 }
+
+//função para criar o nó da arvore AST
+AST_p create_node(char* label, int n_filhos, ...) {
+    AST_p node = (AST_p) malloc(sizeof(AST_t));
+    node->label = label;
+    node->n_filhos = n_filhos;
+    node->filhos = (AST_p*) malloc(n_filhos * sizeof(AST_p));
+
+    va_list args;
+    va_start(args, n_filhos);
+    for (int i = 0; i < n_filhos; i++) {
+        node->filhos[i] = va_arg(args, AST_p);
+    }
+    va_end(args);
+
+    return node;
+}
+
+void printTree(AST_p node, int level) {
+    if (node == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < level; i++) {
+        printf("  ");
+    }
+    printf("%s\n", node->label);
+
+    for (int i = 0; i < node->n_filhos; i++) {
+        printTree(node->filhos[i], level + 1);
+    }
+}
+
+void freeTree(AST_p node) {
+    if (node == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < node->n_filhos; i++) {
+        freeTree(node->filhos[i]);
+    }
+
+    free(node->filhos);
+    free(node);
+}
+
