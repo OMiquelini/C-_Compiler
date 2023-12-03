@@ -54,7 +54,7 @@ int DFA_func()
         } else if (c == ';') {
             estado_atual = tabela_transicoes[estado_atual][ponto_virgula];
         } else if (c == ',') {
-            estado_atual = tabela_transicoes[estado_atual][virgula];
+            estado_atual = tabela_transicoes[estado_atual][COMMA];
         } else if (c == '!') {
             estado_atual = tabela_transicoes[estado_atual][exclama];
         } else if (c == '>') {

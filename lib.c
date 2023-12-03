@@ -54,8 +54,8 @@ void token_operadores()
             else if(strcmp(lex->lexema,  "}")==0){lex->token=R_CHAVES;}
             else if(strcmp(lex->lexema,  "[")==0){lex->token=L_BRAC;}
             else if(strcmp(lex->lexema,  "]")==0){lex->token=R_BRAC;}
-            else if(strcmp(lex->lexema,  ",")==0){lex->token=VIRGULA;}
-            else if(strcmp(lex->lexema,  ";")==0){lex->token=COMMA;}
+            else if(strcmp(lex->lexema,  ",")==0){lex->token=COMMA;}
+            else if(strcmp(lex->lexema,  ";")==0){lex->token=SEMICOLON;}
             else if(strcmp(lex->lexema,  ">=")==0){lex->token=MAIOR_IGUAL;}
             else if(strcmp(lex->lexema,  "!=")==0){lex->token=DIFERENTE;}
         }

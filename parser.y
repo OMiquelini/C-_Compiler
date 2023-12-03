@@ -13,7 +13,7 @@
 }
 
 %token <int> NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
-%token <int> L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC VIRGULA COMMA
+%token <int> L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC COMMA SEMICOLON
 %token <int> MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IF INT ELSE VOID WHILE RETURN
 
 %type <node> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
@@ -42,10 +42,10 @@ declaracao: var_declaracao {
     $$ = $1;
 };
 
-var_declaracao: tipo_especificador IDENTIFICADOR COMMA {
+var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
     $$ = create_node("var_declaracao", 2, create_node($1, NULL, NULL), create_node($2, NULL, NULL));
 }
-| tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC COMMA {
+| tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
     $$ = create_node("var_declaracao", 3, create_node($1, NULL, NULL), create_node($2, NULL, NULL), create_node($4, NULL, NULL));
 };
 
@@ -67,7 +67,7 @@ params: param_list {
     $$ = create_node("params", 1, create_node($1, NULL, NULL));
 };
 
-param_list: param_list VIRGULA param {
+param_list: param_list COMMA param {
     $$ = create_node("param_list", 2, $1, $3);
 }  
 | param {
@@ -118,10 +118,10 @@ statement: expressao_decl {
     $$ = $1;
 };
 
-expressao_decl: expressao COMMA {
+expressao_decl: expressao SEMICOLON {
     $$ = create_node("expressao_decl", 1, $1);
 }
-| COMMA { 
+| SEMICOLON { 
     $$ = create_node("expressao_decl", 0);
 };
 
@@ -136,12 +136,12 @@ iteracao_decl: WHILE L_PAR expressao R_PAR statement {
     $$ = create_node("iteracao_decl", 2, $3, $5);
 };
 
-retorno_decl: RETURN COMMA {
+retorno_decl: RETURN SEMICOLON {
     $$ = create_node("retorno_decl", 0);
     printTree($$, 0);
     freeTree($$);
 }
-| RETURN expressao COMMA {
+| RETURN expressao SEMICOLON {
     $$ = create_node("retorno_decl", 1, $2);
     printTree($$, 0);
     freeTree($$);
@@ -195,7 +195,7 @@ relacional: MENOR {
     $$ = create_node("relacional", 1, create_node($1, NULL, NULL));
 }
 
-| COMMA { //fazer == aqui
+| SEMICOLON { //fazer == aqui
     $$ = create_node("relacional", 0);
 };
 
@@ -262,7 +262,7 @@ args: arg_list {
     $$ = create_node("args", 0);
 };
 
-arg_list: arg_list VIRGULA expressao {
+arg_list: arg_list COMMA expressao {
     $$ = create_node("arg_list", 2, $1, $3);
     printTree($$, 0);
     freeTree($$);
