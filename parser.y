@@ -43,12 +43,18 @@ declaracao: var_declaracao {
         };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
+        $$=$1;
+        $$->str = lex->lexema;
         }
         | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
+        $$=$1;
+        $$->str = lex->lexema;
+        $$->tipo_var = Array;
         };
 
 tipo_especificador: INT {
         //cria no stmt
+
         }
         | VOID {
         //cria no stmt
@@ -71,7 +77,7 @@ param_list: param_list COMMA param {
 
 param: tipo_especificador IDENTIFICADOR  {
         $$ = $1;
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
         | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
         };
@@ -115,13 +121,13 @@ expressao_decl: expressao SEMICOLON {
 
 selecao_decl: IF L_PAR expressao R_PAR statement {
         //cria no stmt
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         $$->filhos[0] = $3;
         $$->filhos[1] = $5;
         }
         | IF L_PAR expressao R_PAR statement ELSE statement {
         //cria no stmt
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         $$->filhos[0] = $3;
         $$->filhos[1] = $5;
         $$->filhos[2] = $7;
@@ -129,23 +135,23 @@ selecao_decl: IF L_PAR expressao R_PAR statement {
 
 iteracao_decl: WHILE L_PAR expressao R_PAR statement {
         //cria no stmt
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         $$->filhos[0] = $3;
         $$->filhos[1] = $5;
         };
 
 retorno_decl: RETURN SEMICOLON {
         //cria no stmt
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
         | RETURN expressao SEMICOLON {
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         $$->filhos[0] = $2;
         };
 
 expressao: var ATRIBUICAO expressao {
         //cria no exp
-        $$->label=lex->lexema;
+        $$->str=lex->lexema;
         $$->filhos[0]=$1;
         $$->filhos[1]=$3;
         }
@@ -155,16 +161,20 @@ expressao: var ATRIBUICAO expressao {
 
 var: IDENTIFICADOR {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;//strcpy
         }
-        | IDENTIFICADOR L_BRAC expressao R_BRAC {
+        | IDENTIFICADOR{
         //cria no exp
+        $$->str = lex->lexema;
+        } L_BRAC expressao R_BRAC {
+        $$=$2;
+        $$->filhos[0]=$4;
         };
 
 simples_expressao: soma_expressao relacional soma_expressao {
         $$ = $2;
-		$$->filhos[0] = $1;
-		$$->filhos[1] = $3;
+	$$->filhos[0] = $1;
+	$$->filhos[1] = $3;
         }
         | soma_expressao {
         $$ = $1;
@@ -172,31 +182,31 @@ simples_expressao: soma_expressao relacional soma_expressao {
 
 relacional: MENOR {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
         | MAIOR {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
 
         | MENOR_IGUAL {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
 
         | DIFERENTE {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
 
         | MAIOR_IGUAL {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
 
         | IGUAL {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         };
 
 soma_expressao: soma_expressao soma termo {
@@ -210,16 +220,18 @@ soma_expressao: soma_expressao soma termo {
 
 soma: MAIS {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
 
         | MENOS {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         };
 
 termo: termo mult fator {
-        $$->label = lex->lexema;
+        $$=$2;
+        $$->filhos[0]=$1;
+        $$->filhos[1]=$3;
         }
         | fator {
         $$ = $1;
@@ -227,11 +239,11 @@ termo: termo mult fator {
 
 mult: MULTIPLICACAO {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         }
         | DIVISAO {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         };
 
 fator: L_PAR expressao R_PAR {
@@ -247,11 +259,16 @@ fator: L_PAR expressao R_PAR {
 
         | NUMERO {
         //cria no exp
-        $$->label = lex->lexema;
+        $$->str = lex->lexema;
         };
 
-ativacao: IDENTIFICADOR L_PAR args R_PAR {
-//cria no exp
+ativacao: IDENTIFICADOR{
+        //cria no exp
+        $$->str = lex->lexema;
+        } L_PAR args R_PAR {
+        //cria no exp
+        $$=$2;
+        $$->filhos[0]=$4;
         };
 
 args: arg_list {
@@ -262,6 +279,7 @@ args: arg_list {
         };
 
 arg_list: arg_list COMMA expressao {
+        
         }
         | expressao {
         $$ = $1;
