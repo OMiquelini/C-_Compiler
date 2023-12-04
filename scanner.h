@@ -8,12 +8,15 @@
 #define SCANNER_H
 
 #include "lib.h"
+#include "parser.tab.h"
+
 
 int DFA_func();
 char get_next_char();
 int fill_buffer();
 void unget_char(char c);
 int get_token();
+void token_operadores();
 
 #endif
 

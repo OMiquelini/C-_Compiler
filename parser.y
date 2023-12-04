@@ -43,10 +43,10 @@ declaracao: var_declaracao {
 };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
-        $$ = $1;
-        $$->label = lex->lexema;
+
 }
 | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
+
 };
 
 tipo_especificador: INT {
@@ -71,7 +71,7 @@ param_list: param_list COMMA param {
 
 param: tipo_especificador IDENTIFICADOR  {
         $$ = $1;
-        $$->label = lex->lexema
+        $$->label = lex->lexema;
 }
 | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
 };

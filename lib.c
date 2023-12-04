@@ -37,33 +37,6 @@ void imprime_token()
     return;
 }
 
-void token_operadores()
-{
-        if(lex->token==3||lex->token==4)
-        {
-            if(strcmp(lex->lexema,  "+")==0){lex->token=MAIS;}
-            else if(strcmp(lex->lexema,  "-")==0){lex->token=MENOS;}
-            else if(strcmp(lex->lexema,  "<")==0){lex->token=MENOR;}
-            else if(strcmp(lex->lexema,  ">")==0){lex->token=MAIOR;}
-            else if(strcmp(lex->lexema,  "=")==0){lex->token=ATRIBUICAO;}
-            else if(strcmp(lex->lexema,  "*")==0){lex->token=MULTIPLICACAO;}
-            else if(strcmp(lex->lexema,  "/")==0){lex->token=DIVISAO;}
-            else if(strcmp(lex->lexema,  "(")==0){lex->token=L_PAR;}
-            else if(strcmp(lex->lexema,  ")")==0){lex->token=R_PAR;}
-            else if(strcmp(lex->lexema,  "{")==0){lex->token=L_CHAVES;}
-            else if(strcmp(lex->lexema,  "}")==0){lex->token=R_CHAVES;}
-            else if(strcmp(lex->lexema,  "[")==0){lex->token=L_BRAC;}
-            else if(strcmp(lex->lexema,  "]")==0){lex->token=R_BRAC;}
-            else if(strcmp(lex->lexema,  ",")==0){lex->token=COMMA;}
-            else if(strcmp(lex->lexema,  ";")==0){lex->token=SEMICOLON;}
-            else if(strcmp(lex->lexema,  ">=")==0){lex->token=MAIOR_IGUAL;}
-            else if(strcmp(lex->lexema,  "<=")==0){lex->token=MENOR_IGUAL;}
-            else if(strcmp(lex->lexema,  "==")==0){lex->token=IGUAL;}
-            else if(strcmp(lex->lexema,  "!=")==0){lex->token=DIFERENTE;}
-        }
-    return;
-}
-
 void corrige_tokens()
 {
     if(lex->token<=257)

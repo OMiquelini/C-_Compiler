@@ -22,7 +22,7 @@ enum Estados{INICIAL, NUM, ID, OP1, OP2, ATRIB, DIV, Q7, Q8, Q9, FINAL, LIXO};
 enum Simbolos{alfa, digito, menos, mais, igual, vezes, barra, maior, menor, ponto_virgula, comma, exclama,
               L_parentesis, R_parentesis, L_colchete, R_colchete, L_chaves, R_chaves, Space };//TODO: adicionar espaço em branco
 
-enum Tokens{NUMERO=258, IDENTIFICADOR, MAIS, MAIOR, ATRIBUICAO, DIVISAO, MENOS, MULTIPLICACAO, L_PAR, R_PAR, L_CHAVES, R_CHAVES, L_BRAC, R_BRAC, COMMA, SEMICOLON, MENOR, MAIOR_IGUAL, MENOR_IGUAL, DIFERENTE, IGUAL, IF,INT, ELSE, VOID, WHILE, RETURN};
+//enum Tokens{NUMERO=258, IDENTIFICADOR, MAIS, MAIOR, ATRIBUICAO, DIVISAO, MENOS, MULTIPLICACAO, L_PAR, R_PAR, L_CHAVES, R_CHAVES, L_BRAC, R_BRAC, COMMA, SEMICOLON, MENOR, MAIOR_IGUAL, MENOR_IGUAL, DIFERENTE, IGUAL, IF,INT, ELSE, VOID, WHILE, RETURN};
 
 //struct do nó da arvore binária das palavras reservadas
 typedef struct arvore_t
@@ -54,11 +54,29 @@ typedef struct no{
     int ascii;
 }t_no;
 
+typedef enum {STMT, EXP, DECL}tipoNo;
+
+typedef enum {Var, Func, Param}tipoDecl;
+
+typedef enum {Void, Int, Array}tipoVar;
+
+typedef enum {Op, Const, Id, array, Ativ}tipoExp;
+
+#define MAX_FILHOS 3
+
 //struct da arvore do parser
 typedef struct AST_t {
-    char* label;
-    struct AST_t** filhos;
-    int n_filhos;
+    struct AST_t* filhos[MAX_FILHOS];
+    struct AST_t* irmaos;
+    int linha; //linha que apareceu
+    char* str; //token ou label
+    int n_filhos; //numero de filhos
+    int tamanho; //caso seja array, temos que salvar o tamanho
+
+    tipoNo tipo_no; //tipo do no, podendo ser statement, expression ou declaration
+    tipoDecl tipo_decl; //tipo da declaracao, podendo ser variavel, funcao ou parametro
+    tipoVar tipo_var; //tipo da variavel, podendo ser void, int ou array
+    tipoExp tipo_exp; //tipo da expressao, podendo ser operador, constante, id array ou ativador 
 } AST_t;
 
 typedef AST_t *AST_p;
@@ -70,7 +88,6 @@ int soma_ascii(char *str);
 int busca_no(arvore_p raiz, int valor, char *str);
 void reservada();
 void imprime_token();
-void token_operadores();
 void corrige_tokens();
 arvore_p criar_no(int valor, char *str, int token);
 arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token);
