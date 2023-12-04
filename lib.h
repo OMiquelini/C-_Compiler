@@ -47,12 +47,22 @@ typedef struct no{
 
 typedef t_no *p_no;
 
+typedef struct TreeNode {
+    char* label;
+    struct TreeNode** children;
+    int n_children;
+} TreeNode;
+
 int soma_ascii(char *str);
 int busca_no(arvore_p raiz, int valor, char *str);
 
 void reservada();
 void imprime_token();
 void token_operadores();
+
+void print_tree(TreeNode* root, int level);
+TreeNode* create_node(char* label, int n_children, ...);
+void free_tree(TreeNode* root);
 
 arvore_p criar_no(int valor, char *str, int token);
 arvore_p inserir_no(arvore_p raiz, int valor, char *str, int token);

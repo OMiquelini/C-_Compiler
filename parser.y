@@ -4,56 +4,10 @@
 #include "stdio.h"
 #include "stdlib.h"
 
-typedef struct TreeNode {
-    char* label;
-    struct TreeNode** children;
-    int n_children;
-} TreeNode;
+#define YYSTYPE TreeNode*
 
-TreeNode* create_node(char* label, int n_children, ...) {
-    TreeNode* node = (TreeNode*) malloc(sizeof(TreeNode));
-    node->label = label;
-    node->n_children = n_children;
-    node->children = (TreeNode**) malloc(n_children * sizeof(TreeNode*));
-
-    va_list args;
-    va_start(args, n_children);
-    for (int i = 0; i < n_children; i++) {
-        node->children[i] = va_arg(args, TreeNode*);
-    }
-    va_end(args);
-
-    return node;
-}
-
-void printTree(TreeNode* node, int level) {
-    if (node == NULL) {
-        return;
-    }
-
-    for (int i = 0; i < level; i++) {
-        printf("  ");
-    }
-    printf("%s\n", node->label);
-
-    for (int i = 0; i < node->n_children; i++) {
-        printTree(node->children[i], level + 1);
-    }
-}
-
-void freeTree(TreeNode* node) {
-    if (node == NULL) {
-        return;
-    }
-
-    for (int i = 0; i < node->n_children; i++) {
-        freeTree(node->children[i]);
-    }
-
-    free(node->children);
-    free(node);
-}
-
+int yylex(void);
+void yyerror(const char *s);
 
 %}
 
@@ -63,9 +17,9 @@ void freeTree(TreeNode* node) {
     p_no token_info;
 }
 
-%token NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
-%token L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC VIRGULA COMMA
-%token MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IF INT ELSE VOID WHILE RETURN
+%token <int> NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO
+%token <int> L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC VIRGULA COMMA
+%token <int> MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IF INT ELSE VOID WHILE RETURN
 
 %type <node> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
 
@@ -212,7 +166,7 @@ var: IDENTIFICADOR COMMA {
     printTree($$, 0);
     freeTree($$);
 }
-| IDENTIFICADOR L_BRAC expressao R_BRAC COMMA {
+| IDENTIFICADOR L_BRAC ex($$,pressao R_BRAC COMMA {
     $$ = create_node("ArrayVar", 2, create_node($1, NULL, NULL), $3);
     printTree($$, 0);
     freeTree($$);
@@ -326,13 +280,9 @@ arg_list: arg_list COMMA expressao COMMA {
 
 %%
 
-int main() {
-    yyparse();
-    return 0;
-}
-
-void yylex() {
-    yylval.token_info = get_token();
+int yylex(void) {
+    int token = get_token();
+    return token;
 }
 
 void yyerror(const char *s) {

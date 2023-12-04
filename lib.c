@@ -1,4 +1,6 @@
 #include "lib.h"
+#include "stdlib.h"
+#include <cstdarg>
 
 FILE *fpi;
 FILE *fpo;
@@ -142,4 +144,48 @@ p_no allocate_no() {
         novo_no->ascii = 0;
     }   
     return novo_no;
+}
+
+TreeNode* create_node(char* label, int n_children, ...) {
+    TreeNode* node = (TreeNode*) malloc(sizeof(TreeNode));
+    node->label = label;
+    node->n_children = n_children;
+    node->children = (TreeNode**) malloc(n_children * sizeof(TreeNode*));
+
+    va_list args;
+    va_start(args, n_children);
+    for (int i = 0; i < n_children; i++) {
+        node->children[i] = va_arg(args, TreeNode*);
+    }
+    va_end(args);
+
+    return node;
+}
+
+void printTree(TreeNode* node, int level) {
+    if (node == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < level; i++) {
+        printf("  ");
+    }
+    printf("%s\n", node->label);
+
+    for (int i = 0; i < node->n_children; i++) {
+        printTree(node->children[i], level + 1);
+    }
+}
+
+void freeTree(TreeNode* node) {
+    if (node == NULL) {
+        return;
+    }
+
+    for (int i = 0; i < node->n_children; i++) {
+        freeTree(node->children[i]);
+    }
+
+    free(node->children);
+    free(node);
 }
