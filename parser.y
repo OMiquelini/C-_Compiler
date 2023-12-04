@@ -21,8 +21,6 @@ void yyerror(const char *s);
 
 %token NUMERO IDENTIFICADOR MAIS MAIOR ATRIBUICAO DIVISAO MENOS MULTIPLICACAO L_PAR R_PAR L_CHAVES R_CHAVES L_BRAC R_BRAC COMMA SEMICOLON MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IGUAL IF INT ELSE VOID WHILE RETURN
 
-%type <AST_p> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
-
 %start programa
 
 %%
@@ -35,14 +33,14 @@ declaracao_lista: declaracao_lista declaracao {
     
 } 
 | declaracao { 
-    
+        $$ = $1;
 };
 
 declaracao: var_declaracao {
-    
+        $$ = $1;
 }    
 | fun_declaracao {
-    
+        $$ = $1;  
 };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
@@ -52,6 +50,7 @@ var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
 };
 
 tipo_especificador: INT {
+
 }
 | VOID {
 };
@@ -60,6 +59,7 @@ fun_declaracao: tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_dec
 };
 
 params: param_list {
+        $$ = $1;
 } 
 | VOID {
 };
@@ -88,22 +88,26 @@ statement_list: statement_list statement {
 };
 
 statement: expressao_decl {
+        $$ = $1;
 }
 | composto_decl {
+        $$ = $1;
 }
-
 | selecao_decl {
+        $$ = $1;
 }
-
 | iteracao_decl {
+        $$ = $1;
 }
-
 | retorno_decl {
+        $$ = $1;
 };
 
 expressao_decl: expressao SEMICOLON {
+        $$ = $1;
 }
 | SEMICOLON { 
+        $$ = NULL;
 };
 
 selecao_decl: IF L_PAR expressao R_PAR statement {
@@ -187,13 +191,16 @@ ativacao: IDENTIFICADOR L_PAR args R_PAR {
 };
 
 args: arg_list {
+        $$ = $1;
 }
 | /* vazio */ {
+        $$ = NULL;
 };
 
 arg_list: arg_list COMMA expressao {
 }
 | expressao {
+        $$ = $1;
 };
 
 %%

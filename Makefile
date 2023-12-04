@@ -3,7 +3,7 @@ CFLAGS = -Wall -g
 
 all: compilador
 
-compilador: lib.o scanner.o main.o
+compilador: lib.o scanner.o parser.o main.o
 	$(CC) $(CFLAGS) $^ -o $@
 
 lib.o: lib.c lib.h
