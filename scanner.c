@@ -84,7 +84,6 @@ int DFA_func()
             printf("Erro lexico na linha %d: caractere '%c' não aceito pela linguagem\n", buffer->line,c);
             return -1;
         } else if ((estado_atual != FINAL && estado_atual != Q8 && estado_atual != Q9) && (!isspace(c))) {
-            printf("i: %d Ant: %d atual: %d char: %c\n",i,estado_ant,estado_atual, c);
             lex->lexema[i] = c;
             lex->linha = buffer->line;
             i++;
