@@ -5,7 +5,6 @@
 **********************************************************************************************************************/
 
 %{
-#include "lib.h"
 #include "scanner.h"
 #include "stdio.h"
 #include "stdlib.h"
@@ -44,7 +43,8 @@ declaracao: var_declaracao {
 };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
-    
+        $$ = $1;
+        $$->label = lex->lexema;
 }
 | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
 };
@@ -70,6 +70,8 @@ param_list: param_list COMMA param {
 };
 
 param: tipo_especificador IDENTIFICADOR  {
+        $$ = $1;
+        $$->label = lex->lexema
 }
 | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
 };
@@ -111,80 +113,122 @@ expressao_decl: expressao SEMICOLON {
 };
 
 selecao_decl: IF L_PAR expressao R_PAR statement {
+        $$->label = lex->lexema;
+        $$->filhos[0] = $3;
+        $$->filhos[1] = $5;
 }
 | IF L_PAR expressao R_PAR statement ELSE statement {
+        $$->label = lex->lexema;
+        $$->filhos[0] = $3;
+        $$->filhos[1] = $5;
+        $$->filhos[2] = $7;
 };
 
 iteracao_decl: WHILE L_PAR expressao R_PAR statement {
+        $$->label = lex->lexema;
+        $$->filhos[0] = $3;
+        $$->filhos[1] = $5;
 };
 
 retorno_decl: RETURN SEMICOLON {
+        $$->label = lex->lexema;
 }
 | RETURN expressao SEMICOLON {
+        $$->label = lex->lexema;
+        $$->filhos[0] = $3;
 };
 
 expressao: var ATRIBUICAO expressao {
+        $$->label=lex->lexema;
+        $$->filhos[0]=$1;
+        $$->filhos[1]=$3;
 }
 | simples_expressao {
+        $$=$1;
 };
 
 var: IDENTIFICADOR {
+        $$->label = lex->lexema;
 }
 | IDENTIFICADOR L_BRAC expressao R_BRAC {
 };
 
 simples_expressao: soma_expressao relacional soma_expressao {
+        $$ = $2;
+		$$->filhos[0] = $1;
+		$$->filhos[1] = $3;
 }
 | soma_expressao {
+        $$ = $1;
 };
 
 relacional: MENOR {
+        $$->label = lex->lexema;
 }
 | MAIOR {
+        $$->label = lex->lexema;
 }
 
 | MENOR_IGUAL {
+        $$->label = lex->lexema;
 }
 
 | DIFERENTE {
+        $$->label = lex->lexema;
 }
 
 | MAIOR_IGUAL {
+        $$->label = lex->lexema;
 }
 
-| IGUAL { //fazer == aqui
+| IGUAL {
+        $$->label = lex->lexema;
 };
 
 soma_expressao: soma_expressao soma termo {
+        $$ = $2;
+		$$->filhos[0] = $1;
+		$$->filhos[1] = $3;
 }
 | termo {
+        $$=$1;
 };
 
 soma: MAIS {
+        $$->label = lex->lexema;
 }
 
 | MENOS {
+        $$->label = lex->lexema;
 };
 
 termo: termo mult fator {
+        $$->label = lex->lexema;
 }
 | fator {
+        $$ = $1;
 };
 
 mult: MULTIPLICACAO {
+        $$->label = lex->lexema;
 }
 | DIVISAO {
+        $$->label = lex->lexema;
 };
 
 fator: L_PAR expressao R_PAR {
+        $$ = $2;
 }
 | var {
+        $$ = $1;
 }
 
 | ativacao {
+        $$ = $1;
 }
 
 | NUMERO {
+        $$->label = lex->lexema;
 };
 
 ativacao: IDENTIFICADOR L_PAR args R_PAR {

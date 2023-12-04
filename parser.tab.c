@@ -70,7 +70,6 @@
 /* Line 189 of yacc.c  */
 #line 7 "parser.y"
 
-#include "lib.h"
 #include "scanner.h"
 #include "stdio.h"
 #include "stdlib.h"
@@ -85,7 +84,7 @@ void yyerror(const char *s);
 
 
 /* Line 189 of yacc.c  */
-#line 89 "parser.tab.c"
+#line 88 "parser.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -156,7 +155,7 @@ typedef int YYSTYPE;
 
 
 /* Line 264 of yacc.c  */
-#line 160 "parser.tab.c"
+#line 159 "parser.tab.c"
 
 #ifdef short
 # undef short
@@ -464,13 +463,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    28,    28,    32,    35,    39,    42,    46,    49,    52,
-      55,    58,    61,    64,    67,    69,    72,    74,    77,    80,
-      82,    85,    87,    90,    93,    96,    99,   102,   106,   109,
-     113,   115,   118,   121,   123,   126,   128,   131,   133,   136,
-     138,   141,   143,   146,   149,   152,   155,   158,   160,   163,
-     166,   169,   171,   174,   176,   179,   181,   184,   187,   190,
-     193,   196,   200,   202
+       0,    27,    27,    31,    34,    38,    41,    45,    49,    52,
+      55,    58,    61,    64,    67,    69,    72,    76,    79,    82,
+      84,    87,    89,    92,    95,    98,   101,   104,   108,   111,
+     115,   120,   127,   133,   136,   141,   146,   150,   153,   156,
+     161,   165,   168,   172,   176,   180,   184,   188,   193,   197,
+     201,   205,   208,   212,   215,   219,   222,   226,   230,   234,
+     237,   240,   244,   246
 };
 #endif
 
@@ -1443,7 +1442,7 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 28 "parser.y"
+#line 27 "parser.y"
     {
     raiz = (yyvsp[(1) - (1)]);
 ;}
@@ -1452,7 +1451,7 @@ yyreduce:
   case 3:
 
 /* Line 1455 of yacc.c  */
-#line 32 "parser.y"
+#line 31 "parser.y"
     {
     
 ;}
@@ -1461,7 +1460,7 @@ yyreduce:
   case 4:
 
 /* Line 1455 of yacc.c  */
-#line 35 "parser.y"
+#line 34 "parser.y"
     { 
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1470,7 +1469,7 @@ yyreduce:
   case 5:
 
 /* Line 1455 of yacc.c  */
-#line 39 "parser.y"
+#line 38 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1479,7 +1478,7 @@ yyreduce:
   case 6:
 
 /* Line 1455 of yacc.c  */
-#line 42 "parser.y"
+#line 41 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);  
 ;}
@@ -1488,9 +1487,10 @@ yyreduce:
   case 7:
 
 /* Line 1455 of yacc.c  */
-#line 46 "parser.y"
+#line 45 "parser.y"
     {
-    
+        (yyval) = (yyvsp[(1) - (3)]);
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
@@ -1565,13 +1565,15 @@ yyreduce:
 /* Line 1455 of yacc.c  */
 #line 72 "parser.y"
     {
+        (yyval) = (yyvsp[(1) - (2)]);
+        (yyval)->label = lex->lexema
 ;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 74 "parser.y"
+#line 76 "parser.y"
     {
 ;}
     break;
@@ -1579,7 +1581,7 @@ yyreduce:
   case 18:
 
 /* Line 1455 of yacc.c  */
-#line 77 "parser.y"
+#line 79 "parser.y"
     {
 ;}
     break;
@@ -1587,7 +1589,7 @@ yyreduce:
   case 19:
 
 /* Line 1455 of yacc.c  */
-#line 80 "parser.y"
+#line 82 "parser.y"
     {
 ;}
     break;
@@ -1595,7 +1597,7 @@ yyreduce:
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 82 "parser.y"
+#line 84 "parser.y"
     {
 ;}
     break;
@@ -1603,7 +1605,7 @@ yyreduce:
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 85 "parser.y"
+#line 87 "parser.y"
     {
 ;}
     break;
@@ -1611,7 +1613,7 @@ yyreduce:
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 87 "parser.y"
+#line 89 "parser.y"
     {
 ;}
     break;
@@ -1619,7 +1621,7 @@ yyreduce:
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 90 "parser.y"
+#line 92 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1628,7 +1630,7 @@ yyreduce:
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 93 "parser.y"
+#line 95 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1637,7 +1639,7 @@ yyreduce:
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 96 "parser.y"
+#line 98 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1646,7 +1648,7 @@ yyreduce:
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 99 "parser.y"
+#line 101 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1655,7 +1657,7 @@ yyreduce:
   case 27:
 
 /* Line 1455 of yacc.c  */
-#line 102 "parser.y"
+#line 104 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1664,7 +1666,7 @@ yyreduce:
   case 28:
 
 /* Line 1455 of yacc.c  */
-#line 106 "parser.y"
+#line 108 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (2)]);
 ;}
@@ -1673,7 +1675,7 @@ yyreduce:
   case 29:
 
 /* Line 1455 of yacc.c  */
-#line 109 "parser.y"
+#line 111 "parser.y"
     { 
         (yyval) = NULL;
 ;}
@@ -1682,71 +1684,89 @@ yyreduce:
   case 30:
 
 /* Line 1455 of yacc.c  */
-#line 113 "parser.y"
+#line 115 "parser.y"
     {
+        (yyval)->label = lex->lexema;
+        (yyval)->filhos[0] = (yyvsp[(3) - (5)]);
+        (yyval)->filhos[1] = (yyvsp[(5) - (5)]);
 ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 115 "parser.y"
+#line 120 "parser.y"
     {
+        (yyval)->label = lex->lexema;
+        (yyval)->filhos[0] = (yyvsp[(3) - (7)]);
+        (yyval)->filhos[1] = (yyvsp[(5) - (7)]);
+        (yyval)->filhos[2] = (yyvsp[(7) - (7)]);
 ;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 118 "parser.y"
+#line 127 "parser.y"
     {
+        (yyval)->label = lex->lexema;
+        (yyval)->filhos[0] = (yyvsp[(3) - (5)]);
+        (yyval)->filhos[1] = (yyvsp[(5) - (5)]);
 ;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 121 "parser.y"
+#line 133 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 123 "parser.y"
+#line 136 "parser.y"
     {
+        (yyval)->label = lex->lexema;
+        (yyval)->filhos[0] = (yyvsp[(3) - (3)]);
 ;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 126 "parser.y"
+#line 141 "parser.y"
     {
+        (yyval)->label=lex->lexema;
+        (yyval)->filhos[0]=(yyvsp[(1) - (3)]);
+        (yyval)->filhos[1]=(yyvsp[(3) - (3)]);
 ;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 128 "parser.y"
+#line 146 "parser.y"
     {
+        (yyval)=(yyvsp[(1) - (1)]);
 ;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 131 "parser.y"
+#line 150 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 133 "parser.y"
+#line 153 "parser.y"
     {
 ;}
     break;
@@ -1754,167 +1774,191 @@ yyreduce:
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 136 "parser.y"
+#line 156 "parser.y"
     {
+        (yyval) = (yyvsp[(2) - (3)]);
+		(yyval)->filhos[0] = (yyvsp[(1) - (3)]);
+		(yyval)->filhos[1] = (yyvsp[(3) - (3)]);
 ;}
     break;
 
   case 40:
 
 /* Line 1455 of yacc.c  */
-#line 138 "parser.y"
+#line 161 "parser.y"
     {
+        (yyval) = (yyvsp[(1) - (1)]);
 ;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 141 "parser.y"
+#line 165 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 143 "parser.y"
+#line 168 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 43:
 
 /* Line 1455 of yacc.c  */
-#line 146 "parser.y"
+#line 172 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 44:
 
 /* Line 1455 of yacc.c  */
-#line 149 "parser.y"
+#line 176 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 45:
 
 /* Line 1455 of yacc.c  */
-#line 152 "parser.y"
+#line 180 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 155 "parser.y"
-    { //fazer == aqui
+#line 184 "parser.y"
+    {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 158 "parser.y"
+#line 188 "parser.y"
     {
+        (yyval) = (yyvsp[(2) - (3)]);
+		(yyval)->filhos[0] = (yyvsp[(1) - (3)]);
+		(yyval)->filhos[1] = (yyvsp[(3) - (3)]);
 ;}
     break;
 
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 160 "parser.y"
+#line 193 "parser.y"
     {
+        (yyval)=(yyvsp[(1) - (1)]);
 ;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 163 "parser.y"
+#line 197 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 166 "parser.y"
+#line 201 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 169 "parser.y"
+#line 205 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 171 "parser.y"
+#line 208 "parser.y"
     {
+        (yyval) = (yyvsp[(1) - (1)]);
 ;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 174 "parser.y"
+#line 212 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 176 "parser.y"
+#line 215 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 55:
 
 /* Line 1455 of yacc.c  */
-#line 179 "parser.y"
+#line 219 "parser.y"
     {
+        (yyval) = (yyvsp[(2) - (3)]);
 ;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 181 "parser.y"
+#line 222 "parser.y"
     {
+        (yyval) = (yyvsp[(1) - (1)]);
 ;}
     break;
 
   case 57:
 
 /* Line 1455 of yacc.c  */
-#line 184 "parser.y"
+#line 226 "parser.y"
     {
+        (yyval) = (yyvsp[(1) - (1)]);
 ;}
     break;
 
   case 58:
 
 /* Line 1455 of yacc.c  */
-#line 187 "parser.y"
+#line 230 "parser.y"
     {
+        (yyval)->label = lex->lexema;
 ;}
     break;
 
   case 59:
 
 /* Line 1455 of yacc.c  */
-#line 190 "parser.y"
+#line 234 "parser.y"
     {
 ;}
     break;
@@ -1922,7 +1966,7 @@ yyreduce:
   case 60:
 
 /* Line 1455 of yacc.c  */
-#line 193 "parser.y"
+#line 237 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1931,7 +1975,7 @@ yyreduce:
   case 61:
 
 /* Line 1455 of yacc.c  */
-#line 196 "parser.y"
+#line 240 "parser.y"
     {
         (yyval) = NULL;
 ;}
@@ -1940,7 +1984,7 @@ yyreduce:
   case 62:
 
 /* Line 1455 of yacc.c  */
-#line 200 "parser.y"
+#line 244 "parser.y"
     {
 ;}
     break;
@@ -1948,7 +1992,7 @@ yyreduce:
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 202 "parser.y"
+#line 246 "parser.y"
     {
         (yyval) = (yyvsp[(1) - (1)]);
 ;}
@@ -1957,7 +2001,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 1961 "parser.tab.c"
+#line 2005 "parser.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -2169,7 +2213,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 206 "parser.y"
+#line 250 "parser.y"
 
 
 int yylex() {
