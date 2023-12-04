@@ -133,45 +133,6 @@ p_no allocate_no() {
     return novo_no;
 }
 
-//função para criar o nó da arvore AST
-AST_p create_node(char* label, int n_filhos, ...) {
-    AST_p node = (AST_p)malloc(sizeof(AST_t));
-    node->label = strdup(label);
-    node->n_filhos = n_filhos;
-
-    if (n_filhos > 0) {
-        node->filhos = (AST_p*)malloc(n_filhos * sizeof(AST_p));
-
-        va_list args;
-        va_start(args, n_filhos);
-        for (int i = 0; i < n_filhos; i++) {
-            node->filhos[i] = va_arg(args, AST_p);
-        }
-        va_end(args);
-    } else {
-        node->filhos = NULL;
-    }
-
-    return node;
-}
-
-
-
-void printTree(AST_p node, int level) {
-    if (node == NULL) {
-        return;
-    }
-
-    for (int i = 0; i < level; i++) {
-        printf("  ");
-    }
-    printf("%s\n", node->label);
-
-    for (int i = 0; i < node->n_filhos; i++) {
-        printTree(node->filhos[i], level + 1);
-    }
-}
-
 void freeTree(AST_p node) {
     if (node == NULL) {
         return;
@@ -185,3 +146,44 @@ void freeTree(AST_p node) {
     free(node);
 }
 
+AST_p cria_exp(tipoExp tipo){
+    AST_p aux = (AST_p)malloc(sizeof(AST_t));
+    int i;
+    for(i = 0; i<MAX_FILHOS; i++)
+    {
+        aux->filhos[i] = NULL;
+    }
+    aux->irmaos = NULL;
+    aux->n_filhos = 0;
+    aux->tipo_no = EXP;
+    aux->tipo_exp = tipo;
+    return aux;
+}
+
+AST_p cria_stmt(tipoStmt tipo){
+    AST_p aux = (AST_p)malloc(sizeof(AST_t));
+    int i;
+    for(i = 0; i<MAX_FILHOS; i++)
+    {
+        aux->filhos[i] = NULL;
+    }
+    aux->irmaos = NULL;
+    aux->n_filhos = 0;
+    aux->tipo_no = STMT;
+    aux->tipo_stmt = tipo;
+    return aux;
+}
+
+AST_p cria_decl(tipoDecl tipo){
+    AST_p aux = (AST_p)malloc(sizeof(AST_t));
+    int i;
+    for(i = 0; i<MAX_FILHOS; i++)
+    {
+        aux->filhos[i] = NULL;
+    }
+    aux->irmaos=NULL;
+    aux->n_filhos = 0;
+    aux->tipo_no = DECL;
+    aux->tipo_decl = tipo;
+    return aux;
+}

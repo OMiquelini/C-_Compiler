@@ -25,227 +25,247 @@ void yyerror(const char *s);
 %%
 
 programa: declaracao_lista {
-    raiz = $1;
-};
+        raiz = $1;
+        };
 
 declaracao_lista: declaracao_lista declaracao {
     
-} 
-| declaracao { 
+        } 
+        | declaracao { 
         $$ = $1;
-};
+        };
 
 declaracao: var_declaracao {
         $$ = $1;
-}    
-| fun_declaracao {
+        }    
+        | fun_declaracao {
         $$ = $1;  
-};
+        };
 
 var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
-
-}
-| tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
-
-};
+        }
+        | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
+        };
 
 tipo_especificador: INT {
-
-}
-| VOID {
-};
+        //cria no stmt
+        }
+        | VOID {
+        //cria no stmt
+        };
 
 fun_declaracao: tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_decl {
-};
+        };
 
 params: param_list {
         $$ = $1;
-} 
-| VOID {
-};
+        } 
+        | VOID {
+        //cria no decl
+        };
 
 param_list: param_list COMMA param {
-}  
-| param {
-};
+        }  
+        | param {
+        };
 
 param: tipo_especificador IDENTIFICADOR  {
         $$ = $1;
         $$->label = lex->lexema;
-}
-| tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
-};
+        }
+        | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
+        };
 
 composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
-};
+        //cria no stmt
+        };
 
 local_declaracoes: local_declaracoes var_declaracao {
-}
-| /* vazio */ {
-};
+        }
+        | /* vazio */ {
+        };
 
 statement_list: statement_list statement {
-}
-| /* vazio */ {
-};
+        }
+        | /* vazio */ {
+        };
 
 statement: expressao_decl {
         $$ = $1;
-}
-| composto_decl {
+        }
+        | composto_decl {
         $$ = $1;
-}
-| selecao_decl {
+        }
+        | selecao_decl {
         $$ = $1;
-}
-| iteracao_decl {
+        }
+        | iteracao_decl {
         $$ = $1;
-}
-| retorno_decl {
+        }
+        | retorno_decl {
         $$ = $1;
-};
+        };
 
 expressao_decl: expressao SEMICOLON {
         $$ = $1;
-}
-| SEMICOLON { 
+        }
+        | SEMICOLON { 
         $$ = NULL;
-};
+        };
 
 selecao_decl: IF L_PAR expressao R_PAR statement {
+        //cria no stmt
         $$->label = lex->lexema;
         $$->filhos[0] = $3;
         $$->filhos[1] = $5;
-}
-| IF L_PAR expressao R_PAR statement ELSE statement {
+        }
+        | IF L_PAR expressao R_PAR statement ELSE statement {
+        //cria no stmt
         $$->label = lex->lexema;
         $$->filhos[0] = $3;
         $$->filhos[1] = $5;
         $$->filhos[2] = $7;
-};
+        };
 
 iteracao_decl: WHILE L_PAR expressao R_PAR statement {
+        //cria no stmt
         $$->label = lex->lexema;
         $$->filhos[0] = $3;
         $$->filhos[1] = $5;
-};
+        };
 
 retorno_decl: RETURN SEMICOLON {
+        //cria no stmt
         $$->label = lex->lexema;
-}
-| RETURN expressao SEMICOLON {
+        }
+        | RETURN expressao SEMICOLON {
         $$->label = lex->lexema;
-        $$->filhos[0] = $3;
-};
+        $$->filhos[0] = $2;
+        };
 
 expressao: var ATRIBUICAO expressao {
+        //cria no exp
         $$->label=lex->lexema;
         $$->filhos[0]=$1;
         $$->filhos[1]=$3;
-}
-| simples_expressao {
+        }
+        | simples_expressao {
         $$=$1;
-};
+        };
 
 var: IDENTIFICADOR {
+        //cria no exp
         $$->label = lex->lexema;
-}
-| IDENTIFICADOR L_BRAC expressao R_BRAC {
-};
+        }
+        | IDENTIFICADOR L_BRAC expressao R_BRAC {
+        //cria no exp
+        };
 
 simples_expressao: soma_expressao relacional soma_expressao {
         $$ = $2;
 		$$->filhos[0] = $1;
 		$$->filhos[1] = $3;
-}
-| soma_expressao {
+        }
+        | soma_expressao {
         $$ = $1;
-};
+        };
 
 relacional: MENOR {
+        //cria no exp
         $$->label = lex->lexema;
-}
-| MAIOR {
+        }
+        | MAIOR {
+        //cria no exp
         $$->label = lex->lexema;
-}
+        }
 
-| MENOR_IGUAL {
+        | MENOR_IGUAL {
+        //cria no exp
         $$->label = lex->lexema;
-}
+        }
 
-| DIFERENTE {
+        | DIFERENTE {
+        //cria no exp
         $$->label = lex->lexema;
-}
+        }
 
-| MAIOR_IGUAL {
+        | MAIOR_IGUAL {
+        //cria no exp
         $$->label = lex->lexema;
-}
+        }
 
-| IGUAL {
+        | IGUAL {
+        //cria no exp
         $$->label = lex->lexema;
-};
+        };
 
 soma_expressao: soma_expressao soma termo {
         $$ = $2;
-		$$->filhos[0] = $1;
-		$$->filhos[1] = $3;
-}
-| termo {
+	$$->filhos[0] = $1;
+	$$->filhos[1] = $3;
+        }
+        | termo {
         $$=$1;
-};
+        };
 
 soma: MAIS {
+        //cria no exp
         $$->label = lex->lexema;
-}
+        }
 
-| MENOS {
+        | MENOS {
+        //cria no exp
         $$->label = lex->lexema;
-};
+        };
 
 termo: termo mult fator {
         $$->label = lex->lexema;
-}
-| fator {
+        }
+        | fator {
         $$ = $1;
-};
+        };
 
 mult: MULTIPLICACAO {
+        //cria no exp
         $$->label = lex->lexema;
-}
-| DIVISAO {
+        }
+        | DIVISAO {
+        //cria no exp
         $$->label = lex->lexema;
-};
+        };
 
 fator: L_PAR expressao R_PAR {
         $$ = $2;
-}
-| var {
+        }
+        | var {
         $$ = $1;
-}
+        }
 
-| ativacao {
+        | ativacao {
         $$ = $1;
-}
+        }
 
-| NUMERO {
+        | NUMERO {
+        //cria no exp
         $$->label = lex->lexema;
-};
+        };
 
 ativacao: IDENTIFICADOR L_PAR args R_PAR {
-};
+//cria no exp
+        };
 
 args: arg_list {
         $$ = $1;
-}
-| /* vazio */ {
+        }
+        | /* vazio */ {
         $$ = NULL;
-};
+        };
 
 arg_list: arg_list COMMA expressao {
-}
-| expressao {
+        }
+        | expressao {
         $$ = $1;
-};
+        };
 
 %%
 

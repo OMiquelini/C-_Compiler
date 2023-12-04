@@ -58,6 +58,8 @@ typedef enum {STMT, EXP, DECL}tipoNo;
 
 typedef enum {Var, Func, Param}tipoDecl;
 
+typedef enum {Comp, If, While, Return}tipoStmt;
+
 typedef enum {Void, Int, Array}tipoVar;
 
 typedef enum {Op, Const, Id, array, Ativ}tipoExp;
@@ -65,7 +67,7 @@ typedef enum {Op, Const, Id, array, Ativ}tipoExp;
 #define MAX_FILHOS 3
 
 //struct da arvore do parser
-typedef struct AST_t {
+typedef struct AST {
     struct AST_t* filhos[MAX_FILHOS];
     struct AST_t* irmaos;
     int linha; //linha que apareceu
@@ -77,6 +79,7 @@ typedef struct AST_t {
     tipoDecl tipo_decl; //tipo da declaracao, podendo ser variavel, funcao ou parametro
     tipoVar tipo_var; //tipo da variavel, podendo ser void, int ou array
     tipoExp tipo_exp; //tipo da expressao, podendo ser operador, constante, id array ou ativador 
+    tipoStmt tipo_stmt; //tipo do statement, podendo ser comp, if, while ou return
 } AST_t;
 
 typedef AST_t *AST_p;
@@ -97,9 +100,12 @@ void deallocate_buffer(p_buffer b);
 void deallocate_no(p_no no);
 
 //funções do parser
-AST_p create_node(char* label, int n_filhos, ...);
-void printTree(AST_p node, int level);
 void freeTree(AST_p node);
+
+AST_p cria_exp(tipoExp tipo);
+AST_p cria_stmt(tipoStmt tipo);
+AST_p cria_decl(tipoDecl tipo);
+
 
 extern FILE *fpi;
 extern FILE *fpo_tokens;
