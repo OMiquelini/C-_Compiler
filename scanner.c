@@ -54,7 +54,7 @@ int DFA_func()
         } else if (c == ';') {
             estado_atual = tabela_transicoes[estado_atual][ponto_virgula];
         } else if (c == ',') {
-            estado_atual = tabela_transicoes[estado_atual][COMMA];
+            estado_atual = tabela_transicoes[estado_atual][comma];
         } else if (c == '!') {
             estado_atual = tabela_transicoes[estado_atual][exclama];
         } else if (c == '>') {
@@ -143,9 +143,10 @@ int get_token()
     }
     else
     {
-        reservada(lex, raiz_reservada);
-        token_operadores(lex);
-        imprime_token(lex, fpo_tokens);
+        reservada();
+        token_operadores();
+        corrige_tokens();
+        imprime_token();
     }
     return lex->token;
 }

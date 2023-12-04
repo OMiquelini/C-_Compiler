@@ -64,6 +64,14 @@ void token_operadores()
     return;
 }
 
+void corrige_tokens()
+{
+    if(lex->token<=257)
+    {
+        lex->token+=257;
+    }
+}
+
 //função para criar o nó com a palavra reservada e seu valor em ascii
 arvore_p criar_no(int valor, char *str, int token)
 {

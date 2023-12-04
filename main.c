@@ -5,7 +5,7 @@
 **********************************************************************************************************************/
 
 #include "scanner.h"
-#include "parser.tab.h"
+//#include "parser.tab.h"
 extern FILE* yyin;
 
 
@@ -41,9 +41,9 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-   /*for(i=0;i<28;i++)
-        get_token();*/
-    yyparse();
+   for(i=0;i<28;i++)
+        get_token();
+    //yyparse();
 
     deallocate_buffer(buffer);
     deallocate_no(lex);
