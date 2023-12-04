@@ -23,7 +23,7 @@ void yyerror(const char *s);
 %token  MENOR MAIOR_IGUAL MENOR_IGUAL DIFERENTE IGUAL IF INT ELSE VOID WHILE RETURN
 
 
-%type programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
+%type <AST_p> programa declaracao_lista declaracao var_declaracao tipo_especificador fun_declaracao params param_list param composto_decl local_declaracoes statement_list statement expressao_decl selecao_decl iteracao_decl retorno_decl expressao var simples_expressao relacional soma_expressao soma termo mult fator ativacao args arg_list
 
 %start programa
 
