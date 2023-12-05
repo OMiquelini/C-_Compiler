@@ -98,7 +98,7 @@ typedef struct SimbTab_no{
 
 typedef SimbTab_no *SimbTab_p;
 
-SimbTab_p hash_tab[HASH_SIZE];
+extern SimbTab_p hash_tab[HASH_SIZE];
 
 //funções do scanner
 int soma_ascii(char *str);

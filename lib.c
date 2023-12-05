@@ -12,6 +12,8 @@ arvore_p raiz_reservada;
 p_no lex;
 p_buffer buffer;
 
+SimbTab_p hash_tab[HASH_SIZE];
+
 int soma_ascii(char *str)
 {
     int soma = 0;
