@@ -69,6 +69,7 @@ int DFA_func()
             estado_atual = tabela_transicoes[estado_atual][Space];
         } else if(c==EOF){
             estado_atual = tabela_transicoes[estado_atual][Space];
+            lex->token=0;
         } else {
             estado_atual = LIXO;
         }

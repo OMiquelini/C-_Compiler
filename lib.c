@@ -39,7 +39,7 @@ void imprime_token()
 
 void corrige_tokens()
 {
-    if(lex->token<=257)
+    if(lex->token<=257 && lex->token > 0)
     {
         lex->token+=257;
     }
