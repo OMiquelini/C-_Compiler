@@ -24,7 +24,7 @@ linha: 6 lexema: ( token: 266
 linha: 6 lexema: v token: 259
 linha: 6 lexema: , token: 272
 linha: 6 lexema: u token: 259
-linha: 6 lexema: - token: 264
+linha: 6 lexema: + token: 260
 linha: 6 lexema: u token: 259
 linha: 6 lexema: / token: 263
 linha: 6 lexema: v token: 259

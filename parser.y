@@ -14,6 +14,7 @@
 AST_p raiz;
 
 int yylex();
+char *str_aux;
 void yyerror(const char *s);
 
 %}
@@ -217,7 +218,7 @@ retorno_decl:
 expressao:
         var ATRIBUICAO expressao {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//nok
                 $$->filhos[0]=$1;
                 $$->filhos[1]=$3;
         }
@@ -228,11 +229,11 @@ expressao:
 var:
         IDENTIFICADOR {
                 $$=cria_exp(Id);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//nok
         }
         | IDENTIFICADOR{
                 $$=cria_exp(array);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//nok
         } L_BRAC expressao R_BRAC {
                 $$=$2;
                 $$->filhos[0]=$4;
@@ -251,31 +252,31 @@ simples_expressao:
 relacional:
         MENOR {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
         | MAIOR {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
 
         | MENOR_IGUAL {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
 
         | DIFERENTE {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
 
         | MAIOR_IGUAL {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
 
         | IGUAL {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         };
 
 soma_expressao:
@@ -291,12 +292,12 @@ soma_expressao:
 soma:
         MAIS {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
 
         | MENOS {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         };
 
 termo:
@@ -312,11 +313,11 @@ termo:
 mult:
         MULTIPLICACAO {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         }
         | DIVISAO {
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         };
 
 fator:
@@ -333,13 +334,13 @@ fator:
 
         | NUMERO {
                 $$=cria_exp(Const);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//ok
         };
 
 ativacao:
         IDENTIFICADOR{
                 $$=cria_exp(Ativ);
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//nok
         } L_PAR args R_PAR {
                 $$=$2;
                 $$->filhos[0]=$4;
