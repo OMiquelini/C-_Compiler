@@ -149,6 +149,9 @@ void freeTree(AST_p node) {
 AST_p cria_exp(tipoExp tipo){
     AST_p aux = (AST_p)malloc(sizeof(AST_t));
     int i;
+
+    aux->str = (char*)malloc(64);
+    
     for(i = 0; i<MAX_FILHOS; i++)
     {
         aux->filhos[i] = NULL;
@@ -163,6 +166,9 @@ AST_p cria_exp(tipoExp tipo){
 AST_p cria_stmt(tipoStmt tipo){
     AST_p aux = (AST_p)malloc(sizeof(AST_t));
     int i;
+
+    aux->str = (char*)malloc(64);
+
     for(i = 0; i<MAX_FILHOS; i++)
     {
         aux->filhos[i] = NULL;
@@ -177,6 +183,9 @@ AST_p cria_stmt(tipoStmt tipo){
 AST_p cria_decl(tipoDecl tipo){
     AST_p aux = (AST_p)malloc(sizeof(AST_t));
     int i;
+
+    aux->str = (char*)malloc(64);
+
     for(i = 0; i<MAX_FILHOS; i++)
     {
         aux->filhos[i] = NULL;

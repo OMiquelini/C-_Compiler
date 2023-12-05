@@ -8,7 +8,6 @@
 #include "scanner.h"
 #include "stdio.h"
 #include "stdlib.h"
-#include "string.h"
 
 #define YYSTYPE AST_p
 
@@ -31,11 +30,11 @@ programa: declaracao_lista {
 
 declaracao_lista: 
         declaracao_lista declaracao {
-                YYTYPE aux = $1;
-                while(aux->irmao != NULL){
-                aux = aux->irmao;
+                YYSTYPE aux = $1;
+                while(aux->irmaos != NULL){
+                aux = aux->irmaos;
                 }
-                aux->irmao = $2;
+                aux->irmaos = $2;
                 $$ = $1;
         } 
         | declaracao { 
@@ -53,19 +52,21 @@ declaracao:
 var_declaracao: 
         tipo_especificador IDENTIFICADOR SEMICOLON {
                 $$=$1;
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
         | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
                 $$=$1;
-                strcpy($$->str,lex->lexema)
+                //$$->str=strdup(lex->lexema)
                 $$->tipo_var = Array;
         };
 
 tipo_especificador: INT { 
-                $$=cria_decl();
+                $$=cria_decl(Var);
+                $$->tipo_var = Int;
         }
         | VOID {
-                $$=cria_decl();
+                $$=cria_decl(Var);
+                $$->tipo_var = Void;
         };
 
 fun_declaracao:
@@ -77,7 +78,7 @@ params:
                 $$ = $1;
         } 
         | VOID {
-                $$=cria_decl();
+                $$=cria_decl(Param);
         };
 
 param_list:
@@ -89,13 +90,15 @@ param_list:
 param:
         tipo_especificador IDENTIFICADOR  {
                 $$ = $1;
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
         | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
         };
 
 composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
-                $$=cria_stmt();
+                $$=cria_stmt(Comp);
+                $$->filhos[0]=$2;
+                $$->filhos[1]=$3;
         };
 
 local_declaracoes: local_declaracoes var_declaracao {
@@ -135,14 +138,12 @@ expressao_decl:
 
 selecao_decl:
         IF L_PAR expressao R_PAR statement {
-                $$=cria_stmt();
-                strcpy($$->str,lex->lexema)
+                $$=cria_stmt(If);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
         }
         | IF L_PAR expressao R_PAR statement ELSE statement {
-                $$=cria_stmt();
-                strcpy($$->str,lex->lexema)
+                $$=cria_stmt(If);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
                 $$->filhos[2] = $7;
@@ -150,20 +151,17 @@ selecao_decl:
 
 iteracao_decl:
         WHILE L_PAR expressao R_PAR statement {
-                $$=cria_stmt();
-                strcpy($$->str,lex->lexema)
+                $$=cria_stmt(While);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
         };
 
 retorno_decl:
         RETURN SEMICOLON {
-                $$=cria_stmt();
-                strcpy($$->str,lex->lexema)
+                $$=cria_stmt(Return);
         }
         | RETURN expressao SEMICOLON {
-                $$=cria_stmt();
-                strcpy($$->str,lex->lexema)
+                $$=cria_stmt(Return);
                 $$->filhos[0] = $2;
         };
 
@@ -181,11 +179,11 @@ expressao:
 var:
         IDENTIFICADOR {
                 $$=cria_exp(Id);
-                strcpy($$->str,lex->lexema)//strcpy
+                $$->str=strdup(lex->lexema)
         }
         | IDENTIFICADOR{
                 $$=cria_exp(array);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         } L_BRAC expressao R_BRAC {
                 $$=$2;
                 $$->filhos[0]=$4;
@@ -204,31 +202,31 @@ simples_expressao:
 relacional:
         MENOR {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
         | MAIOR {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
 
         | MENOR_IGUAL {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
 
         | DIFERENTE {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
 
         | MAIOR_IGUAL {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
 
         | IGUAL {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         };
 
 soma_expressao:
@@ -244,12 +242,12 @@ soma_expressao:
 soma:
         MAIS {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
 
         | MENOS {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         };
 
 termo:
@@ -265,11 +263,11 @@ termo:
 mult:
         MULTIPLICACAO {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         }
         | DIVISAO {
                 $$=cria_exp(Op);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         };
 
 fator:
@@ -286,13 +284,13 @@ fator:
 
         | NUMERO {
                 $$=cria_exp(Const);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         };
 
 ativacao:
         IDENTIFICADOR{
                 $$=cria_exp(Ativ);
-                strcpy($$->str,lex->lexema)
+                $$->str=strdup(lex->lexema)
         } L_PAR args R_PAR {
                 $$=$2;
                 $$->filhos[0]=$4;
@@ -303,7 +301,7 @@ args:
                 $$ = $1;
         }
         | /* vazio */ {
-        $       $ = NULL;
+                $$ = NULL;
         };
 
 arg_list:
@@ -322,4 +320,10 @@ int yylex() {
 
 void yyerror(const char *s) {
     fprintf(stderr, "Erro de sintaxe: %s\n", s);
+}
+
+AST_p parse()
+{
+        yyparse();
+        return raiz;
 }

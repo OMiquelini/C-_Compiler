@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
     int vetor_ascii[]={207, 331, 425, 434, 537, 672};
     char *vetor_palavras[]={"if","int", "else", "void", "while", "return"};
     int token_reservada[]={IF,INT, ELSE, VOID, WHILE, RETURN};
+    AST_p raiz_sintatica;
     raiz_reservada = NULL;
     lex = allocate_no();
     buffer = allocate_buffer();
@@ -43,7 +44,10 @@ int main(int argc, char *argv[])
 
    /*for(i=0;i<28;i++)
         get_token();*/
-    yyparse();
+    //yyparse();
+    raiz_sintatica = parse();
+
+    printf("%s",lex->lexema);
 
     deallocate_buffer(buffer);
     deallocate_no(lex);

@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include <stdarg.h>
 
 
 #define N_SIMBOBOLOS 19
@@ -67,7 +66,7 @@ typedef enum {Op, Const, Id, array, Ativ}tipoExp;
 #define MAX_FILHOS 3
 
 //struct da arvore do parser
-typedef struct AST {
+typedef struct AST_t {
     struct AST_t* filhos[MAX_FILHOS];
     struct AST_t* irmaos;
     int linha; //linha que apareceu
