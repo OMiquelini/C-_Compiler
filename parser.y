@@ -8,6 +8,7 @@
 #include "scanner.h"
 #include "stdio.h"
 #include "stdlib.h"
+#include "string.h"
 
 #define YYSTYPE AST_p
 
@@ -28,62 +29,73 @@ programa: declaracao_lista {
         raiz = $1;
         };
 
-declaracao_lista: declaracao_lista declaracao {
-    
+declaracao_lista: 
+        declaracao_lista declaracao {
+                YYTYPE aux = $1;
+                while(aux->irmao != NULL){
+                aux = aux->irmao;
+                }
+                aux->irmao = $2;
+                $$ = $1;
         } 
         | declaracao { 
-        $$ = $1;
+                $$ = $1;
         };
 
-declaracao: var_declaracao {
-        $$ = $1;
+declaracao:
+        var_declaracao {
+                $$ = $1;
         }    
         | fun_declaracao {
-        $$ = $1;  
+                $$ = $1;  
         };
 
-var_declaracao: tipo_especificador IDENTIFICADOR SEMICOLON {
-        $$=$1;
-        $$->str = lex->lexema;
+var_declaracao: 
+        tipo_especificador IDENTIFICADOR SEMICOLON {
+                $$=$1;
+                strcpy($$->str,lex->lexema)
         }
         | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
-        $$=$1;
-        $$->str = lex->lexema;
-        $$->tipo_var = Array;
+                $$=$1;
+                strcpy($$->str,lex->lexema)
+                $$->tipo_var = Array;
         };
 
-tipo_especificador: INT {
-        //cria no stmt
-
+tipo_especificador: INT { 
+                $$=cria_decl();
         }
         | VOID {
-        //cria no stmt
+                $$=cria_decl();
         };
 
-fun_declaracao: tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_decl {
+fun_declaracao:
+        tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_decl {
         };
 
-params: param_list {
-        $$ = $1;
+params:
+        param_list {
+                $$ = $1;
         } 
         | VOID {
-        //cria no decl
+                $$=cria_decl();
         };
 
-param_list: param_list COMMA param {
+param_list:
+        param_list COMMA param {
         }  
         | param {
         };
 
-param: tipo_especificador IDENTIFICADOR  {
-        $$ = $1;
-        $$->str = lex->lexema;
+param:
+        tipo_especificador IDENTIFICADOR  {
+                $$ = $1;
+                strcpy($$->str,lex->lexema)
         }
         | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
         };
 
 composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
-        //cria no stmt
+                $$=cria_stmt();
         };
 
 local_declaracoes: local_declaracoes var_declaracao {
@@ -96,193 +108,210 @@ statement_list: statement_list statement {
         | /* vazio */ {
         };
 
-statement: expressao_decl {
-        $$ = $1;
+statement:
+        expressao_decl {
+                $$ = $1;
         }
         | composto_decl {
-        $$ = $1;
+                $$ = $1;
         }
         | selecao_decl {
-        $$ = $1;
+                $$ = $1;
         }
         | iteracao_decl {
-        $$ = $1;
+                $$ = $1;
         }
         | retorno_decl {
-        $$ = $1;
+                $$ = $1;
         };
 
-expressao_decl: expressao SEMICOLON {
-        $$ = $1;
+expressao_decl:
+        expressao SEMICOLON {
+                $$ = $1;
         }
         | SEMICOLON { 
-        $$ = NULL;
+                $$ = NULL;
         };
 
-selecao_decl: IF L_PAR expressao R_PAR statement {
-        //cria no stmt
-        $$->str = lex->lexema;
-        $$->filhos[0] = $3;
-        $$->filhos[1] = $5;
+selecao_decl:
+        IF L_PAR expressao R_PAR statement {
+                $$=cria_stmt();
+                strcpy($$->str,lex->lexema)
+                $$->filhos[0] = $3;
+                $$->filhos[1] = $5;
         }
         | IF L_PAR expressao R_PAR statement ELSE statement {
-        //cria no stmt
-        $$->str = lex->lexema;
-        $$->filhos[0] = $3;
-        $$->filhos[1] = $5;
-        $$->filhos[2] = $7;
+                $$=cria_stmt();
+                strcpy($$->str,lex->lexema)
+                $$->filhos[0] = $3;
+                $$->filhos[1] = $5;
+                $$->filhos[2] = $7;
         };
 
-iteracao_decl: WHILE L_PAR expressao R_PAR statement {
-        //cria no stmt
-        $$->str = lex->lexema;
-        $$->filhos[0] = $3;
-        $$->filhos[1] = $5;
+iteracao_decl:
+        WHILE L_PAR expressao R_PAR statement {
+                $$=cria_stmt();
+                strcpy($$->str,lex->lexema)
+                $$->filhos[0] = $3;
+                $$->filhos[1] = $5;
         };
 
-retorno_decl: RETURN SEMICOLON {
-        //cria no stmt
-        $$->str = lex->lexema;
+retorno_decl:
+        RETURN SEMICOLON {
+                $$=cria_stmt();
+                strcpy($$->str,lex->lexema)
         }
         | RETURN expressao SEMICOLON {
-        $$->str = lex->lexema;
-        $$->filhos[0] = $2;
+                $$=cria_stmt();
+                strcpy($$->str,lex->lexema)
+                $$->filhos[0] = $2;
         };
 
-expressao: var ATRIBUICAO expressao {
-        //cria no exp
-        $$->str=lex->lexema;
-        $$->filhos[0]=$1;
-        $$->filhos[1]=$3;
+expressao:
+        var ATRIBUICAO expressao {
+                $$=cria_exp(Op);
+                $$->str=lex->lexema;
+                $$->filhos[0]=$1;
+                $$->filhos[1]=$3;
         }
         | simples_expressao {
-        $$=$1;
+                $$=$1;
         };
 
-var: IDENTIFICADOR {
-        //cria no exp
-        $$->str = lex->lexema;//strcpy
+var:
+        IDENTIFICADOR {
+                $$=cria_exp(Id);
+                strcpy($$->str,lex->lexema)//strcpy
         }
         | IDENTIFICADOR{
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(array);
+                strcpy($$->str,lex->lexema)
         } L_BRAC expressao R_BRAC {
-        $$=$2;
-        $$->filhos[0]=$4;
+                $$=$2;
+                $$->filhos[0]=$4;
         };
 
-simples_expressao: soma_expressao relacional soma_expressao {
-        $$ = $2;
-	$$->filhos[0] = $1;
-	$$->filhos[1] = $3;
+simples_expressao:
+        soma_expressao relacional soma_expressao {
+                $$ = $2;
+                $$->filhos[0] = $1;
+                $$->filhos[1] = $3;
         }
         | soma_expressao {
-        $$ = $1;
+                $$ = $1;
         };
 
-relacional: MENOR {
-        //cria no exp
-        $$->str = lex->lexema;
+relacional:
+        MENOR {
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
         | MAIOR {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
 
         | MENOR_IGUAL {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
 
         | DIFERENTE {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
 
         | MAIOR_IGUAL {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
 
         | IGUAL {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         };
 
-soma_expressao: soma_expressao soma termo {
-        $$ = $2;
-	$$->filhos[0] = $1;
-	$$->filhos[1] = $3;
+soma_expressao:
+        soma_expressao soma termo {
+                $$ = $2;
+                $$->filhos[0] = $1;
+                $$->filhos[1] = $3;
         }
         | termo {
-        $$=$1;
+                $$=$1;
         };
 
-soma: MAIS {
-        //cria no exp
-        $$->str = lex->lexema;
+soma:
+        MAIS {
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
 
         | MENOS {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         };
 
-termo: termo mult fator {
-        $$=$2;
-        $$->filhos[0]=$1;
-        $$->filhos[1]=$3;
+termo:
+        termo mult fator {
+                $$=$2;
+                $$->filhos[0]=$1;
+                $$->filhos[1]=$3;
         }
         | fator {
-        $$ = $1;
+                $$ = $1;
         };
 
-mult: MULTIPLICACAO {
-        //cria no exp
-        $$->str = lex->lexema;
+mult:
+        MULTIPLICACAO {
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         }
         | DIVISAO {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Op);
+                strcpy($$->str,lex->lexema)
         };
 
-fator: L_PAR expressao R_PAR {
-        $$ = $2;
+fator:
+        L_PAR expressao R_PAR {
+                $$ = $2;
         }
         | var {
-        $$ = $1;
+                $$ = $1;
         }
 
         | ativacao {
-        $$ = $1;
+                $$ = $1;
         }
 
         | NUMERO {
-        //cria no exp
-        $$->str = lex->lexema;
+                $$=cria_exp(Const);
+                strcpy($$->str,lex->lexema)
         };
 
-ativacao: IDENTIFICADOR{
-        //cria no exp
-        $$->str = lex->lexema;
+ativacao:
+        IDENTIFICADOR{
+                $$=cria_exp(Ativ);
+                strcpy($$->str,lex->lexema)
         } L_PAR args R_PAR {
-        //cria no exp
-        $$=$2;
-        $$->filhos[0]=$4;
+                $$=$2;
+                $$->filhos[0]=$4;
         };
 
-args: arg_list {
-        $$ = $1;
+args:
+        arg_list {
+                $$ = $1;
         }
         | /* vazio */ {
-        $$ = NULL;
+        $       $ = NULL;
         };
 
-arg_list: arg_list COMMA expressao {
+arg_list:
+        arg_list COMMA expressao {
         
         }
         | expressao {
-        $$ = $1;
+                $$ = $1;
         };
 
 %%
