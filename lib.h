@@ -79,6 +79,7 @@ typedef struct AST_t {
     tipoVar tipo_var; //tipo da variavel, podendo ser void, int ou array
     tipoExp tipo_exp; //tipo da expressao, podendo ser operador, constante, id array ou ativador 
     tipoStmt tipo_stmt; //tipo do statement, podendo ser comp, if, while ou return
+    int tamanho_array;
 } AST_t;
 
 typedef AST_t *AST_p;
