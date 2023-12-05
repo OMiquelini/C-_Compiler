@@ -1,3 +1,4 @@
+========Tokens========
 linha: 4 lexema: int token: 280
 linha: 4 lexema: gcd token: 259
 linha: 4 lexema: ( token: 266
@@ -69,3 +70,31 @@ linha: 13 lexema: ) token: 267
 linha: 13 lexema: ; token: 273
 linha: 14 lexema: } token: 269
 linha: 15 lexema: EOF token: -1
+
+========Árvore Sintática========
+Func: }
+  Var: ,
+  Comp: 
+    If: 
+      Op: ==
+        Id: ==
+        Const: 0
+      Return: 
+        Id: ;
+      Return: 
+        Ativ: (
+          Id: ,
+Func: }
+  Param: 
+  Comp: 
+    Var: ;
+    Var: ;
+    Op: ;
+      Id: =
+      Ativ: (
+    Op: ;
+      Id: =
+      Ativ: (
+    Ativ: (
+      Ativ: (
+        Id: ,

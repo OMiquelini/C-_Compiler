@@ -42,14 +42,11 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-   /*for(i=0;i<28;i++)
-        get_token();*/
-    //yyparse();
+    fprintf(fpo_tokens,"========Tokens========\n");
     raiz_sintatica = parse();
+    fprintf(fpo_tokens,"\n========Árvore Sintática========\n");
 
-    printf("\n\n===================\n\n");
-
-    print_AST(raiz_sintatica);
+    print_AST(raiz_sintatica, 0);
 
     deallocate_buffer(buffer);
     deallocate_no(lex);
