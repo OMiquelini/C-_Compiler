@@ -95,6 +95,7 @@ fun_declaracao:
                 $$->str=strdup(lex->lexema);//nok
                 $$->filhos[0] = $4;
                 $$->filhos[1] = $6;
+                $$->n_filhos = 2;
         };
 
 params:
@@ -144,6 +145,7 @@ composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
                 $$=cria_stmt(Comp);
                 $$->filhos[0]=$2;
                 $$->filhos[1]=$3;
+                $$->n_filhos = 2;
 
         };
 
@@ -227,6 +229,7 @@ selecao_decl:
                 $$=cria_stmt(If);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
+                $$->n_filhos = 2;
         }
         | IF L_PAR expressao R_PAR statement ELSE statement {
                 printf("selecao_decl\n");
@@ -234,6 +237,7 @@ selecao_decl:
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
                 $$->filhos[2] = $7;
+                $$->n_filhos = 3;
         };
 
 iteracao_decl:
@@ -242,6 +246,7 @@ iteracao_decl:
                 $$=cria_stmt(While);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
+                $$->n_filhos = 2;
         };
 
 retorno_decl:
@@ -253,6 +258,7 @@ retorno_decl:
                 printf("retorno_decl\n");
                 $$=cria_stmt(Return);
                 $$->filhos[0] = $2;
+                $$->n_filhos = 1;
         };
 
 expressao:
@@ -262,6 +268,7 @@ expressao:
                 $$->str=strdup(lex->lexema);//nok
                 $$->filhos[0]=$1;
                 $$->filhos[1]=$3;
+                $$->n_filhos=2;
         }
         | simples_expressao {
                 printf("expressao\n");
@@ -282,6 +289,7 @@ var:
                 printf("var\n");
                 $$=$2;
                 $$->filhos[0]=$4;
+                $$->n_filhos = 1;
         };
 
 simples_expressao:
@@ -290,6 +298,7 @@ simples_expressao:
                 $$ = $2;
                 $$->filhos[0] = $1;
                 $$->filhos[1] = $3;
+                $$->n_filhos = 2;
         }
         | soma_expressao {
                 printf("simples_expressao\n");
@@ -338,6 +347,7 @@ soma_expressao:
                 $$ = $2;
                 $$->filhos[0] = $1;
                 $$->filhos[1] = $3;
+                $$->n_filhos = 2;
         }
         | termo {
                 printf("soma_expressao\n");
@@ -363,6 +373,7 @@ termo:
                 $$=$2;
                 $$->filhos[0]=$1;
                 $$->filhos[1]=$3;
+                $$->n_filhos = 2;
         }
         | fator {
                 printf("termo\n");
@@ -411,6 +422,7 @@ ativacao:
                 printf("ativacao\n");
                 $$=$2;
                 $$->filhos[0]=$4;
+                $$->n_filhos = 1;
         };
 
 args:

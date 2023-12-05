@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
     //yyparse();
     raiz_sintatica = parse();
 
-    print_AST(raiz_sintatica);
+    printf("\n\n===================\n\n");
 
-    printf("%s",lex->lexema);
+    print_AST(raiz_sintatica);
 
     deallocate_buffer(buffer);
     deallocate_no(lex);
