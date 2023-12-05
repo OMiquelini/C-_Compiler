@@ -269,3 +269,101 @@ void print_AST(AST_p no, int nivel)
     }
     print_AST(no->irmaos, nivel);    
 }
+
+unsigned int funcao_hash(const char *str)
+{
+    unsigned int hash = 0;
+    while(*str)
+    {
+        hash = (hash*29)+*str;
+        str++;
+    }
+    return hash % HASH_SIZE;
+}
+
+void insere_simbolo(char *nome, char *escopo, Tipo_simbolo tipo, Tipo_dado dado, int linha)
+{
+    unsigned int index = funcao_hash(nome);
+
+    SimbTab_p novo_no = malloc(sizeof(SimbTab_no));
+    novo_no->nome = strdup(nome);
+    novo_no->escopo = strdup(escopo);
+    novo_no->tipo = tipo;
+    novo_no->dado = dado;
+    novo_no->linha = linha;
+    novo_no->prox = NULL;
+
+    if(hash_tab[index]==NULL)
+    {
+        hash_tab[index] = novo_no;
+    }
+    else
+    {
+        novo_no->prox=hash_tab[index];
+        hash_tab[index]=novo_no;
+    }
+}
+
+SimbTab_p lookupSimb(const char *nome, const char *escopo)
+{
+    unsigned int index = funcao_hash(nome);
+    SimbTab_p aux = hash_tab[index];
+    while(aux!=NULL)
+    {
+        if(!strcmp(aux->nome, nome) && !strcmp(aux->escopo, escopo))
+        {
+            return aux;
+        }
+        aux=aux->prox;
+    }
+    return NULL;
+}
+
+void traverseAST(AST_p no, char *escopo_atual)
+{
+    if(no==NULL)
+    {
+        return;
+    }
+    if(no->tipo_no==DECL && no->tipo_decl==Func)
+    {
+        escopo_atual = strdup(no->str);
+    }
+    
+    if(no->tipo_no==DECL && no->tipo_decl==Var)
+    {
+        if(lookupSimb(no->str, escopo_atual)==NULL)
+        {
+            insere_simbolo(no->str, escopo_atual, variavel, no->tipo_var, no->linha);
+        }
+        else
+        {
+            fprintf(fpo_tokens,"Erro semântico: variável %s já declarada na linha %d\n", no->str, no->linha);
+        }
+    }
+    else if(no->tipo_no==DECL && no->tipo_decl==Param)
+    {
+        if(lookupSimb(no->str, escopo_atual)==NULL)
+        {
+            insere_simbolo(no->str, escopo_atual, variavel, no->tipo_var, no->linha);
+        }
+        else
+        {
+            fprintf(fpo_tokens,"Erro semântico: variável %s já declarada na linha %d\n", no->str, no->linha);
+        }
+    }
+    else if(no->tipo_no==EXP && no->tipo_exp==Id)
+    {
+        if(lookupSimb(no->str, escopo_atual)==NULL)
+        {
+            fprintf(fpo_tokens,"Erro semântico: variável %s não declarada na linha %d\n", no->str, no->linha);
+        }
+    }
+    else if(no->tipo_no==EXP && no->tipo_exp==Ativ)
+    {
+        if(lookupSimb(no->str, escopo_atual)==NULL)
+        {
+            fprintf(fpo_tokens,"Erro semântico: função %s não declarada na linha %d\n", no->str, no->linha);
+        }
+    }
+}

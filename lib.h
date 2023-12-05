@@ -53,14 +53,12 @@ typedef struct no{
     int ascii;
 }t_no;
 
+typedef t_no *p_no;
+
 typedef enum {STMT, EXP, DECL}tipoNo;
-
 typedef enum {Var, Func, Param}tipoDecl;
-
 typedef enum {Comp, If, While, Return}tipoStmt;
-
 typedef enum {Void, Int, Array}tipoVar;
-
 typedef enum {Op, Const, Id, array, Ativ}tipoExp;
 
 #define MAX_FILHOS 3
@@ -73,7 +71,6 @@ typedef struct AST_t {
     char* str; //token ou label
     int n_filhos; //numero de filhos
     int tamanho; //caso seja array, temos que salvar o tamanho
-
     tipoNo tipo_no; //tipo do no, podendo ser statement, expression ou declaration
     tipoDecl tipo_decl; //tipo da declaracao, podendo ser variavel, funcao ou parametro
     tipoVar tipo_var; //tipo da variavel, podendo ser void, int ou array
@@ -84,7 +81,24 @@ typedef struct AST_t {
 
 typedef AST_t *AST_p;
 
-typedef t_no *p_no;
+//tabela de simbolos
+#define HASH_SIZE 997
+
+typedef enum {variavel, funct} Tipo_simbolo;
+typedef enum{void_, int_, array_} Tipo_dado;
+
+typedef struct SimbTab_no{
+    char *nome;
+    char *escopo;
+    Tipo_simbolo tipo;
+    Tipo_dado dado;
+    int linha;
+    struct SimbTab_no *prox;
+} SimbTab_no;
+
+typedef SimbTab_no *SimbTab_p;
+
+SimbTab_p hash_tab[HASH_SIZE];
 
 //funções do scanner
 int soma_ascii(char *str);
@@ -101,13 +115,18 @@ void deallocate_no(p_no no);
 
 //funções do parser
 void freeTree(AST_p node);
-
 AST_p parse();
-
 AST_p cria_exp(tipoExp tipo);
 AST_p cria_stmt(tipoStmt tipo);
 AST_p cria_decl(tipoDecl tipo);
 void print_AST(AST_p no, int nivel);
+
+//funções da tabela de símbolos
+unsigned int funcao_hash(const char *str);
+void insere_simbolo(char *nome, char *escopo, Tipo_simbolo tipo, Tipo_dado dado, int linha);
+SimbTab_p lookupSimb(const char *nome, const char *escopo);
+void traverseAST(AST_p no, char *escopo_atual);
+
 
 extern FILE *fpi;
 extern FILE *fpo_tokens;
