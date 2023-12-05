@@ -258,10 +258,9 @@ void print_AST(AST_p no)
                 break;
         }
     }
-    for(i = 0; i<no->n_filhos; i++)
+    for(i=0;i<no->n_filhos;i++)
     {
         print_AST(no->filhos[i]);
     }
-    if(no->irmaos!=NULL)
-        print_AST(no->irmaos);
+    print_AST(no->irmaos);    
 }

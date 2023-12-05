@@ -26,11 +26,13 @@ void yyerror(const char *s);
 %%
 
 programa: declaracao_lista {
+        printf("programa\n");
         raiz = $1;
-        };
+};
 
 declaracao_lista: 
         declaracao_lista declaracao {
+                printf("declaracao_lista\n");
                 YYSTYPE aux = $1;
                 if(aux == NULL)
                 {
@@ -46,55 +48,70 @@ declaracao_lista:
                 }
         } 
         | declaracao { 
+                printf("declaracao_lista\n");
                 $$ = $1;
         };
 
 declaracao:
         var_declaracao {
+                printf("declaracao\n");
                 $$ = $1;
         }    
         | fun_declaracao {
+                printf("declaracao\n");
                 $$ = $1;
         };
 
 var_declaracao: 
         tipo_especificador IDENTIFICADOR SEMICOLON {
+                printf("var_declaracao\n");
                 $$=$1;
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//nok
                 $$->tipo_var = Var;
         }
         | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
+                printf("var_declaracao\n");
                 $$=$1;
-                $$->str=strdup(lex->lexema);
+                $$->str=strdup(lex->lexema);//nok
                 $$->tipo_var = Array;
         };
 
-tipo_especificador: INT { 
+tipo_especificador: INT {
+                printf("tipo_especificador\n"); 
                 $$=cria_decl(Var);
                 $$->tipo_var = Int;
         }
         | VOID {
+                printf("tipo_especificador\n"); 
                 $$=cria_decl(Var);
                 $$->tipo_var = Void;
         };
 
 fun_declaracao:
         tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_decl {
-
+                printf("fun_declaracao\n"); 
+                $$ = $1;
+                $$->tipo_decl = Func;
+                $$->str=strdup(lex->lexema);//nok
+                $$->filhos[0] = $4;
+                $$->filhos[1] = $6;
         };
 
 params:
         param_list {
+                printf("params\n"); 
                 $$ = $1;
 
         } 
         | VOID {
+                printf("params\n");
                 $$=cria_decl(Param);
 
         };
 
 param_list:
         param_list COMMA param {
+                printf("param_list\n");
                 YYSTYPE aux = $1;
                 while(aux->irmaos != NULL){
                 aux = aux->irmaos;
@@ -103,20 +120,27 @@ param_list:
                 $$ = $1;
         }  
         | param {
+                printf("param_list\n");
                 $$ = $1;     
         };
 
 param:
         tipo_especificador IDENTIFICADOR  {
+                printf("param\n");
                 $$ = $1;
                 $$->str=strdup(lex->lexema);
 
         }
         | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
-
+                printf("param\n");
+                $$ = $1;
+                $$->tipo_decl = Param;
+                $$->tipo_var = Array;
+                $$->str=strdup(lex->lexema);//nok
         };
 
 composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
+                printf("composto_decl\n");
                 $$=cria_stmt(Comp);
                 $$->filhos[0]=$2;
                 $$->filhos[1]=$3;
@@ -124,6 +148,7 @@ composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
         };
 
 local_declaracoes: local_declaracoes var_declaracao {
+                printf("local_declaracoes\n");
                 YYSTYPE aux = $1;
                 if(aux == NULL)
                 {
@@ -139,10 +164,12 @@ local_declaracoes: local_declaracoes var_declaracao {
                 }
         }
         | /* vazio */ {
+                printf("local_declaracoes\n");
                 $$ = NULL;
         };
 
 statement_list: statement_list statement {
+                printf("statement_list\n");
                 YYSTYPE aux = $1;
                 if(aux == NULL)
                 {
@@ -158,41 +185,51 @@ statement_list: statement_list statement {
                 }
         }
         | /* vazio */ {
+                printf("statement_list\n");
                 $$ = NULL;
         };
 
 statement:
         expressao_decl {
+                printf("statement\n");
                 $$ = $1;
         }
         | composto_decl {
+                printf("statement\n");
                 $$ = $1;
         }
         | selecao_decl {
+                printf("statement\n");
                 $$ = $1;
         }
         | iteracao_decl {
+                printf("statement\n");
                 $$ = $1;
         }
         | retorno_decl {
+                printf("statement\n");
                 $$ = $1;
         };
 
 expressao_decl:
         expressao SEMICOLON {
+                printf("expressao_decl\n");
                 $$ = $1;
         }
         | SEMICOLON { 
+                printf("expressao_decl\n");
                 $$ = NULL;
         };
 
 selecao_decl:
         IF L_PAR expressao R_PAR statement {
+                printf("selecao_decl\n");
                 $$=cria_stmt(If);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
         }
         | IF L_PAR expressao R_PAR statement ELSE statement {
+                printf("selecao_decl\n");
                 $$=cria_stmt(If);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
@@ -201,6 +238,7 @@ selecao_decl:
 
 iteracao_decl:
         WHILE L_PAR expressao R_PAR statement {
+                printf("iteracao_decl\n");
                 $$=cria_stmt(While);
                 $$->filhos[0] = $3;
                 $$->filhos[1] = $5;
@@ -208,154 +246,186 @@ iteracao_decl:
 
 retorno_decl:
         RETURN SEMICOLON {
+                printf("retorno_decl\n");
                 $$=cria_stmt(Return);
         }
         | RETURN expressao SEMICOLON {
+                printf("retorno_decl\n");
                 $$=cria_stmt(Return);
                 $$->filhos[0] = $2;
         };
 
 expressao:
         var ATRIBUICAO expressao {
+                printf("expressao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//nok
                 $$->filhos[0]=$1;
                 $$->filhos[1]=$3;
         }
         | simples_expressao {
+                printf("expressao\n");
                 $$=$1;
         };
 
 var:
         IDENTIFICADOR {
+                printf("var\n");
                 $$=cria_exp(Id);
                 $$->str=strdup(lex->lexema);//nok
         }
         | IDENTIFICADOR{
+                printf("var\n");
                 $$=cria_exp(array);
                 $$->str=strdup(lex->lexema);//nok
         } L_BRAC expressao R_BRAC {
+                printf("var\n");
                 $$=$2;
                 $$->filhos[0]=$4;
         };
 
 simples_expressao:
         soma_expressao relacional soma_expressao {
+                printf("simples_expressao\n");
                 $$ = $2;
                 $$->filhos[0] = $1;
                 $$->filhos[1] = $3;
         }
         | soma_expressao {
+                printf("simples_expressao\n");
                 $$ = $1;
         };
 
 relacional:
         MENOR {
+                printf("relacao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
         | MAIOR {
+                printf("relacao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
 
         | MENOR_IGUAL {
+                printf("relacao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
 
         | DIFERENTE {
+                printf("relacao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
 
         | MAIOR_IGUAL {
+                printf("relacao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
 
         | IGUAL {
+                printf("relacao\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         };
 
 soma_expressao:
         soma_expressao soma termo {
+                printf("soma_expressao\n");
                 $$ = $2;
                 $$->filhos[0] = $1;
                 $$->filhos[1] = $3;
         }
         | termo {
+                printf("soma_expressao\n");
                 $$=$1;
         };
 
 soma:
         MAIS {
+                printf("soma\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
 
         | MENOS {
+                printf("soma\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         };
 
 termo:
         termo mult fator {
+                printf("termo\n");
                 $$=$2;
                 $$->filhos[0]=$1;
                 $$->filhos[1]=$3;
         }
         | fator {
+                printf("termo\n");
                 $$ = $1;
         };
 
 mult:
         MULTIPLICACAO {
+                printf("mult\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         }
         | DIVISAO {
+                printf("mult\n");
                 $$=cria_exp(Op);
                 $$->str=strdup(lex->lexema);//ok
         };
 
 fator:
         L_PAR expressao R_PAR {
+                printf("fator\n");
                 $$ = $2;
         }
         | var {
+                printf("fator\n");
                 $$ = $1;
         }
 
         | ativacao {
+                printf("fator\n");
                 $$ = $1;
         }
 
         | NUMERO {
+                printf("fator\n");
                 $$=cria_exp(Const);
                 $$->str=strdup(lex->lexema);//ok
         };
 
 ativacao:
         IDENTIFICADOR{
+                printf("ativacao\n");
                 $$=cria_exp(Ativ);
                 $$->str=strdup(lex->lexema);//nok
         } L_PAR args R_PAR {
+                printf("ativacao\n");
                 $$=$2;
                 $$->filhos[0]=$4;
         };
 
 args:
         arg_list {
+                printf("args\n");
                 $$ = $1;
         }
         | /* vazio */ {
+                printf("args\n");
                 $$ = NULL;
         };
 
 arg_list:
         arg_list COMMA expressao {
+                printf("arg_list\n");
                 YYSTYPE aux = $1;
                 while(aux->irmaos != NULL){
                 aux = aux->irmaos;
@@ -364,6 +434,7 @@ arg_list:
                 $$ = $1;
         }
         | expressao {
+                printf("arg_list\n");
                 $$ = $1;
         };
 
