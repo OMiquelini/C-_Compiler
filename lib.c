@@ -262,5 +262,6 @@ void print_AST(AST_p no)
     {
         print_AST(no->filhos[i]);
     }
-    print_AST(no->irmaos);
+    if(no->irmaos!=NULL)
+        print_AST(no->irmaos);
 }
