@@ -73,6 +73,10 @@ int DFA_func()
         } else {
             estado_atual = LIXO;
         }
+        if(estado_ant==Q8 && estado_atual==LIXO)
+        {
+            estado_atual=Q8;
+        }
         if (estado_atual==INICIAL)
         {
             i=0;
