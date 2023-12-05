@@ -104,7 +104,7 @@ void freeTree(AST_p node);
 AST_p cria_exp(tipoExp tipo);
 AST_p cria_stmt(tipoStmt tipo);
 AST_p cria_decl(tipoDecl tipo);
-
+void print_AST(AST_p no);
 
 extern FILE *fpi;
 extern FILE *fpo_tokens;

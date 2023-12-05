@@ -196,3 +196,71 @@ AST_p cria_decl(tipoDecl tipo){
     aux->tipo_decl = tipo;
     return aux;
 }
+
+void print_AST(AST_p no)
+{
+    int i;
+    if(no == NULL)
+    {
+        return;
+    }
+    if(no->tipo_no == EXP)
+    {
+        switch(no->tipo_exp)
+        {
+            case Op:
+                printf("Op: %s\n", no->str);
+                break;
+            case Const:
+                printf("Const: %s\n", no->str);
+                break;
+            case Id:
+                printf("Id: %s\n", no->str);
+                break;
+            case array:
+                printf("array: %s\n", no->str);
+                break;
+            case Ativ:
+                printf("Ativ: %s\n", no->str);
+                break;
+        }
+    }
+    else if(no->tipo_no == STMT)
+    {
+        switch(no->tipo_stmt)
+        {
+            case Comp:
+                printf("Comp: %s\n", no->str);
+                break;
+            case If:
+                printf("If: %s\n", no->str);
+                break;
+            case While:
+                printf("While: %s\n", no->str);
+                break;
+            case Return:
+                printf("Return: %s\n", no->str);
+                break;
+        }
+    }
+    else if(no->tipo_no == DECL)
+    {
+        switch(no->tipo_decl)
+        {
+            case Var:
+                printf("Var: %s\n", no->str);
+                break;
+            case Func:
+                printf("Func: %s\n", no->str);
+                break;
+            case Param:
+                printf("Param: %s\n", no->str);
+                break;
+        }
+    }
+    for(i = 0; i<no->n_filhos; i++)
+    {
+        print_AST(no->filhos[i]);
+    }
+    print_AST(no->irmaos);
+}

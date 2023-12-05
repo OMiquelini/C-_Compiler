@@ -26,7 +26,7 @@ int DFA_func()
     int estado_atual = INICIAL, estado_ant = INICIAL;
     int i = 0;
         char c =' ';
-    while (estado_atual!=FINAL){
+    while (estado_atual!=FINAL && estado_ant!=-1){
         c = get_next_char(buffer, fpi);
         estado_ant = estado_atual;
         if (isalpha(c)) {
@@ -68,7 +68,7 @@ int DFA_func()
         } else if (isspace(c)) {
             estado_atual = tabela_transicoes[estado_atual][Space];
         } else if(c==EOF){
-            estado_atual = tabela_transicoes[estado_atual][Space];
+            estado_atual = -1;//tabela_transicoes[estado_atual][Space];
             lex->token=0;
         } else {
             estado_atual = LIXO;
@@ -84,7 +84,7 @@ int DFA_func()
         } else if(estado_atual == LIXO){
             printf("Erro lexico na linha %d: caractere '%c' não aceito pela linguagem\n", buffer->line,c);
             return -1;
-        } else if ((estado_atual != FINAL && estado_atual != Q8 && estado_atual != Q9) && (!isspace(c))) {
+        } else if ((estado_atual != FINAL && estado_atual != Q8 && estado_atual != Q9 && estado_atual !=-1) && (!isspace(c))) {
             lex->lexema[i] = c;
             lex->linha = buffer->line;
             i++;
@@ -93,7 +93,10 @@ int DFA_func()
     }
     unget_char(c);
     lex->token = estado_ant;
-    lex->lexema[i] = '\0';
+    if(estado_ant==-1)
+        lex->lexema="EOF";
+    else
+        lex->lexema[i] = '\0';
     return 0;
 }
 
