@@ -369,3 +369,13 @@ void traverseAST(AST_p no, char *escopo_atual)
         }
     }
 }
+void print_SimTab()
+{
+    for (int i = 0; i < HASH_SIZE; i++) {
+        SimbTab_p atual = hash_tab[i];
+        while (atual != NULL) {
+            fprintf(fpo_tokens, "Nome: %s, Escopo: %s, Tipo: %s, Tipo de dados: %s, Linha: %d\n",atual->nome,atual->escopo,(atual->tipo == variavel) ? "Variable" : "Function",(atual->dado == void_) ? "void" : ((atual->dado == int_) ? "int" : "array"),atual->linha);
+            atual = atual->prox;
+        }
+    }
+}

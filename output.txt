@@ -1,0 +1,103 @@
+========Tokens========
+linha: 4 lexema: int token: 280
+linha: 4 lexema: gcd token: 259
+linha: 4 lexema: ( token: 266
+linha: 4 lexema: int token: 280
+linha: 4 lexema: u token: 259
+linha: 4 lexema: , token: 272
+linha: 4 lexema: int token: 280
+linha: 4 lexema: v token: 259
+linha: 4 lexema: ) token: 267
+linha: 5 lexema: { token: 268
+linha: 5 lexema: if token: 279
+linha: 5 lexema: ( token: 266
+linha: 5 lexema: v token: 259
+linha: 5 lexema: == token: 278
+linha: 5 lexema: 0 token: 258
+linha: 5 lexema: ) token: 267
+linha: 5 lexema: return token: 284
+linha: 5 lexema: u token: 259
+linha: 5 lexema: ; token: 273
+linha: 6 lexema: else token: 281
+linha: 6 lexema: return token: 284
+linha: 6 lexema: gcd token: 259
+linha: 6 lexema: ( token: 266
+linha: 6 lexema: v token: 259
+linha: 6 lexema: , token: 272
+linha: 6 lexema: u token: 259
+linha: 6 lexema: - token: 264
+linha: 6 lexema: u token: 259
+linha: 6 lexema: / token: 263
+linha: 6 lexema: v token: 259
+linha: 6 lexema: * token: 265
+linha: 6 lexema: v token: 259
+linha: 6 lexema: ) token: 267
+linha: 6 lexema: ; token: 273
+linha: 8 lexema: } token: 269
+linha: 10 lexema: void token: 282
+linha: 10 lexema: main token: 259
+linha: 10 lexema: ( token: 266
+linha: 10 lexema: void token: 282
+linha: 10 lexema: ) token: 267
+linha: 11 lexema: { token: 268
+linha: 11 lexema: int token: 280
+linha: 11 lexema: x token: 259
+linha: 11 lexema: ; token: 273
+linha: 11 lexema: int token: 280
+linha: 11 lexema: y token: 259
+linha: 11 lexema: ; token: 273
+linha: 12 lexema: x token: 259
+linha: 12 lexema: = token: 262
+linha: 12 lexema: input token: 259
+linha: 12 lexema: ( token: 266
+linha: 12 lexema: ) token: 267
+linha: 12 lexema: ; token: 273
+linha: 12 lexema: y token: 259
+linha: 12 lexema: = token: 262
+linha: 12 lexema: input token: 259
+linha: 12 lexema: ( token: 266
+linha: 12 lexema: ) token: 267
+linha: 12 lexema: ; token: 273
+linha: 13 lexema: output token: 259
+linha: 13 lexema: ( token: 266
+linha: 13 lexema: gcd token: 259
+linha: 13 lexema: ( token: 266
+linha: 13 lexema: x token: 259
+linha: 13 lexema: , token: 272
+linha: 13 lexema: y token: 259
+linha: 13 lexema: ) token: 267
+linha: 13 lexema: ) token: 267
+linha: 13 lexema: ; token: 273
+linha: 14 lexema: } token: 269
+linha: 15 lexema: EOF token: -1
+
+========Árvore Sintática========
+Func: }
+  Var: ,
+  Comp: 
+    If: 
+      Op: ==
+        Id: ==
+        Const: 0
+      Return: 
+        Id: ;
+      Return: 
+        Ativ: (
+          Id: ,
+Func: }
+  Param: 
+  Comp: 
+    Var: ;
+    Var: ;
+    Op: ;
+      Id: =
+      Ativ: (
+    Op: ;
+      Id: =
+      Ativ: (
+    Ativ: (
+      Ativ: (
+        Id: ,
+
+========Symbol Table========
+

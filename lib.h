@@ -98,8 +98,6 @@ typedef struct SimbTab_no{
 
 typedef SimbTab_no *SimbTab_p;
 
-extern SimbTab_p hash_tab[HASH_SIZE];
-
 //funções do scanner
 int soma_ascii(char *str);
 int busca_no(arvore_p raiz, int valor, char *str);
@@ -126,6 +124,7 @@ unsigned int funcao_hash(const char *str);
 void insere_simbolo(char *nome, char *escopo, Tipo_simbolo tipo, Tipo_dado dado, int linha);
 SimbTab_p lookupSimb(const char *nome, const char *escopo);
 void traverseAST(AST_p no, char *escopo_atual);
+void print_SimTab();
 
 
 extern FILE *fpi;
@@ -133,5 +132,6 @@ extern FILE *fpo_tokens;
 extern arvore_p raiz_reservada;
 extern p_no lex;
 extern p_buffer buffer;
+extern SimbTab_p hash_tab[HASH_SIZE];
 
 #endif

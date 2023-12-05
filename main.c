@@ -44,9 +44,13 @@ int main(int argc, char *argv[])
 
     fprintf(fpo_tokens,"========Tokens========\n");
     raiz_sintatica = parse();
-    fprintf(fpo_tokens,"\n========Árvore Sintática========\n");
 
+    fprintf(fpo_tokens,"\n========Árvore Sintática========\n");
     print_AST(raiz_sintatica, 0);
+
+    fprintf(fpo_tokens,"\n========Symbol Table========\n");
+    traverseAST(raiz_sintatica, "global"); 
+    print_SimTab();
 
     deallocate_buffer(buffer);
     deallocate_no(lex);
