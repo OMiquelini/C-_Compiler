@@ -124,13 +124,14 @@ param_list:
         }  
         | param {
                 //printf("param_list\n");
-                $$ = $1;     
+                $$ = $1;   
         };
 
 param:
         tipo_especificador id  {
                 //printf("param\n");
                 $$ = $1;
+                $$->tipo_decl = Param;
                 $$->str=str_aux;
 
         }
@@ -267,7 +268,7 @@ expressao:
         var ATRIBUICAO expressao {
                 //printf("expressao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//nok
+                $$->str="=";//nok
                 $$->filhos[0]=$1;
                 $$->filhos[1]=$3;
                 $$->n_filhos=2;
@@ -412,7 +413,7 @@ fator:
         | NUMERO {
                 //printf("fator\n");
                 $$=cria_exp(Const);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str=str_aux;//ok
         };
 
 ativacao:

@@ -73,12 +73,12 @@ linha: 14 lexema: EOF token: -1
 
 ========Árvore Sintática========
 Func: gcd
-		Var: u
+		Param: u
 		Comp: 
 				If: 
 						Op: ==
 								Id: v
-								Const: 0
+								Const: v
 						Return: 
 								Id: u
 						Return: 
@@ -89,10 +89,10 @@ Func: main
 		Comp: 
 				Var: x
 				Var: y
-				Op: ;
+				Op: =
 						Id: x
 						Ativ: input
-				Op: ;
+				Op: =
 						Id: y
 						Ativ: input
 				Ativ: output
