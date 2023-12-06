@@ -209,7 +209,7 @@ void print_AST(AST_p no, int nivel)
     }
     for(i=0;i<nivel;i++)
     {
-        fprintf(fpo_tokens,"  ");
+        fprintf(fpo_tokens,"\t\t");
     }
     if(no->tipo_no == EXP)
     {
@@ -323,11 +323,11 @@ SimbTab_p lookupSimb(const char *nome, const char *escopo)
 
 void traverseAST(AST_p no, char *escopo_atual)
 {
-    if(no==NULL)
+    if (no == NULL)
     {
         return;
     }
-    if(no->tipo_no==DECL && no->tipo_decl==Func)
+    if (no->tipo_no == DECL && no->tipo_decl == Func)
     {
         escopo_atual = strdup(no->str);
     }

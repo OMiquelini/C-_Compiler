@@ -48,11 +48,14 @@ int main(int argc, char *argv[])
     fprintf(fpo_tokens,"\n========Árvore Sintática========\n");
     print_AST(raiz_sintatica, 0);
 
+    char *escopo_atual="global";
+
     fprintf(fpo_tokens,"\n========Symbol Table========\n");
-    traverseAST(raiz_sintatica, "global"); 
+    traverseAST(raiz_sintatica, escopo_atual); 
     print_SimTab();
 
     deallocate_buffer(buffer);
+    free(raiz_sintatica);
     deallocate_no(lex);
     fclose(fpi);
     fclose(fpo_tokens);

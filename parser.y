@@ -34,19 +34,12 @@ declaracao_lista:
         declaracao_lista declaracao {
                 //printf("declaracao_lista\n");
                 YYSTYPE aux = $1;
-                if(aux == NULL)
-                {
-                        $$ = $2;
+                while(aux->irmaos != NULL){
+                aux = aux->irmaos;
                 }
-                else
-                {
-                        while(aux->irmaos != NULL){
-                        aux = aux->irmaos;
-                        }
-                        aux->irmaos = $2;
-                        $$ = $1;
+                aux->irmaos = $2;
+                $$ = $1;
                 }
-        } 
         | declaracao { 
                 //printf("declaracao_lista\n");
                 $$ = $1;
@@ -62,17 +55,21 @@ declaracao:
                 $$ = $1;
         };
 
+id : IDENTIFICADOR {
+        str_aux = strdup(lex->lexema);
+        };
+
 var_declaracao: 
-        tipo_especificador IDENTIFICADOR SEMICOLON {
+        tipo_especificador id SEMICOLON {
                 //printf("var_declaracao\n");
                 $$=$1;
-                $$->str=strdup(lex->lexema);//nok
+                $$->str=str_aux;//nok
                 $$->tipo_var = Var;
         }
-        | tipo_especificador IDENTIFICADOR L_BRAC NUMERO R_BRAC SEMICOLON {
+        | tipo_especificador id L_BRAC NUMERO R_BRAC SEMICOLON {
                 //printf("var_declaracao\n");
                 $$=$1;
-                $$->str=strdup(lex->lexema);//nok
+                $$->str=str_aux;//nok
                 $$->tipo_var = Array;
         };
 
@@ -88,13 +85,18 @@ tipo_especificador: INT {
         };
 
 fun_declaracao:
-        tipo_especificador IDENTIFICADOR L_PAR params R_PAR composto_decl {
+        tipo_especificador id 
+        {
                 //printf("fun_declaracao\n"); 
                 $$ = $1;
+                $$->str=str_aux;//nok
                 $$->tipo_decl = Func;
-                $$->str=strdup(lex->lexema);//nok
-                $$->filhos[0] = $4;
-                $$->filhos[1] = $6;
+        }
+        L_PAR params R_PAR composto_decl {
+                //printf("fun_declaracao\n"); 
+                $$ = $3;
+                $$->filhos[0] = $5;
+                $$->filhos[1] = $7;
                 $$->n_filhos = 2;
         };
 
@@ -107,7 +109,7 @@ params:
         | VOID {
                 //printf("params\n");
                 $$=cria_decl(Param);
-
+                $$->tipo_var = Void;
         };
 
 param_list:
@@ -126,18 +128,18 @@ param_list:
         };
 
 param:
-        tipo_especificador IDENTIFICADOR  {
+        tipo_especificador id  {
                 //printf("param\n");
                 $$ = $1;
-                $$->str=strdup(lex->lexema);
+                $$->str=str_aux;
 
         }
-        | tipo_especificador IDENTIFICADOR L_BRAC R_BRAC {
+        | tipo_especificador id L_BRAC R_BRAC {
                 //printf("param\n");
                 $$ = $1;
                 $$->tipo_decl = Param;
                 $$->tipo_var = Array;
-                $$->str=strdup(lex->lexema);//nok
+                $$->str=str_aux;//nok
         };
 
 composto_decl: L_CHAVES local_declaracoes statement_list R_CHAVES {
@@ -276,15 +278,15 @@ expressao:
         };
 
 var:
-        IDENTIFICADOR {
+        id {
                 //printf("var\n");
                 $$=cria_exp(Id);
-                $$->str=strdup(lex->lexema);//nok
+                $$->str=str_aux;//nok
         }
-        | IDENTIFICADOR{
+        | id{
                 //printf("var\n");
                 $$=cria_exp(array);
-                $$->str=strdup(lex->lexema);//nok
+                $$->str=str_aux;//nok
         } L_BRAC expressao R_BRAC {
                 //printf("var\n");
                 $$=$2;
@@ -309,36 +311,36 @@ relacional:
         MENOR {
                 //printf("relacao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="<";//ok
         }
         | MAIOR {
                 //printf("relacao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str=">";//ok
         }
 
         | MENOR_IGUAL {
                 //printf("relacao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="<=";//ok
         }
 
         | DIFERENTE {
                 //printf("relacao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="!=";//ok
         }
 
         | MAIOR_IGUAL {
                 //printf("relacao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str=">=";//ok
         }
 
         | IGUAL {
                 //printf("relacao\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="==";//ok
         };
 
 soma_expressao:
@@ -358,13 +360,13 @@ soma:
         MAIS {
                 //printf("soma\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="+";//ok
         }
 
         | MENOS {
                 //printf("soma\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="-";//ok
         };
 
 termo:
@@ -384,12 +386,12 @@ mult:
         MULTIPLICACAO {
                 //printf("mult\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="*";//ok
         }
         | DIVISAO {
                 //printf("mult\n");
                 $$=cria_exp(Op);
-                $$->str=strdup(lex->lexema);//ok
+                $$->str="/";//ok
         };
 
 fator:
@@ -414,10 +416,10 @@ fator:
         };
 
 ativacao:
-        IDENTIFICADOR{
+        id{
                 //printf("ativacao\n");
                 $$=cria_exp(Ativ);
-                $$->str=strdup(lex->lexema);//nok
+                $$->str=str_aux;//nok
         } L_PAR args R_PAR {
                 //printf("ativacao\n");
                 $$=$2;
