@@ -123,7 +123,7 @@ void print_AST(AST_p no, int nivel);
 unsigned int funcao_hash(const char *str);
 void insere_simbolo(char *nome, char *escopo, Tipo_simbolo tipo, Tipo_dado dado, int linha);
 SimbTab_p lookupSimb(const char *nome, const char *escopo);
-void traverseAST(AST_p no, char *escopo_atual);
+void traverseAST(AST_p no, char **escopo_atual);
 void print_SimTab();
 
 

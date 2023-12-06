@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     char *escopo_atual="global";
 
     fprintf(fpo_tokens,"\n========Symbol Table========\n");
-    traverseAST(raiz_sintatica, escopo_atual); 
+    traverseAST(raiz_sintatica, &escopo_atual); 
     print_SimTab();
 
     deallocate_buffer(buffer);
